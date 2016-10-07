@@ -4,9 +4,15 @@ namespace Engine
 {
 	class Ticker
 	{
+		unsigned int lastTime;
+		float t;
+		float dt;
 	public:
 		Ticker();
-		~Ticker();
+		void tick();
+		void pause();
+		float uptime() const;
+		float elapsedTime() const;
 	};
 }
 
