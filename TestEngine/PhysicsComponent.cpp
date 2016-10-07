@@ -6,6 +6,15 @@ namespace Engine
 	{
 	}
 
+	Ogre::Vector3 PhysicsComponent::getPhysicalPosition() const
+	{
+		return Ogre::Vector3(0, 0, 0);
+	}
+
+	Ogre::Quaternion PhysicsComponent::getPhysicalOrientation() const
+	{
+		return Ogre::Quaternion(0, 0, 0, 0);
+	}
 
 	PhysicsComponent::~PhysicsComponent()
 	{

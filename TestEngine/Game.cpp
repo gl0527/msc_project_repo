@@ -47,7 +47,8 @@ namespace Engine
 
 	void Game::destroy()
 	{
-
+		if(timer)
+			delete timer;
 	}
 
 	Game::~Game()
