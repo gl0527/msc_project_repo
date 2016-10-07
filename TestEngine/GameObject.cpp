@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "GameObject.h"
 
 namespace Engine
@@ -8,33 +9,33 @@ namespace Engine
 
 	void GameObject::onStart()
 	{
-		for (auto c : components)
-			c->onStart(this);
+		for (auto it = components.begin(); it != components.end(); ++it)
+			(*it)->onStart(this);
 	}
 
 	void GameObject::onPreUpdate(float t, float dt)
 	{
-		for (auto c : components)
-			c->onPreUpdate(t, dt);
+		for (auto it = components.begin(); it != components.end(); ++it)
+			(*it)->onPreUpdate(t, dt);
 	}
 
 	void GameObject::onPostUpdate(float t, float dt)
 	{
-		for (auto c : components)
-			c->onPostUpdate(t, dt);
+		for (auto it = components.begin(); it != components.end(); ++it)
+			(*it)->onPostUpdate(t, dt);
 	}
 
 	void GameObject::onDestroy()
 	{
-		for (auto c : components)
-			c->onDestroy();
+		for (auto it = components.begin(); it != components.end(); ++it)
+			(*it)->onDestroy();
 	}
 
 	Component* GameObject::getComponent(unsigned int cID)
 	{
-		for (auto c : components)
-			if (c->getID() == cID)
-				return c;
+		for (auto it = components.begin(); it != components.end(); ++it)
+			if ((*it)->getID() == cID)
+				return *it;
 		return nullptr;
 	}
 

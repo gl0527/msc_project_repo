@@ -1,17 +1,18 @@
 #pragma once
+#include "stdafx.h"
 #include <vector>
 #include "Component.h"
 
 namespace Engine
 {
-	class GameObject
+	class DLL_SPEC GameObject
 	{
+		Ogre::Vector3 position;
+		Ogre::Quaternion orientation;
+		Ogre::Vector3 scale;
+		std::vector<Component*> components;
 		unsigned int tag;
 		bool isDestroyed;
-		std::vector<Component*> components;
-		// position
-		// orientation
-		// scale
 	public:
 		GameObject();
 
@@ -25,6 +26,9 @@ namespace Engine
 		void onDestroy();
 		//void onCollision(Collider other);
 
+		const Ogre::Vector3& getPosition() const { return position; }
+		const Ogre::Quaternion& getOrientation() const { return orientation; }
+		const Ogre::Vector3& getScale() const { return scale; }
 		Component* getComponent(unsigned int cID);
 
 		void destroy();

@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	PhysicsComponent::PhysicsComponent()
+	PhysicsComponent::PhysicsComponent() : Component(0)
 	{
 	}
 

@@ -1,0 +1,5 @@
+﻿  Game.cpp
+  LINK : D:\dev\ws\TestEngine\Debug\TestEngine_d.dll not found or not built by the last incremental link; performing full link
+     Creating library D:\dev\ws\TestEngine\Debug\TestEngine_d.lib and object D:\dev\ws\TestEngine\Debug\TestEngine_d.exp
+  TestEngine.vcxproj -> D:\dev\ws\TestEngine\Debug\TestEngine_d.dll
+          1 file(s) copied.

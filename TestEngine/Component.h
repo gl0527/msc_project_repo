@@ -1,4 +1,5 @@
 #pragma once
+#include "Ogre.h"
 
 namespace Engine
 {

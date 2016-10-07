@@ -5,8 +5,17 @@ namespace Engine
 {
 	class RenderComponent : public Component
 	{
+	protected:
+		Ogre::SceneNode* node;
+		Ogre::Entity* entity;
 	public:
 		RenderComponent();
+
+		void onPostUpdate(float t, float dt) override;
+
+		void createNode(Ogre::SceneNode* parentNode = 0);
+		void createEntity(const Ogre::String& entityName, const Ogre::String& meshName);
+
 		~RenderComponent();
 	};
 }
