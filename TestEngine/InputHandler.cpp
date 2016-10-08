@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	InputHandler::InputHandler()
+	InputHandler::InputHandler() : inputManager(nullptr), keyboard(nullptr), mouse(nullptr)
 	{
 	}
 
