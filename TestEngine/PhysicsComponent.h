@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "btBulletDynamicsCommon.h"
 
 namespace Engine
 {
@@ -8,9 +9,9 @@ namespace Engine
 	protected:
 		float mass;
 		bool isTrigger;
-		/*btRigidBody* physicsBody;
-		btCollisionShape* physicsShape; // ebbol tobb is lehet, s akkor compoundshape-eket is letre tudunk hozni
-		btMotionState* physicsMotionState;*/
+		btRigidBody* rigidBody;
+		std::vector<btCollisionShape*> shapes;
+		btMotionState* motionState;
 	public:
 		PhysicsComponent();
 
