@@ -15,9 +15,9 @@ namespace Engine
 	public:
 		RenderSystem(const char* wName);
 
-		void init() override;
-		void update(float t, float dt) override;
-		void destroy() override;
+		virtual void init() override;
+		virtual void update(float t, float dt) override;
+		virtual void destroy() override;
 	};
 }
 

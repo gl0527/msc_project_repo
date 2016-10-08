@@ -2,10 +2,14 @@
 
 namespace Engine
 {
-	CameraComponent::CameraComponent()
+	CameraComponent::CameraComponent(const char* name, float zDepth)
 	{
 	}
 
+	const Ogre::Ray& CameraComponent::getRay(float screenX, float screenY)
+	{
+		return camera->getCameraToViewportRay(screenX, screenY);
+	}
 
 	CameraComponent::~CameraComponent()
 	{
