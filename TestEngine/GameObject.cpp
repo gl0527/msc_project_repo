@@ -19,6 +19,12 @@ namespace Engine
 			(*it)->onPreUpdate(t, dt);
 	}
 
+	void GameObject::onUpdate(float t, float dt)
+	{
+		for (auto it = components.begin(); it != components.end(); ++it)
+			(*it)->onUpdate(t, dt);
+	}
+
 	void GameObject::onPostUpdate(float t, float dt)
 	{
 		for (auto it = components.begin(); it != components.end(); ++it)

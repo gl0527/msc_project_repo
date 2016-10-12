@@ -18,6 +18,10 @@ namespace Engine
 		virtual void init() override;
 		virtual void update(float t, float dt) override;
 		virtual void destroy() override;
+
+		Ogre::Root* getRoot() const { return ogreRoot; }
+		Ogre::SceneManager* getSceneManager() const { return sceneManager; }
+		Ogre::RenderWindow* getRenderWindow() const { return renderWindow; }
 	};
 }
 

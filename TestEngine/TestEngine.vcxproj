@@ -103,6 +103,7 @@
     <ClInclude Include="System.h" />
     <ClInclude Include="TestEngine.h" />
     <ClInclude Include="Ticker.h" />
+    <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraComponent.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="StaticComponent.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Ticker.cpp" />
+    <ClCompile Include="XMLParser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

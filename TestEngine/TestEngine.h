@@ -1,2 +1,5 @@
 #include "stdafx.h"
 #include "Ogre.h"
+#include "Game.h"
+#include "GameObject.h"
+#include "Component.h"

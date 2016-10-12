@@ -15,7 +15,14 @@ namespace Engine
 
 	void Game::start()
 	{
-
+		if (running)
+			return;
+		if (!inited)
+			init();
+		else
+			timer->pause();
+		running = true;
+		mainLoop();
 	}
 
 	void Game::pause()

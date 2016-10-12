@@ -21,8 +21,9 @@ namespace Engine
 		void removeComponent();
 
 		void onStart();
-		void onPreUpdate(float t, float dt); // fizika elotti teendok
-		void onPostUpdate(float t, float dt); // fizika utani teendok
+		void onPreUpdate(float t, float dt);
+		void onUpdate(float t, float dt);
+		void onPostUpdate(float t, float dt); 
 		void onDestroy();
 		//void onCollision(Collider other);
 

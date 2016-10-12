@@ -16,6 +16,7 @@ namespace Engine
 
 		virtual void onStart(GameObject* owner) { ownerObject = owner; }
 		virtual void onPreUpdate(float t, float dt) { }
+		virtual void onUpdate(float t, float dt) { }
 		virtual void onPostUpdate(float t, float dt) { }
 		virtual void onDestroy() { }
 		//virtual void onCollision(Collider other) { }

@@ -1,9 +1,16 @@
 #include "TestEngine.h"
 
-//using namespace Engine;
+using namespace Engine;
 
 int main(int argc, char** argv)
 {
-	Ogre::Vector3 vec(0,0,0);
+	Game* game = new Game();
+
+	game->init();
+	game->start();
+	game->destroy();
+
+	delete game;
+
 	return 0;
 }
