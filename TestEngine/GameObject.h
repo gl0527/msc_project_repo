@@ -32,6 +32,9 @@ namespace Engine
 		const Ogre::Vector3& getScale() const { return scale; }
 		Component* getComponent(unsigned int cID);
 
+		void setPosition(const Ogre::Vector3& pos) { position = pos; }
+		void setOrientation(const Ogre::Quaternion& q) { orientation = q; }
+
 		void destroy();
 
 		~GameObject();
