@@ -3,15 +3,46 @@
 
 namespace Engine
 {
-	Game::Game() : inited(false), running(false), destroyed(false)
+	Game* Game::instance = nullptr;
+	
+
+	Game::Game(const char* title)
+		: inited(false), running(false), destroyed(false), renderSystem(nullptr), physicsSystem(nullptr), 
+		inputHandler(nullptr), timer(nullptr)
 	{
+		renderSystem = new RenderSystem(title);
+		physicsSystem = new PhysicsSystem();
+		inputHandler = new InputHandler();
 		timer = new Ticker();
 	}
 
+
+	Game& Game::getInstance()
+	{
+		if (instance == nullptr)
+			instance = new Game("Project lab Gurzo Lajos");
+		return *instance;
+	}
+
+
+	void Game::deleteInstance()
+	{
+		if (instance)
+		{
+			delete instance;
+			instance = nullptr;
+		}
+	}
+
+
 	void Game::init()
 	{
-
+		physicsSystem->init();
+		renderSystem->init();
+		//inputHandler->init();
+		inited = true;
 	}
+
 
 	void Game::start()
 	{
@@ -25,6 +56,7 @@ namespace Engine
 		mainLoop();
 	}
 
+
 	void Game::pause()
 	{
 		if (running)
@@ -32,6 +64,7 @@ namespace Engine
 		else if (inited)
 			start();
 	}
+
 
 	void Game::mainLoop()
 	{
@@ -47,18 +80,26 @@ namespace Engine
 		}
 	}
 
+
 	void Game::update(float t, float dt)
 	{
-
+		//inputHandler->update(t, dt);
+		physicsSystem->update(t, dt);
+		renderSystem->update(t, dt);
 	}
+
 
 	void Game::destroy()
 	{
-		if(timer)
+		if (timer)
+		{
 			delete timer;
+			timer = nullptr;
+		}
+		//inputHandler->destroy();
+		renderSystem->destroy();
+		physicsSystem->destroy();
 	}
 
-	Game::~Game()
-	{
-	}
+
 }

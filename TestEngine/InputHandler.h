@@ -17,7 +17,7 @@ namespace Engine
 		
 		std::map<unsigned int, std::vector<handlerFunction>> handlers;
 	public:
-		InputHandler(Ogre::RenderWindow* rw);
+		InputHandler();
 
 		virtual void init() override;
 		virtual void update(float t, float dt) override;

@@ -20,6 +20,7 @@ namespace Engine
 		virtual void destroy() override;
 
 		Ogre::Root* getRoot() const { return ogreRoot; }
+		Ogre::SceneNode* getRootNode() const { return sceneManager->getRootSceneNode(); }
 		Ogre::SceneManager* getSceneManager() const { return sceneManager; }
 		Ogre::RenderWindow* getRenderWindow() const { return renderWindow; }
 	};

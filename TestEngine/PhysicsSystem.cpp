@@ -3,8 +3,11 @@
 namespace Engine
 {
 	PhysicsSystem::PhysicsSystem()
+		: gravity(btVector3(0.0f, -10.0f, 0.0f)), collisionConfiguration(nullptr), dispatcher(nullptr), overlappingPairCache(nullptr), 
+		solver(nullptr), dynamicsWorld(nullptr) 
 	{
 	}
+
 
 	void PhysicsSystem::init()
 	{
@@ -18,15 +21,18 @@ namespace Engine
 		gContactProcessedCallback = onCollision;
 	}
 
+
 	bool PhysicsSystem::onCollision(btManifoldPoint& cp, void* body0, void* body1)
 	{
 		return false;
 	}
 
+
 	void PhysicsSystem::update(float t, float dt)
 	{
 		
 	}
+
 
 	void PhysicsSystem::setGravity(float y)
 	{
@@ -34,11 +40,13 @@ namespace Engine
 		dynamicsWorld->setGravity(g);
 	}
 
+
 	void PhysicsSystem::setGravity(float x, float y, float z)
 	{
 		btVector3 g(x, y, z);
 		dynamicsWorld->setGravity(g);
 	}
+
 
 	void PhysicsSystem::destroy()
 	{
@@ -58,5 +66,7 @@ namespace Engine
 		delete dispatcher;
 		delete collisionConfiguration;
 	}
+
+
 }
 

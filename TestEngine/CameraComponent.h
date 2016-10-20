@@ -16,7 +16,9 @@ namespace Engine
 		Ogre::ColourValue clearColor;
 	public:
 		CameraComponent(const char* name, float zDepth);
-
+		
+		Ogre::Camera* getCamera() const { return camera; }
+		Ogre::Viewport* getViewPort() const { return viewport; }
 		const Ogre::Ray& getRay(float screenX, float screenY);
 
 		~CameraComponent();

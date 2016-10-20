@@ -2,9 +2,11 @@
 
 namespace Engine
 {
-	RenderSystem::RenderSystem(const char* wName) : windowName(wName), windowWidth(800), windowHeight(600)
+	RenderSystem::RenderSystem(const char* wName)
+		: ogreRoot(nullptr), sceneManager(nullptr), renderWindow(nullptr), windowName(wName), windowWidth(800), windowHeight(600)
 	{
 	}
+
 
 	void RenderSystem::init()
 	{
@@ -26,6 +28,7 @@ namespace Engine
 		Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 	}
 
+
 	void RenderSystem::update(float t, float dt)
 	{
 		if (renderWindow->isClosed())
@@ -37,9 +40,12 @@ namespace Engine
 			ogreRoot->shutdown();
 	}
 
+
 	void RenderSystem::destroy()
 	{
 		sceneManager->clearScene();
 	}
+
+
 }
 

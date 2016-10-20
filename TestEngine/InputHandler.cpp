@@ -1,10 +1,11 @@
 #include "InputHandler.h"
 #include <sstream>
+#include "Game.h"
 
 namespace Engine
 {
-	InputHandler::InputHandler(Ogre::RenderWindow* rw)
-		: inputManager(nullptr), keyboard(nullptr), mouse(nullptr), renderWindow(rw)
+	InputHandler::InputHandler()
+		: inputManager(nullptr), keyboard(nullptr), mouse(nullptr), renderWindow(nullptr)
 	{
 		keys["left"] = false;
 		keys["right"] = false;
@@ -17,10 +18,12 @@ namespace Engine
 		
 	}
 
+
 	void InputHandler::init()
 	{
 		OIS::ParamList pl;
 		size_t windowHnd = 0;
+		renderWindow = Game::getInstance().getRenderSystem()->getRenderWindow();
 		renderWindow->getCustomAttribute("WINDOW", &windowHnd);
 		std::ostringstream windowHndStr;
 		windowHndStr << windowHnd;
@@ -43,6 +46,7 @@ namespace Engine
 		mouse = static_cast<OIS::Mouse*>(inputManager->createInputObject(OIS::OISMouse, false)); // unbuffered mouse
 	}
 
+
 	void InputHandler::update(float t, float dt)
 	{
 		keyboard->capture();
@@ -58,6 +62,7 @@ namespace Engine
 		ms.width = renderWindow->getViewport(0)->getActualWidth();
 		ms.height = renderWindow->getViewport(0)->getActualHeight();
 	}
+
 
 	void InputHandler::destroy()
 	{
@@ -78,11 +83,14 @@ namespace Engine
 		}
 	}
 
+
 	void InputHandler::clearInputs()
 	{
 		for (auto it = keys.begin(); it != keys.end(); ++it)
 			it->second = false;
 		
 	}
+
+
 }
 

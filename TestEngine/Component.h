@@ -1,5 +1,6 @@
 #pragma once
 #include "Ogre.h"
+#include "Game.h"
 
 namespace Engine
 {

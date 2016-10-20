@@ -7,6 +7,7 @@ namespace Engine
 	{
 	}
 
+
 	void Ticker::tick()
 	{
 		unsigned int currentTime = timeGetTime();
@@ -15,19 +16,23 @@ namespace Engine
 		lastTime = currentTime;
 	}
 
+
 	void Ticker::pause()
 	{
 		lastTime = timeGetTime();
 	}
+
 
 	float Ticker::uptime() const
 	{
 		return t;
 	}
 
+
 	float Ticker::elapsedTime() const
 	{
 		return dt;
 	}
+
 	
 }

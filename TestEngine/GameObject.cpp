@@ -7,11 +7,13 @@ namespace Engine
 	{
 	}
 
+
 	void GameObject::onStart()
 	{
 		for (auto it = components.begin(); it != components.end(); ++it)
 			(*it)->onStart(this);
 	}
+
 
 	void GameObject::onPreUpdate(float t, float dt)
 	{
@@ -19,11 +21,13 @@ namespace Engine
 			(*it)->onPreUpdate(t, dt);
 	}
 
+
 	void GameObject::onUpdate(float t, float dt)
 	{
 		for (auto it = components.begin(); it != components.end(); ++it)
 			(*it)->onUpdate(t, dt);
 	}
+
 
 	void GameObject::onPostUpdate(float t, float dt)
 	{
@@ -31,11 +35,13 @@ namespace Engine
 			(*it)->onPostUpdate(t, dt);
 	}
 
+
 	void GameObject::onDestroy()
 	{
 		for (auto it = components.begin(); it != components.end(); ++it)
 			(*it)->onDestroy();
 	}
+
 
 	Component* GameObject::getComponent(unsigned int cID)
 	{
@@ -45,7 +51,10 @@ namespace Engine
 		return nullptr;
 	}
 
+
 	GameObject::~GameObject()
 	{
 	}
+
+
 }

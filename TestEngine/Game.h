@@ -1,27 +1,39 @@
 #pragma once
 #include "Ticker.h"
 #include "stdafx.h"
+#include "RenderSystem.h"
+#include "PhysicsSystem.h"
+#include "InputHandler.h"
 
 namespace Engine
 {
 	class DLL_SPEC Game
 	{
-		Ticker* timer;
 		bool inited;
 		bool running;
 		bool destroyed;
 
+		RenderSystem* renderSystem;
+		PhysicsSystem* physicsSystem;
+		InputHandler* inputHandler;
+		Ticker* timer;
+
 		void mainLoop();
 		void update(float t, float dt);
+
+		static Game* instance;
+		Game(const char* title);
 	public:
-		Game();
+		static Game& getInstance();
+		static void deleteInstance();
 
 		void init();
 		void start();
 		void pause();
 		void destroy();
 
-		~Game();
+		RenderSystem* getRenderSystem() const { return renderSystem; }
+		PhysicsSystem* getPhysicsSystem() const { return physicsSystem; }
 	};
 }
 
