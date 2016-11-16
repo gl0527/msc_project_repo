@@ -1,15 +1,16 @@
 #include "PhysicsSystem.h"
+#include "PhysicsComponent.h"
 
 namespace Engine
 {
 	PhysicsSystem::PhysicsSystem()
-		: gravity(btVector3(0.0f, -10.0f, 0.0f)), collisionConfiguration(nullptr), dispatcher(nullptr), overlappingPairCache(nullptr), 
+		: gravity(btVector3(0.0f, -200.0f, 0.0f)), collisionConfiguration(nullptr), dispatcher(nullptr), overlappingPairCache(nullptr), 
 		solver(nullptr), dynamicsWorld(nullptr) 
 	{
 	}
 
 
-	void PhysicsSystem::init()
+	bool PhysicsSystem::init()
 	{
 		collisionConfiguration = new btDefaultCollisionConfiguration();
 		dispatcher = new btCollisionDispatcher(collisionConfiguration);
@@ -19,6 +20,8 @@ namespace Engine
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 		dynamicsWorld->setGravity(gravity);
 		gContactProcessedCallback = onCollision;
+
+		return true;
 	}
 
 
@@ -28,9 +31,10 @@ namespace Engine
 	}
 
 
-	void PhysicsSystem::update(float t, float dt)
+	bool PhysicsSystem::update(float t, float dt)
 	{
-		
+		dynamicsWorld->stepSimulation(dt, 1);
+		return true;
 	}
 
 

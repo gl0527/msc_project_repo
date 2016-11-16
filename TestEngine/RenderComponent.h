@@ -3,19 +3,27 @@
 
 namespace Engine
 {
-	class RenderComponent : public Component
+	class DLL_SPEC RenderComponent : public Component
 	{
 	protected:
-		Ogre::SceneNode* node;
+		Ogre::SceneNode* currentNode;
 		Ogre::Entity* entity;
-	public:
-		RenderComponent();
+		const std::string entityName;
+		const std::string meshName;
 
+		void createNode();
+		void createEntity();
+	public:
+		typedef struct{ const char* eName; const char* mName; } InitStruct;
+		RenderComponent(const char* eName, const char* mName = "");
+
+		virtual void onStart() override;
 		virtual void onPostUpdate(float t, float dt) override;
 		virtual void onDestroy() override;
 
-		void createNode(Ogre::SceneNode* parentNode = 0);
-		void createEntity(const Ogre::String& entityName, const Ogre::String& meshName);
+		Ogre::SceneNode* getNode() const { return currentNode; }
+		Ogre::Entity* getEntity() const { return entity; }
+		const std::string& getEntityName() const { return entityName; }
 
 		~RenderComponent();
 	};

@@ -3,40 +3,62 @@
 
 namespace Engine
 {
-	RenderComponent::RenderComponent() : Component(0), node(nullptr), entity(nullptr)
+	RenderComponent::RenderComponent(const char* eName, const char* mName)
+		: Component(1), currentNode(nullptr), entity(nullptr), entityName(eName), meshName(mName)
 	{
+		createEntity();
+	}
+
+
+	void RenderComponent::onStart()
+	{
+		createNode();
 	}
 
 
 	void RenderComponent::onPostUpdate(float t, float dt)
 	{
-		node->setPosition(ownerObject->getPosition());
-		node->setOrientation(ownerObject->getOrientation());
+		if (ownerObject)
+		{
+			currentNode->setPosition(ownerObject->getPosition());
+			currentNode->setOrientation(ownerObject->getOrientation());
+			currentNode->setScale(ownerObject->getScale());
+		}
 	}
 
 
-	void RenderComponent::createNode(Ogre::SceneNode* parentNode)
+	void RenderComponent::createNode()
 	{
-		if (parentNode)
-			node = parentNode->createChildSceneNode();
+		GameObject* ownerParent = ownerObject->getParent();
+		if (ownerParent)
+		{
+			if(Ogre::SceneNode* parentNode = ownerParent->getFirstComponentByType<RenderComponent>()->getNode())
+				currentNode = parentNode->createChildSceneNode();
+		}
 		else
-			node = Game::getInstance().getRenderSystem()->getRootNode()->createChildSceneNode();
+			currentNode = Game::getInstance().getRenderSystem()->getRootNode()->createChildSceneNode();
 		if (entity)
-			node->attachObject(entity);
+			currentNode->attachObject(entity);
 	}
 
 
-	void RenderComponent::createEntity(const Ogre::String& entityName, const Ogre::String& meshName)
+	void RenderComponent::createEntity()
 	{
-		entity = Game::getInstance().getRenderSystem()->getSceneManager()->createEntity(entityName, meshName);
-		if (node)
-			node->attachObject(entity);
+		if (meshName != "")
+		{
+			entity = Game::getInstance().getRenderSystem()->getSceneManager()->createEntity(entityName, meshName);
+			if (currentNode)
+				currentNode->attachObject(entity);
+		}
 	}
 
 
 	void RenderComponent::onDestroy()
 	{
-		Game::getInstance().getRenderSystem()->getSceneManager()->destroySceneNode(node);
+		Game::getInstance().getRenderSystem()->getSceneManager()->destroySceneNode(currentNode);
+		currentNode = nullptr;
+		Game::getInstance().getRenderSystem()->getSceneManager()->destroyEntity(entityName);
+		entity = nullptr;
 	}
 
 

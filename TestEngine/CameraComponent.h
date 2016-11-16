@@ -3,10 +3,8 @@
 
 namespace Engine
 {
-	class CameraComponent : public RenderComponent
+	class DLL_SPEC CameraComponent : public RenderComponent
 	{
-		float moveSpeed;
-		float turnSpeed;
 		float nearCullingPlane;
 		float farCullingPlane;
 		float zOrder;
@@ -17,6 +15,9 @@ namespace Engine
 	public:
 		CameraComponent(const char* name, float zDepth);
 		
+		virtual void onStart() override;
+		virtual void onDestroy() override;
+
 		Ogre::Camera* getCamera() const { return camera; }
 		Ogre::Viewport* getViewPort() const { return viewport; }
 		const Ogre::Ray& getRay(float screenX, float screenY);

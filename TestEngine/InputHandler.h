@@ -19,8 +19,8 @@ namespace Engine
 	public:
 		InputHandler();
 
-		virtual void init() override;
-		virtual void update(float t, float dt) override;
+		virtual bool init() override;
+		virtual bool update(float t, float dt) override;
 		virtual void destroy() override;
 
 		void clearInputs();

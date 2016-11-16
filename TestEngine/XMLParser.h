@@ -1,8 +1,9 @@
 #pragma once
+#include "stdafx.h"
 
 namespace Engine
 {
-	class XMLParser
+	class DLL_SPEC XMLParser
 	{
 	public:
 		XMLParser();

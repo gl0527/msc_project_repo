@@ -4,23 +4,25 @@
 
 namespace Engine
 {
-	class PhysicsComponent : public Component
+	class DLL_SPEC PhysicsComponent : public Component
 	{
 		float mass;
 		bool isTrigger;
 		btRigidBody* rigidBody;
-		std::vector<btCollisionShape*> shapes;
+		btCompoundShape* shape;
 		btMotionState* motionState;
 
 		void setPosition(const Ogre::Vector3& p);
 		void setOrientation(const Ogre::Quaternion& q);
-
 	public:
-		PhysicsComponent(float m);
+		typedef enum{ STATIC, DYNAMIC, KINEMATIC } RigidBodyType;
+		RigidBodyType type;
 
-		enum{ STATIC, DYNAMIC, KINEMATIC } type;
+		PhysicsComponent(float m, RigidBodyType rbt);
+		void addShape(btCollisionShape* collShape, const Ogre::Vector3& p = Ogre::Vector3::ZERO, const Ogre::Quaternion& q = Ogre::Quaternion::IDENTITY);
+		void createBody();
 
-		virtual void onPreUpdate(float t, float dt) override;
+		virtual void onStart() override;
 		virtual void onUpdate(float t, float dt) override;
 		virtual void onPostUpdate(float t, float dt) override;
 
@@ -32,7 +34,10 @@ namespace Engine
 		void setDamping(float linear, float angular);
 		void setRestitution(float restitution);
 		void setAngularFactor(float x, float y, float z);
-		void setTrigger(bool trigger) { isTrigger = trigger; }
+		
+		void setMass();
+		void setTrigger(bool trigger);
+		void setType(RigidBodyType rbt);
 
 		~PhysicsComponent();
 	};

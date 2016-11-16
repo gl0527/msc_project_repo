@@ -19,15 +19,16 @@ namespace Engine
 		Ticker* timer;
 
 		void mainLoop();
-		void update(float t, float dt);
+		bool update(float t, float dt);
 
 		static Game* instance;
 		Game(const char* title);
 	public:
 		static Game& getInstance();
 		static void deleteInstance();
+		static bool exists();
 
-		void init();
+		bool init();
 		void start();
 		void pause();
 		void destroy();

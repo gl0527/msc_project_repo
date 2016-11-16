@@ -1,10 +1,11 @@
 #pragma once
 #include "System.h"
 #include "Ogre.h"
+#include "stdafx.h"
 
 namespace Engine
 {
-	class RenderSystem : public System
+	class DLL_SPEC RenderSystem : public System
 	{
 		Ogre::Root* ogreRoot;
 		Ogre::SceneManager* sceneManager;
@@ -13,12 +14,14 @@ namespace Engine
 		unsigned int windowWidth;
 		unsigned int windowHeight;
 	public:
-		RenderSystem(const char* wName);
+		RenderSystem(const char* wName, unsigned int w = 800, unsigned int h = 600);
 
-		virtual void init() override;
-		virtual void update(float t, float dt) override;
+		virtual bool init() override;
+		virtual bool update(float t, float dt) override;
 		virtual void destroy() override;
 
+		void createPlaneXZ(const char* planeMeshName, float u, float v);
+		
 		Ogre::Root* getRoot() const { return ogreRoot; }
 		Ogre::SceneNode* getRootNode() const { return sceneManager->getRootSceneNode(); }
 		Ogre::SceneManager* getSceneManager() const { return sceneManager; }

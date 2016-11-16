@@ -19,7 +19,7 @@ namespace Engine
 	}
 
 
-	void InputHandler::init()
+	bool InputHandler::init()
 	{
 		OIS::ParamList pl;
 		size_t windowHnd = 0;
@@ -44,10 +44,12 @@ namespace Engine
 		inputManager = OIS::InputManager::createInputSystem(pl);
 		keyboard = static_cast<OIS::Keyboard*>(inputManager->createInputObject(OIS::OISKeyboard, false)); // unbuffered keyboard
 		mouse = static_cast<OIS::Mouse*>(inputManager->createInputObject(OIS::OISMouse, false)); // unbuffered mouse
+
+		return true;
 	}
 
 
-	void InputHandler::update(float t, float dt)
+	bool InputHandler::update(float t, float dt)
 	{
 		keyboard->capture();
 		mouse->capture();
@@ -61,6 +63,8 @@ namespace Engine
 		const OIS::MouseState& ms = mouse->getMouseState();
 		ms.width = renderWindow->getViewport(0)->getActualWidth();
 		ms.height = renderWindow->getViewport(0)->getActualHeight();
+
+		return true;
 	}
 
 

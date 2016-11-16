@@ -5,8 +5,8 @@ namespace Engine
 	class System
 	{
 	public:
-		virtual void init() {}
-		virtual void update(float t, float dt) {}
+		virtual bool init() { return false; }
+		virtual bool update(float t, float dt) { return false; }
 		virtual void destroy() {}
 	};
 }

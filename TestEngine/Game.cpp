@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Game.h"
+#include "ObjectManager.h"
 
 namespace Engine
 {
@@ -35,12 +36,16 @@ namespace Engine
 	}
 
 
-	void Game::init()
+	bool Game::exists()
 	{
-		physicsSystem->init();
-		renderSystem->init();
-		//inputHandler->init();
-		inited = true;
+		return (instance != nullptr);
+	}
+
+
+	bool Game::init()
+	{		
+		inited = physicsSystem->init() && renderSystem->init() && inputHandler->init();
+		return inited;
 	}
 
 
@@ -49,10 +54,16 @@ namespace Engine
 		if (running)
 			return;
 		if (!inited)
-			init();
+			if (!init())
+			{
+				destroy();
+				return;
+			}
 		else
 			timer->pause();
 		running = true;
+		if (inited)
+			ObjectManager::getInstance().start();
 		mainLoop();
 	}
 
@@ -75,17 +86,31 @@ namespace Engine
 				timer->tick();
 				float dt = timer->elapsedTime();
 				float t = timer->uptime();
-				update(t, dt);
+				if (!update(t, dt))
+					destroy();
 			}
 		}
 	}
 
 
-	void Game::update(float t, float dt)
+	bool Game::update(float t, float dt)
 	{
-		//inputHandler->update(t, dt);
-		physicsSystem->update(t, dt);
-		renderSystem->update(t, dt);
+		if (!inputHandler->update(t, dt))
+			return false;
+	
+		ObjectManager::getInstance().preUpdate(t, dt); // fizika elotti teendok befrissitese
+			
+		if (!physicsSystem->update(t, dt)) // fizikai rendszer befrissitese
+			return false;
+
+		ObjectManager::getInstance().update(t, dt); // fizika befrissitese
+			
+		ObjectManager::getInstance().postUpdate(t, dt); // fizika utani teendok elvegzese
+			
+		if (!renderSystem->update(t, dt)) // kirajzolas
+			return false;
+		
+		return true;
 	}
 
 

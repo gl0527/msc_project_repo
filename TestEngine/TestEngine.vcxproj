@@ -50,13 +50,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>d:\dev\tools\OgreSDK_vc10_v1-9-0\boost\;d:\dev\tools\OgreSDK_vc10_v1-9-0\include\;d:\dev\tools\OgreSDK_vc10_v1-9-0\include\OGRE\;d:\dev\tools\bullet-2.82-r2704\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE_HOME)\boost\;$(OGRE_HOME)\include\;$(OGRE_HOME)\include\OGRE\;d:\dev\tools\bullet-2.82-r2704\src\</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>d:\dev\tools\OgreSDK_vc10_v1-9-0\boost\lib\;d:\dev\tools\OgreSDK_vc10_v1-9-0\lib\$(ConfigurationName);d:\dev\tools\bullet-2.82-r2704\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OGRE_HOME)\boost\lib\;$(OGRE_HOME)\lib\$(ConfigurationName);d:\dev\tools\bullet-2.82-r2704\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>LinearMath_vs2010_debug.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;OIS_d.lib;OgreMain_d.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -70,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>d:\dev\tools\OgreSDK_vc10_v1-9-0\boost\;d:\dev\tools\OgreSDK_vc10_v1-9-0\include\;d:\dev\tools\OgreSDK_vc10_v1-9-0\include\OGRE\;d:\dev\tools\bullet-2.82-r2704\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OGRE_HOME)\boost\;$(OGRE_HOME)\include\;$(OGRE_HOME)\include\OGRE\;d:\dev\tools\bullet-2.82-r2704\src\</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -78,7 +78,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>d:\dev\tools\OgreSDK_vc10_v1-9-0\boost\lib\;d:\dev\tools\OgreSDK_vc10_v1-9-0\lib\$(ConfigurationName);d:\dev\tools\bullet-2.82-r2704\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OGRE_HOME)\boost\lib\;$(OGRE_HOME)\lib\$(ConfigurationName);d:\dev\tools\bullet-2.82-r2704\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>LinearMath_vs2010.lib;BulletCollision_vs2010.lib;BulletDynamics_vs2010.lib;OIS.lib;OgreMain.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -86,15 +86,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="IComponentFactory.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PhysicsComponentFactory.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="RenderComponentFactory.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="System.h" />
@@ -103,15 +107,19 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="IComponentFactory.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="PhysicsComponentFactory.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
+    <ClCompile Include="RenderComponentFactory.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="System.cpp" />
     <ClCompile Include="Ticker.cpp" />

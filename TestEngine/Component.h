@@ -1,28 +1,31 @@
 #pragma once
 #include "Ogre.h"
 #include "Game.h"
+#include "stdafx.h"
 
 namespace Engine
 {
 	class GameObject;
 
-	class Component
+	class DLL_SPEC Component
 	{
 	protected:
-		unsigned int id;
-		bool unique;
+		const unsigned int ID;
+		const bool unique;
 		GameObject* ownerObject;
 	public:
-		Component(unsigned int ident, bool uniq = true);
+		Component(unsigned int id, bool uniq = true);
+		void setGameObject(GameObject* object);
 
-		virtual void onStart(GameObject* owner) { ownerObject = owner; }
+		virtual void onStart() { }
 		virtual void onPreUpdate(float t, float dt) { }
 		virtual void onUpdate(float t, float dt) { }
 		virtual void onPostUpdate(float t, float dt) { }
 		virtual void onDestroy() { }
-		//virtual void onCollision(Collider other) { }
+		virtual void onCollision(GameObject* other) { }
 
-		unsigned int getID() const { return id; }
+		unsigned int getID() const { return ID; }
+		bool isUnique() const { return unique; }
 		GameObject* getOwnerObject() const { return ownerObject; }
 
 		~Component();

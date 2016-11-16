@@ -3,8 +3,14 @@
 
 namespace Engine
 {
-	Component::Component(unsigned int ident, bool uniq) : id(ident), unique(uniq), ownerObject(nullptr)
+	Component::Component(unsigned int id, bool uniq) : ID(id), unique(uniq)
 	{
+	}
+
+
+	void Component::setGameObject(GameObject* object)
+	{
+		ownerObject = object;
 	}
 
 

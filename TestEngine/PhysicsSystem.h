@@ -1,9 +1,12 @@
 #pragma once
 #include "btBulletDynamicsCommon.h"
 #include "System.h"
+#include <vector>
 
 namespace Engine
 {
+	class PhysicsComponent;
+
 	class PhysicsSystem : public System
 	{
 		btVector3 gravity;
@@ -16,11 +19,12 @@ namespace Engine
 	public:
 		PhysicsSystem();
 
-		virtual void init() override;
-		virtual void update(float t, float dt) override;
+		virtual bool init() override;
+		virtual bool update(float t, float dt) override;
 		virtual void destroy() override;
 
 		btDiscreteDynamicsWorld* getWorld() const { return dynamicsWorld; }
+
 		void setGravity(float y);
 		void setGravity(float x, float y, float z);
 	};

@@ -3,13 +3,29 @@
 namespace Engine
 {
 	CameraComponent::CameraComponent(const char* name, float zDepth)
-		: camera(nullptr), viewport(nullptr), renderTexture(nullptr)
+		: RenderComponent(name), nearCullingPlane(0.1f), farCullingPlane(1000.0f),
+		zOrder(zDepth), camera(nullptr), viewport(nullptr), renderTexture(nullptr)
 	{
 		camera = Game::getInstance().getRenderSystem()->getSceneManager()->createCamera(name);
-		createNode();
-		node->attachObject(camera);
-
 		viewport = Game::getInstance().getRenderSystem()->getRenderWindow()->addViewport(camera, zOrder);
+	}
+
+
+	void CameraComponent::onStart()
+	{
+		createNode();
+		currentNode->attachObject(camera);
+	}
+
+
+	void CameraComponent::onDestroy()
+	{
+		Game::getInstance().getRenderSystem()->getRenderWindow()->removeViewport(zOrder);
+		Game::getInstance().getRenderSystem()->getSceneManager()->destroyCamera(entityName);
+		Game::getInstance().getRenderSystem()->getSceneManager()->destroySceneNode(currentNode);
+		currentNode = nullptr;
+		Game::getInstance().getRenderSystem()->getSceneManager()->destroyEntity(entityName);
+		entity = nullptr;
 	}
 
 
