@@ -15,7 +15,7 @@ namespace Engine
 		if (comp)
 		{
 			components.push_back(comp);
-			comp->setGameObject(this);
+			comp->onInit(this);
 		}
 	}
 

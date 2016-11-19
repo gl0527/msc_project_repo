@@ -35,7 +35,6 @@ namespace Engine
 		btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, shape, inertia);
 		rigidBody = new btRigidBody(rigidBodyCI);
 		rigidBody->setMassProps(mass, inertia);
-		rigidBody->setRestitution(0.8f);
 
 		if (type == RigidBodyType::KINEMATIC)
 		{
@@ -46,8 +45,10 @@ namespace Engine
 	}
 
 
-	void PhysicsComponent::onStart()
+	void PhysicsComponent::onInit(GameObject* object)
 	{
+		ownerObject = object;
+
 		const Ogre::Quaternion& q = ownerObject->getOrientation();
 		const Ogre::Vector3& p = ownerObject->getPosition();
 
@@ -63,13 +64,10 @@ namespace Engine
 	{
 		if (type == RigidBodyType::DYNAMIC)
 		{
-			if (ownerObject)
-			{
-				ownerObject->setPosition(getPosition());
-				ownerObject->setOrientation(getOrientation());
-				//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
-				//shape->setLocalScaling(ownerScaling);
-			}
+			ownerObject->setPosition(getPosition());
+			ownerObject->setOrientation(getOrientation());
+			//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
+			//shape->setLocalScaling(ownerScaling);
 		}
 	}
 
@@ -78,13 +76,10 @@ namespace Engine
 	{
 		if (type == RigidBodyType::KINEMATIC)
 		{
-			if (ownerObject)
-			{
-				setPosition(ownerObject->getPosition());
-				setOrientation(ownerObject->getOrientation());
-				//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
-				//shape->setLocalScaling(ownerScaling);
-			}
+			setPosition(ownerObject->getPosition());
+			setOrientation(ownerObject->getOrientation());
+			//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
+			//shape->setLocalScaling(ownerScaling);
 		}
 	}
 

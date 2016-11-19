@@ -62,9 +62,9 @@ namespace Engine
 	}
 
 
-	void RenderSystem::createPlaneXZ(const char* planeMeshName, float u, float v)
+	void RenderSystem::createPlaneMeshXZ(const char* planeMeshName, float y, unsigned int u, unsigned int v)
 	{
-		Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
+		Ogre::Plane plane(Ogre::Vector3::UNIT_Y, y);
 		Ogre::MeshManager::getSingleton().createPlane(
 			planeMeshName,
 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,

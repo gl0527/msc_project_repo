@@ -22,12 +22,13 @@ namespace Engine
 		void addShape(btCollisionShape* collShape, const Ogre::Vector3& p = Ogre::Vector3::ZERO, const Ogre::Quaternion& q = Ogre::Quaternion::IDENTITY);
 		void createBody();
 
-		virtual void onStart() override;
+		virtual void onInit(GameObject* object) override;
 		virtual void onUpdate(float t, float dt) override;
 		virtual void onPostUpdate(float t, float dt) override;
 
 		Ogre::Vector3 getPosition() const;
 		Ogre::Quaternion getOrientation() const;
+		btRigidBody* getRigidBody() const { return rigidBody; }
 
 		void addForce(float fx, float fy, float fz);
 		void setFriction(float friction);

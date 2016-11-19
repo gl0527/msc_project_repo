@@ -9,19 +9,19 @@ int main(int argc, char** argv)
 		return -1;
 
 	GameObject* mainCamera = ObjectManager::getInstance().createGameObject(0);
-	mainCamera->setPosition(Ogre::Vector3(0.0f, 200.0f, 50.0f));
+	mainCamera->setPosition(Ogre::Vector3(0.0f, 500.0f, 150.0f));
 	mainCamera->setOrientation(Ogre::Quaternion(Ogre::Radian(-Ogre::Math::PI / 5), Ogre::Vector3::UNIT_X));
 	CameraComponent* cameraComponent = new CameraComponent("mainCamera", 0.0f);
 	mainCamera->addComponent(cameraComponent);
 
 	GameObject* archway = ObjectManager::getInstance().createGameObject(1);
-	archway->setPosition(Ogre::Vector3(0.0f, 0.0f, -250.0f));
+	archway->setPosition(Ogre::Vector3(0.0f, 0.0f, -550.0f));
 	archway->setScale(Ogre::Vector3(1.5f, 1.5f, 1.5f));
 	RenderComponent* renderComponent = new RenderComponent("aw", "Archway.mesh");
 	archway->addComponent(renderComponent);
 
 	GameObject* box = ObjectManager::getInstance().createGameObject(2);
-	box->setPosition(Ogre::Vector3(0.0f, 50.0f, -200.0f));
+	box->setPosition(Ogre::Vector3(0.0f, 50.0f, -500.0f));
 	box->setScale(Ogre::Vector3(10, 10, 10));
 	RenderComponent* boxRenderer = new RenderComponent("box1", "doboz.mesh");
 	PhysicsComponent* boxCollider = new PhysicsComponent(1.0f, PhysicsComponent::DYNAMIC);
@@ -29,9 +29,10 @@ int main(int argc, char** argv)
 	boxCollider->addShape(cs);
 	box->addComponent(boxRenderer);
 	box->addComponent(boxCollider);
+	boxCollider->setRestitution(0.2f);
 
 	GameObject* ball = ObjectManager::getInstance().createGameObject(10);
-	ball->setPosition(Ogre::Vector3(10.0f, 100.0f, -190.0f));
+	ball->setPosition(Ogre::Vector3(15.0f, 200.0f, -490.0f));
 	ball->setScale(Ogre::Vector3(10, 10, 10));
 	RenderComponent* ballRenderer = new RenderComponent("ball", "strippedBall.mesh");
 	PhysicsComponent* ballCollider = new PhysicsComponent(1.0f, PhysicsComponent::DYNAMIC);
@@ -39,8 +40,18 @@ int main(int argc, char** argv)
 	ballCollider->addShape(ballShape);
 	ball->addComponent(ballRenderer);
 	ball->addComponent(ballCollider);
+	ballCollider->setRestitution(0.8f);
 
-	Game::getInstance().getRenderSystem()->createPlaneXZ("ground", 50, 50);
+	GameObject* ball2 = ObjectManager::getInstance().createGameObject(11);
+	ball2->setPosition(Ogre::Vector3(-1.0f, 0.0f, -2.0f));
+	ball2->setScale(Ogre::Vector3(2, 2, 2));
+	RenderComponent* ball2Renderer = new RenderComponent("ball2", "strippedBall.mesh");
+	ball2->addComponent(ball2Renderer);
+
+	// ha mind a kettonek van fizikai komponense, akkor nem mukodik
+	ball->addChild(ball2); // igy az iment megadott transzformacios ertekek a szulohoz kepest relativen ertendok
+
+	Game::getInstance().getRenderSystem()->createPlaneMeshXZ("ground", 0, 20, 20);
 
 	GameObject* ground = ObjectManager::getInstance().createGameObject(3);
 	ground->setScale(Ogre::Vector3(5000.0f, 0.0f, 5000.0f));
@@ -52,6 +63,8 @@ int main(int argc, char** argv)
 	groundRender->getEntity()->setMaterialName("Ground");
 	ground->addComponent(groundRender);
 	ground->addComponent(groundCollider);
+
+	groundCollider->getRigidBody()->setRestitution(1.0f);
 
 	// setting up environment
 	Ogre::Light* mainLight = Game::getInstance().getRenderSystem()->getSceneManager()->createLight("mainlight");

@@ -15,8 +15,8 @@ namespace Engine
 		GameObject* ownerObject;
 	public:
 		Component(unsigned int id, bool uniq = true);
-		void setGameObject(GameObject* object);
 
+		virtual void onInit(GameObject* object) { ownerObject = object; }
 		virtual void onStart() { }
 		virtual void onPreUpdate(float t, float dt) { }
 		virtual void onUpdate(float t, float dt) { }

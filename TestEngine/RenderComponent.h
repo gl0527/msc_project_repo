@@ -6,6 +6,7 @@ namespace Engine
 	class DLL_SPEC RenderComponent : public Component
 	{
 	protected:
+		Ogre::SceneNode* parentNode;
 		Ogre::SceneNode* currentNode;
 		Ogre::Entity* entity;
 		const std::string entityName;

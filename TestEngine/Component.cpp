@@ -8,12 +8,6 @@ namespace Engine
 	}
 
 
-	void Component::setGameObject(GameObject* object)
-	{
-		ownerObject = object;
-	}
-
-
 	Component::~Component()
 	{
 	}

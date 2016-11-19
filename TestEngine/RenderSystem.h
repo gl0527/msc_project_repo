@@ -20,7 +20,7 @@ namespace Engine
 		virtual bool update(float t, float dt) override;
 		virtual void destroy() override;
 
-		void createPlaneXZ(const char* planeMeshName, float u, float v);
+		void createPlaneMeshXZ(const char* planeMeshName, float y, unsigned int u = 1, unsigned int v = 1);
 		
 		Ogre::Root* getRoot() const { return ogreRoot; }
 		Ogre::SceneNode* getRootNode() const { return sceneManager->getRootSceneNode(); }
