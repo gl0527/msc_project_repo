@@ -14,8 +14,11 @@ void InputComponent::onStart()
 
 void InputComponent::onPreUpdate(float t, float dt)
 {
+	const OIS::MouseState& ms = inputHandler->getMouseState();
 	Ogre::Vector3 moveDir = Ogre::Vector3::ZERO;
 
+	if (inputHandler->isKeyDown(OIS::KC_ESCAPE))
+		Game::getInstance().destroy();
 	if (inputHandler->isKeyDown(OIS::KC_W))
 		moveDir += Ogre::Vector3(0.0f, 1.0f, -1.0f);
 	if (inputHandler->isKeyDown(OIS::KC_S))
@@ -29,10 +32,15 @@ void InputComponent::onPreUpdate(float t, float dt)
 	if (inputHandler->isKeyDown(OIS::KC_SUBTRACT))
 		moveDir += Ogre::Vector3(0.0f, 0.0f, 1.0f);
 
+	if (ms.buttonDown(OIS::MB_Left))
+		std::cout << "lmb pushed.\n";
+	if (ms.buttonDown(OIS::MB_Right))
+		std::cout << "rmb pushed.\n";
+
 	moveDir.normalise();
 	moveDir = ownerObject->getOrientation() * moveDir; // azert, hogy a movedir az ownerObject koordinata-rendszereben legyen ertve
 	
-	ownerObject->setPosition(ownerObject->getPosition() + moveDir * dt * moveSpeed);
+	ownerObject->setPosition(ownerObject->getPosition() + moveDir * dt * moveSpeed); // a dt miatt a mozgas sebessege fuggetlen a gep sebessegetol
 }
 
 

@@ -2,10 +2,11 @@
 #include "Ogre.h"
 #include <OIS\OIS.h>
 #include "System.h"
+#include "stdafx.h"
 
 namespace Engine
 {
-	class InputHandler : public System
+	class DLL_SPEC InputHandler : public System
 	{
 		OIS::InputManager* inputManager;
 		OIS::Keyboard* keyboard;
@@ -18,8 +19,8 @@ namespace Engine
 		virtual bool update(float t, float dt) override;
 		virtual void destroy() override;
 
-		bool isKeyDown(OIS::KeyCode key) const { return keyboard->isKeyDown(key); }
-		const OIS::MouseState& getMouseState() const { return mouse->getMouseState(); }
+		bool isKeyDown(OIS::KeyCode key) const;
+		const OIS::MouseState& getMouseState() const;
 	};
 }
 

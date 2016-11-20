@@ -121,7 +121,7 @@ namespace Engine
 			delete timer;
 			timer = nullptr;
 		}
-		//inputHandler->destroy();
+		inputHandler->destroy();
 		renderSystem->destroy();
 		physicsSystem->destroy();
 

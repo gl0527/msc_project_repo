@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 		return -1;
 
 	GameObject* mainCamera = ObjectManager::getInstance().createGameObject(0);
-	mainCamera->setPosition(Ogre::Vector3(0.0f, 300.0f, 150.0f));
+	mainCamera->setPosition(Ogre::Vector3(0.0f, 400.0f, 0.0f));
 	mainCamera->setOrientation(Ogre::Quaternion(Ogre::Radian(-Ogre::Math::PI / 4), Ogre::Vector3::UNIT_X));
 	CameraComponent* cameraComponent = new CameraComponent("mainCamera", 0.0f);
 	mainCamera->addComponent(cameraComponent);

@@ -61,6 +61,21 @@ namespace Engine
 	}
 
 
+	bool InputHandler::isKeyDown(OIS::KeyCode key) const
+	{
+		if (keyboard)
+			return keyboard->isKeyDown(key);
+		else
+			return false;
+	}
+
+	const OIS::MouseState& InputHandler::getMouseState() const
+	{
+		if (mouse)
+			return mouse->getMouseState();
+	}
+
+
 	void InputHandler::destroy()
 	{
 		if (inputManager) 
