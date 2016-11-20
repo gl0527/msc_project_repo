@@ -9,9 +9,9 @@ namespace Engine
 	}
 
 
-	RenderComponent* RenderComponentFactory::create()
+	/*RenderComponent* RenderComponentFactory::create()
 	{
 		return nullptr;
-	}
+	}*/
 }
 

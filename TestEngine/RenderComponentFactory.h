@@ -11,7 +11,7 @@ namespace Engine
 	public:
 		RenderComponentFactory(const char* eName, const char* mName);
 
-		virtual RenderComponent* create() override;
+		//virtual RenderComponent* create() override;
 	};
 }
 

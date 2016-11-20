@@ -9,7 +9,7 @@ namespace Engine
 	public:
 		PhysicsComponentFactory();
 
-		virtual PhysicsComponent* create() override;
+		//virtual PhysicsComponent* create() override;
 	};
 }
 

@@ -94,7 +94,7 @@ namespace Engine
 
 
 	bool Game::update(float t, float dt)
-	{
+	{		
 		if (!inputHandler->update(t, dt))
 			return false;
 	
@@ -124,6 +124,8 @@ namespace Engine
 		//inputHandler->destroy();
 		renderSystem->destroy();
 		physicsSystem->destroy();
+
+		//deleteInstance();
 	}
 
 

@@ -1,5 +1,5 @@
 #include "TestEngine.h"
-#include <memory>
+#include "InputComponent.h"
 
 using namespace Engine;
 
@@ -9,16 +9,19 @@ int main(int argc, char** argv)
 		return -1;
 
 	GameObject* mainCamera = ObjectManager::getInstance().createGameObject(0);
-	mainCamera->setPosition(Ogre::Vector3(0.0f, 500.0f, 150.0f));
-	mainCamera->setOrientation(Ogre::Quaternion(Ogre::Radian(-Ogre::Math::PI / 5), Ogre::Vector3::UNIT_X));
+	mainCamera->setPosition(Ogre::Vector3(0.0f, 300.0f, 150.0f));
+	mainCamera->setOrientation(Ogre::Quaternion(Ogre::Radian(-Ogre::Math::PI / 4), Ogre::Vector3::UNIT_X));
 	CameraComponent* cameraComponent = new CameraComponent("mainCamera", 0.0f);
 	mainCamera->addComponent(cameraComponent);
+	InputComponent* inputComponent = new InputComponent();
+	mainCamera->addComponent(inputComponent);
 
 	GameObject* archway = ObjectManager::getInstance().createGameObject(1);
 	archway->setPosition(Ogre::Vector3(0.0f, 0.0f, -550.0f));
 	archway->setScale(Ogre::Vector3(1.5f, 1.5f, 1.5f));
-	RenderComponent* renderComponent = new RenderComponent("aw", "Archway.mesh");
-	archway->addComponent(renderComponent);
+	RenderComponent::InitStruct is = { "aw", "Archway.mesh" };
+	RenderComponent* renderer = (RenderComponent*) IComponentFactory::create<RenderComponent::InitStruct>("RenderComponent", &is);
+	archway->addComponent(renderer);
 
 	GameObject* box = ObjectManager::getInstance().createGameObject(2);
 	box->setPosition(Ogre::Vector3(0.0f, 50.0f, -500.0f));

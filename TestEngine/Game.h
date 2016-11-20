@@ -35,6 +35,7 @@ namespace Engine
 
 		RenderSystem* getRenderSystem() const { return renderSystem; }
 		PhysicsSystem* getPhysicsSystem() const { return physicsSystem; }
+		InputHandler* getInputHandler() const { return inputHandler; }
 	};
 }
 

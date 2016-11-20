@@ -10,3 +10,4 @@
 #include "XMLParser.h"
 #include "btBulletDynamicsCommon.h"
 #include "RenderSystem.h"
+#include "IComponentFactory.h"

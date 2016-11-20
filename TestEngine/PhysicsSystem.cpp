@@ -32,7 +32,7 @@ namespace Engine
 
 	bool PhysicsSystem::update(float t, float dt)
 	{
-		dynamicsWorld->stepSimulation(dt, 1);
+		dynamicsWorld->stepSimulation(dt);
 		return true;
 	}
 

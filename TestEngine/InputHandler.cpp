@@ -7,14 +7,6 @@ namespace Engine
 	InputHandler::InputHandler()
 		: inputManager(nullptr), keyboard(nullptr), mouse(nullptr), renderWindow(nullptr)
 	{
-		keys["left"] = false;
-		keys["right"] = false;
-		keys["up"] = false;
-		keys["down"] = false;
-		keys["zoomIn"] = false;
-		keys["zoomOut"] = false;
-		keys["quit"] = false;
-
 		
 	}
 
@@ -51,14 +43,15 @@ namespace Engine
 
 	bool InputHandler::update(float t, float dt)
 	{
-		keyboard->capture();
-		mouse->capture();
-
-		if (keyboard->isKeyDown(OIS::KC_ESCAPE))
-			keys["quit"] = true;
-
-		if (keyboard->isKeyDown(OIS::KC_DOWN))
-			keys["down"] = true;
+		if (keyboard)
+			keyboard->capture();
+		else
+			return false;
+		
+		if (mouse)
+			mouse->capture();
+		else
+			return false;
 
 		const OIS::MouseState& ms = mouse->getMouseState();
 		ms.width = renderWindow->getViewport(0)->getActualWidth();
@@ -85,14 +78,6 @@ namespace Engine
 			inputManager->destroyInputSystem(inputManager);
 			inputManager = nullptr;
 		}
-	}
-
-
-	void InputHandler::clearInputs()
-	{
-		for (auto it = keys.begin(); it != keys.end(); ++it)
-			it->second = false;
-		
 	}
 
 

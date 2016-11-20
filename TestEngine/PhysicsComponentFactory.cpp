@@ -7,9 +7,9 @@ namespace Engine
 	}
 
 
-	PhysicsComponent* PhysicsComponentFactory::create()
+	/*PhysicsComponent* PhysicsComponentFactory::create()
 	{
 		return nullptr;
-	}
+	}*/
 }
 

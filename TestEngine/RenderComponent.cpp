@@ -10,6 +10,13 @@ namespace Engine
 		createEntity();
 	}
 
+	RenderComponent::RenderComponent(InitStruct initStruct)
+		: Component(1), parentNode(nullptr), currentNode(nullptr), entity(nullptr), entityName(initStruct.eName), meshName(initStruct.mName)
+	{
+		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
+		createEntity();
+	}
+
 
 	void RenderComponent::onStart()
 	{
