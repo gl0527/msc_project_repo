@@ -1,4 +1,5 @@
 #include "PhysicsSystem.h"
+#include "PhysicsComponent.h"
 
 namespace Engine
 {
@@ -26,28 +27,56 @@ namespace Engine
 
 	bool PhysicsSystem::onCollision(btManifoldPoint& cp, void* body0, void* body1)
 	{
-		return false;
+		btRigidBody* rigidbody0 = (btRigidBody*)body0;
+		btRigidBody* rigidbody1 = (btRigidBody*)body1;
+
+		PhysicsComponent* collider0 = (PhysicsComponent*)rigidbody0->getUserPointer();
+		PhysicsComponent* collider1 = (PhysicsComponent*)rigidbody1->getUserPointer();
+
+		if (collider0 && collider0->isTrigger()) // az elso szereplo trigger volt
+		{
+			collider0->onTriggerEnter(collider1);
+		}
+		else if (collider1 && collider1->isTrigger()) // a masodik szereplo trigger volt
+		{
+			collider1->onTriggerEnter(collider0);
+		}
+		else // egyik szereplo sem volt trigger
+		{
+			collider0->onCollision(collider1);
+			collider1->onCollision(collider0);
+		}
+		// cp hasznalata az utkozeshez
+
+		return true;
 	}
 
 
 	bool PhysicsSystem::update(float t, float dt)
 	{
-		dynamicsWorld->stepSimulation(dt);
-		return true;
+		if (dynamicsWorld)
+		{
+			dynamicsWorld->stepSimulation(dt);
+			return true;
+		}
+		else
+			return false;
 	}
 
 
 	void PhysicsSystem::setGravity(float y)
 	{
 		btVector3 g(0.0f, y, 0.0f);
-		dynamicsWorld->setGravity(g);
+		if (dynamicsWorld)
+			dynamicsWorld->setGravity(g);
 	}
 
 
 	void PhysicsSystem::setGravity(float x, float y, float z)
 	{
 		btVector3 g(x, y, z);
-		dynamicsWorld->setGravity(g);
+		if (dynamicsWorld)
+			dynamicsWorld->setGravity(g);
 	}
 
 
@@ -64,10 +93,19 @@ namespace Engine
 		// ...
 
 		delete dynamicsWorld;
+		dynamicsWorld = nullptr;
+		
 		delete solver;
+		solver = nullptr;
+
 		delete overlappingPairCache;
+		overlappingPairCache = nullptr;
+
 		delete dispatcher;
+		dispatcher = nullptr;
+
 		delete collisionConfiguration;
+		collisionConfiguration = nullptr;
 	}
 
 

@@ -24,6 +24,7 @@ namespace Engine
 
 		void addComponent(Component* comp);
 		void removeComponent(unsigned int cID);
+		void removeComponent(Component* component);
 		void removeComponent();
 
 		void addChild(GameObject* child);
@@ -32,14 +33,19 @@ namespace Engine
 		void onStart();
 		void onPreUpdate(float t, float dt);
 		void onUpdate(float t, float dt);
-		void onPostUpdate(float t, float dt); 
-		void onCollision(GameObject* other);
+		void onPostUpdate(float t, float dt);
 		void onDestroy();
 
 		unsigned int getID() const { return ID; }
+
 		const Ogre::Vector3& getPosition() const { return position; }
 		const Ogre::Quaternion& getOrientation() const { return orientation; }
 		const Ogre::Vector3& getScale() const { return scale; }
+		
+		Ogre::Vector3 getDirection() const { return orientation * (-Ogre::Vector3::UNIT_Z); }
+		Ogre::Vector3 getUp() const { return orientation * Ogre::Vector3::UNIT_Y; }
+		Ogre::Vector3 getRight() const { return orientation * Ogre::Vector3::UNIT_X; }
+		
 		Component* getComponent(unsigned int cID) const;
 		GameObject* getParent() const { return parent; }
 		GameObject* getChild(unsigned int childID) const;
@@ -73,7 +79,9 @@ namespace Engine
 		void setOrientation(const Ogre::Quaternion& q) { orientation = q; }
 		void setScale(const Ogre::Vector3& s) { scale = s; }
 		void clearParent() { parent = nullptr; }
+
 		bool hasParent() const { return parent != 0; }
+		bool hasTag(unsigned int t);
 
 		bool operator==(const GameObject& other) { return ID == other.getID(); }
 	};

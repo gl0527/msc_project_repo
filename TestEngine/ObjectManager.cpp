@@ -108,8 +108,21 @@ namespace Engine
 	}
 
 
+	void ObjectManager::destroy()
+	{
+		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		{
+			it->second->onDestroy();
+		}
+	}
+
+
 	ObjectManager::~ObjectManager()
 	{
+		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		{
+			delete it->second;
+		}
 	}
 }
 

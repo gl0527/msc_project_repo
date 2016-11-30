@@ -4,7 +4,8 @@
 namespace Engine
 {
 	PhysicsComponent::PhysicsComponent(float m, RigidBodyType t)
-		: Component(0), mass(m), isTrigger(false), rigidBody(nullptr), motionState(nullptr), type(t)
+		: Component(0), mass(m), trigger(false), rigidBody(nullptr), motionState(nullptr), type(t),
+		onTriggerEnter(defaultTriggerEnter), onCollision(defaultCollision)
 	{
 		shape = new btCompoundShape();
 	}
@@ -22,6 +23,7 @@ namespace Engine
 		if (rigidBody)
 		{
 			Game::getInstance().getPhysicsSystem()->getWorld()->removeRigidBody(rigidBody);
+			rigidBody->setUserPointer(nullptr);
 			delete rigidBody;
 			rigidBody = nullptr;
 		}
@@ -41,7 +43,7 @@ namespace Engine
 			rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 			rigidBody->setActivationState(DISABLE_DEACTIVATION);
 		}
-		Game::getInstance().getPhysicsSystem()->getWorld()->addRigidBody(rigidBody);
+		rigidBody->setUserPointer(this);
 	}
 
 
@@ -60,6 +62,12 @@ namespace Engine
 	}
 
 
+	void PhysicsComponent::onStart()
+	{
+		Game::getInstance().getPhysicsSystem()->getWorld()->addRigidBody(rigidBody);
+	}
+
+	
 	void PhysicsComponent::onUpdate(float t, float dt)
 	{
 		if (type == RigidBodyType::DYNAMIC)
@@ -81,6 +89,18 @@ namespace Engine
 			//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
 			//shape->setLocalScaling(ownerScaling);
 		}
+	}
+
+
+	void PhysicsComponent::defaultTriggerEnter(PhysicsComponent* other)
+	{
+		
+	}
+
+
+	void PhysicsComponent::defaultCollision(PhysicsComponent* other)
+	{
+		
 	}
 
 
@@ -156,6 +176,13 @@ namespace Engine
 	}
 
 
+	void PhysicsComponent::disableRotation()
+	{
+		if (type == RigidBodyType::DYNAMIC && rigidBody)
+			rigidBody->setAngularFactor(0);
+	}
+
+
 	void PhysicsComponent::setMass()
 	{
 		if (mass == 0 && type != RigidBodyType::STATIC)
@@ -169,10 +196,10 @@ namespace Engine
 	}
 
 
-	void PhysicsComponent::setTrigger(bool trigger)
+	void PhysicsComponent::setTrigger(bool t)
 	{
-		isTrigger = trigger;
-		if (isTrigger)
+		trigger = t;
+		if (trigger)
 		{
 			if (rigidBody)
 				rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_NO_CONTACT_RESPONSE);

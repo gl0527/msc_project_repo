@@ -43,13 +43,11 @@ namespace Engine
 
 	bool InputHandler::update(float t, float dt)
 	{
-		if (keyboard)
+		if (keyboard && mouse)
+		{
 			keyboard->capture();
-		else
-			return false;
-		
-		if (mouse)
 			mouse->capture();
+		}
 		else
 			return false;
 

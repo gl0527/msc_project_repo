@@ -12,6 +12,7 @@ namespace Engine
 
 	void GameObject::addComponent(Component* comp)
 	{
+		// unicitást ellenorizni kellene!
 		if (comp)
 		{
 			components.push_back(comp);
@@ -19,10 +20,20 @@ namespace Engine
 		}
 	}
 
+
+	void GameObject::removeComponent(Component* component)
+	{
+		for (auto it = components.begin(); it != components.end(); it++)
+		{
+			if (*it == component)
+				it = components.erase(it);
+		}
+	}
+
 	
 	void GameObject::removeComponent()
 	{
-		
+		components.clear();
 	}
 
 
@@ -75,16 +86,13 @@ namespace Engine
 	}
 
 
-	void GameObject::onCollision(GameObject* other)
-	{
-
-	}
-
-
 	void GameObject::onDestroy()
 	{
 		for (auto it = components.begin(); it != components.end(); ++it)
+		{
 			(*it)->onDestroy();
+			//delete *it;
+		}
 	}
 
 
@@ -106,8 +114,23 @@ namespace Engine
 	}
 
 
+	bool GameObject::hasTag(unsigned int t)
+	{
+		for (auto it = tags.cbegin(); it != tags.cend(); ++it)
+		{
+			if (*it == t)
+				return true;
+		}
+		return false;
+	}
+
+
 	GameObject::~GameObject()
 	{
+		for (auto it = components.begin(); it != components.end(); ++it)
+		{
+			delete *it;
+		}
 	}
 
 

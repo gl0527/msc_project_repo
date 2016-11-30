@@ -11,14 +11,14 @@ namespace Engine
 	public:
 		IComponentFactory();
 		
-		template<class T>
-		static Component* create(const std::string& compType, T* creatingStructure)
+		template<typename IS>
+		static Component* create(const std::string& T, IS* initStruct) // initstruct kimazsolazasa az xml-bol
 		{ 
-			if (compType == "RenderComponent")
+			if (T == "RenderComponent")
 			{
 				//if (RenderComponent::InitStruct* initStruct = dynamic_cast<RenderComponent::InitStruct*>(creatingStructure))
 				//{
-					return new RenderComponent(*creatingStructure);
+					return new RenderComponent(*initStruct);
 				//}
 			}
 		}

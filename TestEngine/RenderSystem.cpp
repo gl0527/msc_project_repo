@@ -58,7 +58,8 @@ namespace Engine
 
 	void RenderSystem::destroy()
 	{
-		sceneManager->clearScene();
+		if (sceneManager)
+			sceneManager->clearScene();
 	}
 
 

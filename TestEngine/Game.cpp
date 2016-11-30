@@ -121,9 +121,13 @@ namespace Engine
 			delete timer;
 			timer = nullptr;
 		}
+		else return;
+
+		ObjectManager::getInstance().destroy();
+		//ObjectManager::getInstance().deleteInstance();
 		inputHandler->destroy();
-		renderSystem->destroy();
 		physicsSystem->destroy();
+		renderSystem->destroy();
 
 		//deleteInstance();
 	}

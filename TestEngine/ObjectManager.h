@@ -32,6 +32,7 @@ namespace Engine
 		void preUpdate(float t, float dt);
 		void update(float t, float dt);
 		void postUpdate(float t, float dt);
+		void destroy();
 
 		~ObjectManager();
 	};
