@@ -7,9 +7,7 @@ namespace Engine
 	class PhysicsComponentFactory : public IComponentFactory
 	{
 	public:
-		PhysicsComponentFactory();
-
-		//virtual PhysicsComponent* create() override;
+		virtual PhysicsComponent* create(Component::InitStruct* init) override;
 	};
 }
 

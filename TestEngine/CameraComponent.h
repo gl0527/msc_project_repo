@@ -9,7 +9,6 @@ namespace Engine
 		float nearCullingPlane;
 		float farCullingPlane;
 		float zOrder;
-		float motionBlend;
 		Ogre::Camera* camera;
 		Ogre::Viewport* viewport;
 		Ogre::RenderTexture* renderTexture;
@@ -30,7 +29,7 @@ namespace Engine
 		void setTarget(GameObject* object) { targetObject = object; }
 		void clearTarget() { targetObject = nullptr; }
 
-		~CameraComponent();
+		virtual ~CameraComponent();
 	};
 }
 

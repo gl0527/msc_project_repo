@@ -3,9 +3,16 @@
 
 namespace Engine
 {
+	PhysicsComponent::PhysicsComponent(const InitStruct& init)
+		: Component(0), mass(init.mass), trigger(false), rigidBody(nullptr), motionState(nullptr), type(init.type),
+		triggerEnter(defaultTriggerEnter), collision(defaultCollision)
+	{
+		shape = new btCompoundShape();
+	}
+
 	PhysicsComponent::PhysicsComponent(float m, RigidBodyType t)
 		: Component(0), mass(m), trigger(false), rigidBody(nullptr), motionState(nullptr), type(t),
-		onTriggerEnter(defaultTriggerEnter), onCollision(defaultCollision)
+		triggerEnter(defaultTriggerEnter), collision(defaultCollision)
 	{
 		shape = new btCompoundShape();
 	}
@@ -92,15 +99,10 @@ namespace Engine
 	}
 
 
-	void PhysicsComponent::defaultTriggerEnter(PhysicsComponent* other)
+	void PhysicsComponent::onDestroy()
 	{
-		
-	}
-
-
-	void PhysicsComponent::defaultCollision(PhysicsComponent* other)
-	{
-		
+		delete motionState;
+		delete shape;
 	}
 
 

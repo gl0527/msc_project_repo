@@ -14,6 +14,7 @@ namespace Engine
 		renderSystem = new RenderSystem(title);
 		physicsSystem = new PhysicsSystem();
 		inputHandler = new InputHandler();
+		gui = new GUI();
 		timer = new Ticker();
 	}
 
@@ -32,6 +33,7 @@ namespace Engine
 		{
 			delete instance;
 			instance = nullptr;
+			ObjectManager::getInstance().deleteInstance();
 		}
 	}
 
@@ -44,7 +46,7 @@ namespace Engine
 
 	bool Game::init()
 	{		
-		inited = physicsSystem->init() && renderSystem->init() && inputHandler->init();
+		inited = physicsSystem->init() && renderSystem->init() && inputHandler->init() && gui->init();
 		return inited;
 	}
 
@@ -109,6 +111,9 @@ namespace Engine
 			
 		if (!renderSystem->update(t, dt)) // kirajzolas
 			return false;
+
+		if (!gui->update(t, dt))
+			return false;
 		
 		return true;
 	}
@@ -124,12 +129,10 @@ namespace Engine
 		else return;
 
 		ObjectManager::getInstance().destroy();
-		//ObjectManager::getInstance().deleteInstance();
+		gui->destroy();
 		inputHandler->destroy();
 		physicsSystem->destroy();
 		renderSystem->destroy();
-
-		//deleteInstance();
 	}
 
 

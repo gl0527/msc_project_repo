@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include <vector>
+#include <memory>
 #include "Component.h"
 
 namespace Engine
@@ -14,7 +15,7 @@ namespace Engine
 		GameObject* parent;
 		std::vector<GameObject*> children;
 
-		std::vector<Component*> components;
+		std::vector<std::shared_ptr<Component>> components;
 		std::vector<unsigned int> tags;
 		const unsigned int ID;
 		bool isDestroyed;
@@ -45,18 +46,19 @@ namespace Engine
 		Ogre::Vector3 getDirection() const { return orientation * (-Ogre::Vector3::UNIT_Z); }
 		Ogre::Vector3 getUp() const { return orientation * Ogre::Vector3::UNIT_Y; }
 		Ogre::Vector3 getRight() const { return orientation * Ogre::Vector3::UNIT_X; }
+		Ogre::Vector3 getLocalVector(const Ogre::Vector3& vec) const { return orientation * vec; }
 		
 		Component* getComponent(unsigned int cID) const;
 		GameObject* getParent() const { return parent; }
 		GameObject* getChild(unsigned int childID) const;
 		const std::vector<GameObject*>& getChildren() const { return children; }
-
+		// TODO: rekurziv komponenskereses a gyerekek kozott is kellene
 		template<typename T>
 		T* getFirstComponentByType()
 		{
 			for (auto it = components.begin(); it != components.end(); ++it)
 			{
-				if (T* castedComponent = dynamic_cast<T*>(*it))
+				if (T* castedComponent = dynamic_cast<T*>((*it).get()))
 					return castedComponent;
 			}
 			return nullptr;
@@ -86,7 +88,6 @@ namespace Engine
 		bool operator==(const GameObject& other) { return ID == other.getID(); }
 	};
 
-	
 
 }
 

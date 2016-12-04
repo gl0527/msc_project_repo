@@ -1,7 +1,8 @@
 #include "InputComponent.h"
 #include "GameObject.h"
 
-InputComponent::InputComponent() : Component(11), inputHandler(nullptr), moveSpeed(200.0f), delay(0), maxDelay(10)
+InputComponent::InputComponent() : 
+	Component(11), inputHandler(nullptr), moveSpeed(200.0f), turnSpeed(10.0f), mouseSensitivity(50.0f), delay(0), maxDelay(20)
 {
 }
 

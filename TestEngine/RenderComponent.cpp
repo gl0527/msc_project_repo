@@ -10,8 +10,8 @@ namespace Engine
 		createEntity();
 	}
 
-	RenderComponent::RenderComponent(InitStruct initStruct)
-		: Component(1), parentNode(nullptr), currentNode(nullptr), entity(nullptr), entityName(initStruct.eName), meshName(initStruct.mName)
+	RenderComponent::RenderComponent(const InitStruct& init)
+		: Component(1), parentNode(nullptr), currentNode(nullptr), entity(nullptr), entityName(init.eName), meshName(init.mName)
 	{
 		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
 		createEntity();
@@ -65,6 +65,7 @@ namespace Engine
 
 	RenderComponent::~RenderComponent()
 	{
+		std::cout << "RenderComponent destructor called.\n";
 	}
 
 

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Ogre.h"
 #include "Game.h"
-#include "Component.h"
 #include "CameraComponent.h"
 #include "RenderComponent.h"
 #include "PhysicsComponent.h"

@@ -4,6 +4,7 @@
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
 #include "InputHandler.h"
+#include "GUI.h"
 
 namespace Engine
 {
@@ -16,6 +17,7 @@ namespace Engine
 		RenderSystem* renderSystem;
 		PhysicsSystem* physicsSystem;
 		InputHandler* inputHandler;
+		GUI* gui;
 		Ticker* timer;
 
 		void mainLoop();
@@ -36,6 +38,7 @@ namespace Engine
 		RenderSystem* getRenderSystem() const { return renderSystem; }
 		PhysicsSystem* getPhysicsSystem() const { return physicsSystem; }
 		InputHandler* getInputHandler() const { return inputHandler; }
+		GUI* getGUI() const { return gui; }
 	};
 }
 

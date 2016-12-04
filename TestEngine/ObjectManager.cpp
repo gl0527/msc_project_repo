@@ -35,20 +35,13 @@ namespace Engine
 	}
 
 
-	void ObjectManager::addComponentFactory(const std::string& compType, IComponentFactory* compFact)
-	{
-		if (compFact)
-			componentFactories[compType] = compFact;
-	}
-
-
 	GameObject* ObjectManager::createGameObject(unsigned int id)
 	{
 		auto it = gameObjects.find(id);	
 		if (it == gameObjects.end())
 		{
-			gameObjects[id] = new GameObject(id);
-			return gameObjects[id];
+			gameObjects[id] = std::shared_ptr<GameObject>(new GameObject(id));
+			return gameObjects[id].get();
 		}
 		return nullptr;
 	}
@@ -57,18 +50,6 @@ namespace Engine
 	void ObjectManager::removeGameObject(unsigned int id)
 	{
 
-	}
-
-
-	Component* ObjectManager::createComponent(const std::string& compType)
-	{
-		/*if (componentFactories.find(compType) == componentFactories.end())
-			return nullptr;
-		else
-		{
-			return componentFactories[compType]->create();
-		}*/
-		return nullptr;
 	}
 
 
@@ -119,10 +100,7 @@ namespace Engine
 
 	ObjectManager::~ObjectManager()
 	{
-		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
-		{
-			delete it->second;
-		}
+		gameObjects.clear();
 	}
 }
 

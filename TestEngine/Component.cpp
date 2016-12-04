@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	Component::Component(unsigned int id, bool uniq) : ID(id), unique(uniq)
+	Component::Component(unsigned int id, bool uniq) : ID(id), unique(uniq), enabled(true)
 	{
 	}
 

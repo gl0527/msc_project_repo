@@ -19,13 +19,13 @@ namespace Engine
 
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 		dynamicsWorld->setGravity(gravity);
-		gContactProcessedCallback = onCollision;
+		gContactProcessedCallback = onContactProcessed;
 
 		return true;
 	}
 
 
-	bool PhysicsSystem::onCollision(btManifoldPoint& cp, void* body0, void* body1)
+	bool PhysicsSystem::onContactProcessed(btManifoldPoint& cp, void* body0, void* body1)
 	{
 		btRigidBody* rigidbody0 = (btRigidBody*)body0;
 		btRigidBody* rigidbody1 = (btRigidBody*)body1;
@@ -46,8 +46,6 @@ namespace Engine
 			collider0->onCollision(collider1);
 			collider1->onCollision(collider0);
 		}
-		// cp hasznalata az utkozeshez
-
 		return true;
 	}
 

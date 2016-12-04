@@ -3,19 +3,6 @@
 
 using namespace Engine;
 
-
-void onTrigger(PhysicsComponent* other)
-{
-	other->addForce(0, 10000, 0);
-}
-
-
-void onCollision(PhysicsComponent* other)
-{
-
-}
-
-
 int main(int argc, char** argv)
 {
 	if (!Game::getInstance().init())
@@ -24,8 +11,7 @@ int main(int argc, char** argv)
 	GameObject* archway = ObjectManager::getInstance().createGameObject(1);
 	archway->setPosition(Ogre::Vector3(0.0f, 0.0f, -550.0f));
 	archway->setScale(Ogre::Vector3(1.5f, 1.5f, 1.5f));
-	RenderComponent::InitStruct is = { "aw", "Archway.mesh" };
-	RenderComponent* renderer = (RenderComponent*)IComponentFactory::create<RenderComponent::InitStruct>("RenderComponent", &is);
+	RenderComponent* renderer = new RenderComponent("aw", "Archway.mesh");
 	archway->addComponent(renderer);
 
 	for (int i = 10; i < 50; ++i)
@@ -38,24 +24,20 @@ int main(int argc, char** argv)
 		PhysicsComponent* boxCollider = new PhysicsComponent(1.0f, PhysicsComponent::DYNAMIC);
 		btCollisionShape* cs = new btBoxShape(btVector3(5, 5, 5));
 		boxCollider->addShape(cs);
-		//boxCollider->onCollision = onCollision;
-		//boxCollider->onTriggerEnter = onTrigger;
 		box->addComponent(boxRenderer);
 		box->addComponent(boxCollider);
 	}
 
 	GameObject* ball = ObjectManager::getInstance().createGameObject(10);
-	ball->setPosition(Ogre::Vector3(50.0f, 5.0f, -480.0f));
+	ball->setPosition(Ogre::Vector3(-50.0f, 400.0f, -500.0f));
 	ball->setScale(Ogre::Vector3(10, 10, 10));
 	RenderComponent* ballRenderer = new RenderComponent("ball", "strippedBall.mesh");
 	PhysicsComponent* ballCollider = new PhysicsComponent(1.0f, PhysicsComponent::DYNAMIC);
 	btCollisionShape* ballShape = new btSphereShape(10);
 	ballCollider->addShape(ballShape);
-	ballCollider->onCollision = onCollision;
-	ballCollider->onTriggerEnter = onTrigger;
 	ball->addComponent(ballRenderer);
 	ball->addComponent(ballCollider);
-	ballCollider->setRestitution(0.8f);
+	ballCollider->setRestitution(0.9f);
 
 	GameObject* ball2 = ObjectManager::getInstance().createGameObject(11);
 	ball2->setPosition(Ogre::Vector3(-1.0f, 0.0f, -2.0f));
@@ -73,8 +55,7 @@ int main(int argc, char** argv)
 	PhysicsComponent* triggerCollider = new PhysicsComponent(100.0f, PhysicsComponent::KINEMATIC);
 	btCollisionShape* triggerShape = new btBoxShape(btVector3(15, 30, 15));
 	triggerCollider->addShape(triggerShape);
-	triggerCollider->onCollision = onCollision;
-	triggerCollider->onTriggerEnter = onTrigger;
+	triggerCollider->setOnTriggerEnter([](PhysicsComponent* other){ other->addForce(100, 1000, 0); });
 	triggerObject->addComponent(triggerRenderer);
 	triggerObject->addComponent(triggerCollider);
 	triggerCollider->setTrigger(true);
@@ -87,8 +68,6 @@ int main(int argc, char** argv)
 	PhysicsComponent* groundCollider = new PhysicsComponent(0.0f, PhysicsComponent::STATIC);
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 	groundCollider->addShape(groundShape);
-	groundCollider->onTriggerEnter = onTrigger;
-	groundCollider->onCollision = onCollision;
 	groundRender->getEntity()->setCastShadows(false);
 	groundRender->getEntity()->setMaterialName("Ground");
 	ground->addComponent(groundRender);
@@ -115,6 +94,7 @@ int main(int argc, char** argv)
 	Game::getInstance().getRenderSystem()->getSceneManager()->setSkyBox(true, "Sky", 500.0f);
 	
 	Game::getInstance().start();
+	Game::getInstance().deleteInstance();
 
 	return 0;
 }

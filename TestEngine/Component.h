@@ -12,8 +12,10 @@ namespace Engine
 	protected:
 		const unsigned int ID;
 		const bool unique;
+		bool enabled;
 		GameObject* ownerObject;
 	public:
+		class InitStruct{};
 		Component(unsigned int id, bool uniq = true);
 
 		// runs when this component is added to a gameobject
@@ -27,13 +29,15 @@ namespace Engine
 		// runs on every update cycle - after the physics update
 		virtual void onPostUpdate(float t, float dt) { }
 		virtual void onDestroy() { }
-		virtual void onCollision(GameObject* other) { }
 
 		unsigned int getID() const { return ID; }
 		bool isUnique() const { return unique; }
+		bool isEnabled() const { return enabled; }
+		void enable() { enabled = true; }
+		void disable() { enabled = false; }
 		GameObject* getOwnerObject() const { return ownerObject; }
 
-		~Component();
+		virtual ~Component();
 	};
 }
 

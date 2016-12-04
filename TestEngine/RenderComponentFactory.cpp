@@ -2,16 +2,12 @@
 
 namespace Engine
 {
-	RenderComponentFactory::RenderComponentFactory(const char* eName, const char* mName)
-		: entityName(eName), meshName(mName)
+	RenderComponent* RenderComponentFactory::create(Component::InitStruct* init)
 	{
-		
+		if (RenderComponent::InitStruct* rInit = static_cast<RenderComponent::InitStruct*>(init))
+			return new RenderComponent(*rInit);
+		else
+			return nullptr;
 	}
-
-
-	/*RenderComponent* RenderComponentFactory::create()
-	{
-		return nullptr;
-	}*/
 }
 

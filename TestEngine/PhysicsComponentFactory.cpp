@@ -2,14 +2,12 @@
 
 namespace Engine
 {
-	PhysicsComponentFactory::PhysicsComponentFactory()
+	PhysicsComponent* PhysicsComponentFactory::create(Component::InitStruct* init)
 	{
+		if (PhysicsComponent::InitStruct* phyInit = static_cast<PhysicsComponent::InitStruct*>(init))
+			return new PhysicsComponent(*phyInit);
+		else
+			return nullptr;
 	}
-
-
-	/*PhysicsComponent* PhysicsComponentFactory::create()
-	{
-		return nullptr;
-	}*/
 }
 

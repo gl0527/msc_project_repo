@@ -8,6 +8,8 @@ class InputComponent : public Component
 {
 	InputHandler* inputHandler;
 	float moveSpeed;
+	float turnSpeed;
+	float mouseSensitivity;
 	unsigned int delay;
 	unsigned int maxDelay;
 public:

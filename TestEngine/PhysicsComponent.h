@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "btBulletDynamicsCommon.h"
+#include <functional>
 
 namespace Engine
 {
@@ -18,12 +19,25 @@ namespace Engine
 		void setPosition(const Ogre::Vector3& p);
 		void setOrientation(const Ogre::Quaternion& q);
 
-		static void defaultTriggerEnter(PhysicsComponent* other);
-		static void defaultCollision(PhysicsComponent* other);
+		std::function<void(PhysicsComponent*)> triggerEnter;
+		std::function<void(PhysicsComponent*)> collision;
+
+		static void defaultTriggerEnter(PhysicsComponent* other) {}
+		static void defaultCollision(PhysicsComponent* other) {}
 	public:
 		typedef enum{ STATIC, DYNAMIC, KINEMATIC } RigidBodyType;
 		RigidBodyType type;
 
+		class InitStruct : public Component::InitStruct
+		{
+		public:
+			float mass;
+			RigidBodyType type;
+
+			InitStruct(float m, RigidBodyType rbt) : mass(m), type(rbt){}
+		};
+
+		PhysicsComponent(const InitStruct& init);
 		PhysicsComponent(float m, RigidBodyType rbt);
 		void addShape(btCollisionShape* collShape, const Ogre::Vector3& p = Ogre::Vector3::ZERO, const Ogre::Quaternion& q = Ogre::Quaternion::IDENTITY);
 		void createBody();
@@ -32,10 +46,7 @@ namespace Engine
 		virtual void onStart() override;
 		virtual void onUpdate(float t, float dt) override;
 		virtual void onPostUpdate(float t, float dt) override;
-
-		// minden osztalypeldanyra mas implementacio kene - fv.-pointeres megvalositas!!!
-		void (*onTriggerEnter)(PhysicsComponent* other);
-		void (*onCollision)(PhysicsComponent* other);
+		virtual void onDestroy() override;
 		
 		btRigidBody* getRigidBody() const { return rigidBody; }
 
@@ -50,9 +61,15 @@ namespace Engine
 		void setTrigger(bool trigger);
 		void setType(RigidBodyType rbt);
 
+		void setOnTriggerEnter(std::function<void(PhysicsComponent*)>&& f) { triggerEnter = f; }
+		void setOnCollision(std::function<void(PhysicsComponent*)>&& f) { collision = f; }
+
+		void onTriggerEnter(PhysicsComponent* other) { triggerEnter(other); }
+		void onCollision(PhysicsComponent* other) { collision(other); }
+
 		bool isTrigger() const { return trigger; }
 		
-		~PhysicsComponent();
+		virtual ~PhysicsComponent();
 	};
 
 }

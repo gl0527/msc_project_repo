@@ -15,9 +15,16 @@ namespace Engine
 		void createNode();
 		void createEntity();
 	public:
-		typedef struct{ const char* eName; const char* mName; } InitStruct;
+		class InitStruct : public Component::InitStruct
+		{
+		public:
+			const char* eName;
+			const char* mName;
+			InitStruct(const char* en, const char* mn) : eName(en), mName(mn){}
+		};
+
 		RenderComponent(const char* eName, const char* mName = "");
-		RenderComponent(InitStruct initStruct);
+		RenderComponent(const InitStruct& init);
 
 		virtual void onStart() override;
 		virtual void onPostUpdate(float t, float dt) override;
@@ -27,7 +34,7 @@ namespace Engine
 		Ogre::Entity* getEntity() const { return entity; }
 		const std::string& getEntityName() const { return entityName; }
 
-		~RenderComponent();
+		virtual ~RenderComponent();
 	};
 }
 

@@ -2,8 +2,6 @@
 
 namespace Engine
 {
-	IComponentFactory::IComponentFactory()
-	{
-	}
+
 }
 

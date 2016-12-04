@@ -12,10 +12,10 @@ namespace Engine
 
 	void GameObject::addComponent(Component* comp)
 	{
-		// unicitást ellenorizni kellene!
+		// TODO: unicitást ellenorizni kellene!
 		if (comp)
 		{
-			components.push_back(comp);
+			components.push_back(std::shared_ptr<Component>(comp));
 			comp->onInit(this);
 		}
 	}
@@ -25,7 +25,7 @@ namespace Engine
 	{
 		for (auto it = components.begin(); it != components.end(); it++)
 		{
-			if (*it == component)
+			if ((*it).get() == component)
 				it = components.erase(it);
 		}
 	}
@@ -91,7 +91,6 @@ namespace Engine
 		for (auto it = components.begin(); it != components.end(); ++it)
 		{
 			(*it)->onDestroy();
-			//delete *it;
 		}
 	}
 
@@ -100,7 +99,7 @@ namespace Engine
 	{
 		for (auto it = components.cbegin(); it != components.cend(); ++it)
 			if ((*it)->getID() == cID)
-				return (*it);
+				return (*it).get();
 		return nullptr;
 	}
 
@@ -127,10 +126,7 @@ namespace Engine
 
 	GameObject::~GameObject()
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
-		{
-			delete *it;
-		}
+		removeComponent();
 	}
 
 
