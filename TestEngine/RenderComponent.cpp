@@ -4,14 +4,24 @@
 namespace Engine
 {
 	RenderComponent::RenderComponent(const char* eName, const char* mName)
-		: Component(1), parentNode(nullptr), currentNode(nullptr), entity(nullptr), entityName(eName), meshName(mName)
+		: Component(1),
+		parentNode(nullptr),
+		currentNode(nullptr),
+		entity(nullptr),
+		entityName(eName),
+		meshName(mName)
 	{
 		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
 		createEntity();
 	}
 
 	RenderComponent::RenderComponent(const InitStruct& init)
-		: Component(1), parentNode(nullptr), currentNode(nullptr), entity(nullptr), entityName(init.eName), meshName(init.mName)
+		: Component(1),
+		parentNode(nullptr),
+		currentNode(nullptr),
+		entity(nullptr),
+		entityName(init.eName),
+		meshName(init.mName)
 	{
 		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
 		createEntity();

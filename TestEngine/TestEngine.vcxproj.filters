@@ -78,7 +78,16 @@
     <ClInclude Include="AudioSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GUI.h">
+    <ClInclude Include="AudioComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EventID.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -134,7 +143,16 @@
     <ClCompile Include="AudioSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GUI.cpp">
+    <ClCompile Include="AudioComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EventID.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

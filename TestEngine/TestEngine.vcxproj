@@ -86,12 +86,15 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="EventID.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GUI.h" />
     <ClInclude Include="IComponentFactory.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="ObjectManager.h" />
@@ -108,12 +111,15 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="EventID.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GUI.cpp" />
     <ClCompile Include="IComponentFactory.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="ObjectManager.cpp" />

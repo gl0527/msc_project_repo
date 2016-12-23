@@ -4,8 +4,12 @@
 namespace Engine
 {
 	GameObject::GameObject(unsigned int id)
-		: position(Ogre::Vector3::ZERO), orientation(Ogre::Quaternion::IDENTITY), scale(Ogre::Vector3(1.0f, 1.0f, 1.0f)),
-		parent(nullptr), ID(id), isDestroyed(false)
+		: position(Ogre::Vector3::ZERO),
+		orientation(Ogre::Quaternion::IDENTITY),
+		scale(Ogre::Vector3(1.0f, 1.0f, 1.0f)),
+		parent(nullptr),
+		ID(id),
+		isDestroyed(false)
 	{
 	}
 

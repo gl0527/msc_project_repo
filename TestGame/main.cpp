@@ -8,6 +8,14 @@ int main(int argc, char** argv)
 	if (!Game::getInstance().init())
 		return -1;
 
+	GameObject* mainCamera = ObjectManager::getInstance().createGameObject(0);
+	mainCamera->setPosition(Ogre::Vector3(0.0f, 400.0f, 0.0f));
+	mainCamera->setOrientation(Ogre::Quaternion(Ogre::Radian(-Ogre::Math::PI / 4), Ogre::Vector3::UNIT_X));
+	CameraComponent* cameraComponent = new CameraComponent("mainCamera", 0.0f);
+	mainCamera->addComponent(cameraComponent);
+	InputComponent* inputComponent = new InputComponent();
+	mainCamera->addComponent(inputComponent);
+
 	GameObject* archway = ObjectManager::getInstance().createGameObject(1);
 	archway->setPosition(Ogre::Vector3(0.0f, 0.0f, -550.0f));
 	archway->setScale(Ogre::Vector3(1.5f, 1.5f, 1.5f));
@@ -21,11 +29,22 @@ int main(int argc, char** argv)
 		box->setScale(Ogre::Vector3(10, 10, 10));
 		std::string s = "box" + Ogre::StringConverter::toString(i);
 		RenderComponent* boxRenderer = new RenderComponent(s.c_str(), "doboz.mesh");
+		AudioComponent* boxAudio = new AudioComponent("media/sound/human_dead.wav", mainCamera);
 		PhysicsComponent* boxCollider = new PhysicsComponent(1.0f, PhysicsComponent::DYNAMIC);
+		boxCollider->setOnCollision([](PhysicsComponent* other)
+		{
+			GameObject* otherObject = other->getOwnerObject();
+			if (otherObject->getID() == 3)
+				return;
+			if (AudioComponent* otherAC = other->getOwnerObject()->getFirstComponentByType<AudioComponent>())
+				otherAC->play(1.0f, 1.0f, false);
+			
+		});
 		btCollisionShape* cs = new btBoxShape(btVector3(5, 5, 5));
 		boxCollider->addShape(cs);
 		box->addComponent(boxRenderer);
 		box->addComponent(boxCollider);
+		box->addComponent(boxAudio);
 	}
 
 	GameObject* ball = ObjectManager::getInstance().createGameObject(10);
@@ -73,16 +92,10 @@ int main(int argc, char** argv)
 	ground->addComponent(groundRender);
 	ground->addComponent(groundCollider);
 	groundCollider->getRigidBody()->setRestitution(1.0f);
-
-	GameObject* mainCamera = ObjectManager::getInstance().createGameObject(0);
-	mainCamera->setPosition(Ogre::Vector3(0.0f, 400.0f, 0.0f));
-	mainCamera->setOrientation(Ogre::Quaternion(Ogre::Radian(-Ogre::Math::PI / 4), Ogre::Vector3::UNIT_X));
-	CameraComponent* cameraComponent = new CameraComponent("mainCamera", 0.0f);
-	mainCamera->addComponent(cameraComponent);
-	InputComponent* inputComponent = new InputComponent();
-	mainCamera->addComponent(inputComponent);
-	//cameraComponent->setTarget(triggerObject);
-
+	AudioComponent* groundAudio = new AudioComponent("media/sound/main_theme.wav", mainCamera);
+	ground->addComponent(groundAudio);
+	groundAudio->play(0.5f, 1.0f, true); // ezt egy esemenykezelobe kellene tenni
+	
 	// setting up environment
 	Ogre::Light* mainLight = Game::getInstance().getRenderSystem()->getSceneManager()->createLight("mainlight");
 	mainLight->setType(Ogre::Light::LT_DIRECTIONAL);
@@ -92,7 +105,7 @@ int main(int argc, char** argv)
 	Game::getInstance().getRenderSystem()->getSceneManager()->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
 	Game::getInstance().getRenderSystem()->getSceneManager()->setShadowColour(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
 	Game::getInstance().getRenderSystem()->getSceneManager()->setSkyBox(true, "Sky", 500.0f);
-	
+
 	Game::getInstance().start();
 	Game::getInstance().deleteInstance();
 

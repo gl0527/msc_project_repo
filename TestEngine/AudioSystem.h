@@ -1,30 +1,17 @@
 #pragma once
 #include "System.h"
-#include <al.h>
-#include <alc.h>
-#include <alut.h>
+#include "alut.h"
 #include <iostream>
 
 namespace Engine
 {
-#define MAX_AUDIO_BUFFERS 32
-#define MAX_AUDIO_SOURCES 8
-#define ALUT_SAFE_CALL(call, message) { call; \
-		ALenum error = alutGetError(); \
-		if(error != ALUT_ERROR_NO_ERROR) \
-			 std::cout << "ALUT Error occured.\n";\
-    }
-#define AL_SAFE_CALL(call, message) {call; \
-		ALenum error = alGetError(); \
-		if(error != AL_NO_ERROR) \
-			 std::cout << "AL Error occured.\n";\
-    }
-
 	class AudioSystem : public System
 	{
 		ALCdevice* audioDevice;
 		ALCcontext* audioContext;
 		bool enabled;
+		const unsigned char MAX_BUFFERS;
+		const unsigned char MAX_SOURCES;
 	public:
 		AudioSystem();
 		~AudioSystem();
@@ -33,7 +20,11 @@ namespace Engine
 		virtual void destroy() override;
 
 		bool isEnabled() const { return enabled; }
-		ALuint loadFile(const char* fileName);
+		void enable() { enabled = true; }
+		void disable() { enabled = false; }
+
+		const unsigned char getMaxBuffers() const { return MAX_BUFFERS; }
+		const unsigned char getMaxSources() const { return MAX_SOURCES; }
 	};
 }
 

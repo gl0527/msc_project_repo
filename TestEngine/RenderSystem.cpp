@@ -3,7 +3,14 @@
 namespace Engine
 {
 	RenderSystem::RenderSystem(const char* wName, unsigned int w, unsigned int h)
-		: ogreRoot(nullptr), sceneManager(nullptr), renderWindow(nullptr), windowName(wName), windowWidth(w), windowHeight(h)
+		: ogreRoot(nullptr),
+		sceneManager(nullptr),
+		renderWindow(nullptr),
+		overlaySystem(nullptr),
+		overlayManager(nullptr),
+		windowName(wName),
+		windowWidth(w),
+		windowHeight(h)
 	{
 	}
 
@@ -28,11 +35,15 @@ namespace Engine
 		ogreRoot->initialise(false);
 
 		renderWindow = ogreRoot->createRenderWindow(windowName, windowWidth, windowHeight, false);
-		sceneManager = ogreRoot->createSceneManager(0, "Default");
+		sceneManager = ogreRoot->createSceneManager(Ogre::ST_GENERIC);
+
+		overlaySystem = new Ogre::OverlaySystem();
+		sceneManager->addRenderQueueListener(overlaySystem);
+		overlayManager = Ogre::OverlayManager::getSingletonPtr();
 
 		Ogre::ResourceGroupManager::getSingleton().addResourceLocation("media", "FileSystem", "General", false);
 		Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-
+		
 		return true;
 	}
 
@@ -58,8 +69,20 @@ namespace Engine
 
 	void RenderSystem::destroy()
 	{
+		if (overlaySystem)
+		{
+			delete overlaySystem;
+			overlaySystem = nullptr;
+		}
 		if (sceneManager)
+		{
 			sceneManager->clearScene();
+		}
+		if (ogreRoot)
+		{
+			delete ogreRoot;
+			ogreRoot = nullptr;
+		}
 	}
 
 
@@ -82,5 +105,21 @@ namespace Engine
 	}
 
 
+	Ogre::OverlayElement* RenderSystem::getOverlayElement(const char* elementName) const
+	{
+		return overlayManager->getOverlayElement(elementName);
+	}
+	
+	
+	Ogre::Overlay* RenderSystem::getOverlay(const char* overlayName) const
+	{
+		return overlayManager->getByName(overlayName);
+	}
+
+
+	Ogre::OverlayContainer* RenderSystem::getContainer(const char* containerName) const
+	{
+		return static_cast<Ogre::OverlayContainer*>(overlayManager->getOverlayElement(containerName));
+	}
 }
 

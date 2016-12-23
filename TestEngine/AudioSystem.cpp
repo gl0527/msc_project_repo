@@ -3,6 +3,11 @@
 namespace Engine
 {
 	AudioSystem::AudioSystem()
+		: audioDevice(nullptr),
+		audioContext(nullptr),
+		enabled(true),
+		MAX_BUFFERS(32),
+		MAX_SOURCES(8)
 	{
 	}
 
@@ -14,9 +19,22 @@ namespace Engine
 
 	bool AudioSystem::init()
 	{
-		alutInit(0, 0);
-		ALenum error;
-		error = alutGetError();
+		if (!alutInitWithoutContext(0, 0))
+		{
+			exit(EXIT_FAILURE);
+			return false;
+		}
+		
+		audioDevice = alcOpenDevice(NULL);
+		if(!audioDevice)
+			return false;
+		
+		audioContext = alcCreateContext(audioDevice, NULL);
+		alcMakeContextCurrent(audioContext);
+		if(!audioContext)
+			return false;
+		
+		ALenum error = alutGetError();
 		if (error != AL_NO_ERROR)
 			return false;
 		return true;
@@ -25,16 +43,10 @@ namespace Engine
 
 	void AudioSystem::destroy()
 	{
+		alcMakeContextCurrent(NULL);
+		alcDestroyContext(audioContext);
+		alcCloseDevice(audioDevice);
 		alutExit();
-	}
-
-
-	ALuint loadFile(const char* fileName)
-	{
-		ALenum error;
-		ALuint newBuffer;
-		ALUT_SAFE_CALL(newBuffer = alutCreateBufferFromFile(fileName), "Cannot load audio file: ");
-		return newBuffer;
 	}
 }
 

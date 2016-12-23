@@ -8,13 +8,19 @@ namespace Engine
 	
 
 	Game::Game(const char* title)
-		: inited(false), running(false), destroyed(false), renderSystem(nullptr), physicsSystem(nullptr), 
-		inputHandler(nullptr), timer(nullptr)
+		: inited(false),
+		running(false),
+		destroyed(false),
+		renderSystem(nullptr),
+		physicsSystem(nullptr),
+		inputHandler(nullptr),
+		audioSystem(nullptr),
+		timer(nullptr)
 	{
 		renderSystem = new RenderSystem(title);
 		physicsSystem = new PhysicsSystem();
 		inputHandler = new InputHandler();
-		gui = new GUI();
+		audioSystem = new AudioSystem();
 		timer = new Ticker();
 	}
 
@@ -46,8 +52,16 @@ namespace Engine
 
 	bool Game::init()
 	{		
-		inited = physicsSystem->init() && renderSystem->init() && inputHandler->init() && gui->init();
-		return inited;
+		if (!renderSystem->init())
+			return false;
+		if (!inputHandler->init())
+			return false;
+		if (!physicsSystem->init())
+			return false;
+		if (!audioSystem->init())
+			return false;
+		inited = true;
+		return true;
 	}
 
 
@@ -96,7 +110,7 @@ namespace Engine
 
 
 	bool Game::update(float t, float dt)
-	{		
+	{
 		if (!inputHandler->update(t, dt))
 			return false;
 	
@@ -108,11 +122,11 @@ namespace Engine
 		ObjectManager::getInstance().update(t, dt); // fizika befrissitese
 			
 		ObjectManager::getInstance().postUpdate(t, dt); // fizika utani teendok elvegzese
+
+		if (!audioSystem->update(t, dt))
+			return false;
 			
 		if (!renderSystem->update(t, dt)) // kirajzolas
-			return false;
-
-		if (!gui->update(t, dt))
 			return false;
 		
 		return true;
@@ -129,10 +143,10 @@ namespace Engine
 		else return;
 
 		ObjectManager::getInstance().destroy();
-		gui->destroy();
 		inputHandler->destroy();
 		physicsSystem->destroy();
 		renderSystem->destroy();
+		audioSystem->destroy();
 	}
 
 

@@ -2,7 +2,13 @@
 #include "GameObject.h"
 
 InputComponent::InputComponent() : 
-	Component(11), inputHandler(nullptr), moveSpeed(200.0f), turnSpeed(10.0f), mouseSensitivity(50.0f), delay(0), maxDelay(20)
+	Component(11),
+	inputHandler(nullptr),
+	moveSpeed(200.0f),
+	turnSpeed(10.0f),
+	mouseSensitivity(50.0f),
+	delay(0),
+	maxDelay(20)
 {
 }
 
@@ -36,9 +42,10 @@ void InputComponent::onPreUpdate(float t, float dt)
 		moveDir += Ogre::Vector3(0.0f, 0.0f, -1.0f);
 	if (inputHandler->isKeyDown(OIS::KC_SUBTRACT))
 		moveDir += Ogre::Vector3(0.0f, 0.0f, 1.0f);
-	if (inputHandler->isKeyDown(OIS::KC_SPACE) && delay > maxDelay)
+	if (inputHandler->isKeyDown(OIS::KC_SYSRQ) && delay > maxDelay)
 	{
-		std::cout << "space is pressed.\n";
+		std::cout << "Screenshot taken.\n";
+		Game::getInstance().getRenderSystem()->getRenderWindow()->writeContentsToTimestampedFile("screenshot", ".jpg");
 		delay = 0;
 	}
 		

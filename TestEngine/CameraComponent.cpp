@@ -3,12 +3,20 @@
 
 namespace Engine
 {
-	CameraComponent::CameraComponent(const char* name, float zDepth)
-		: RenderComponent(name), nearCullingPlane(0.1f), farCullingPlane(1000.0f),
-		zOrder(zDepth), camera(nullptr), viewport(nullptr), renderTexture(nullptr), targetObject(nullptr)
+	CameraComponent::CameraComponent(const char* name, float zDepth, const Ogre::ColourValue& clear)
+		: RenderComponent(name),
+		nearCullingPlane(0.1f),
+		farCullingPlane(1000.0f),
+		zOrder(zDepth),
+		camera(nullptr),
+		viewport(nullptr),
+		renderTexture(nullptr),
+		clearColor(clear),
+		targetObject(nullptr)
 	{
 		camera = Game::getInstance().getRenderSystem()->getSceneManager()->createCamera(name);
 		viewport = Game::getInstance().getRenderSystem()->getRenderWindow()->addViewport(camera, zOrder);
+		camera->setAspectRatio(Ogre::Real(viewport->getActualWidth()) / Ogre::Real(viewport->getActualHeight()));
 	}
 
 

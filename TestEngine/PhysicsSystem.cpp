@@ -4,8 +4,12 @@
 namespace Engine
 {
 	PhysicsSystem::PhysicsSystem()
-		: gravity(btVector3(0.0f, -200.0f, 0.0f)), collisionConfiguration(nullptr), dispatcher(nullptr), overlappingPairCache(nullptr), 
-		solver(nullptr), dynamicsWorld(nullptr)
+		: gravity(btVector3(0.0f, -200.0f, 0.0f)),
+		collisionConfiguration(nullptr),
+		dispatcher(nullptr),
+		overlappingPairCache(nullptr), 
+		solver(nullptr),
+		dynamicsWorld(nullptr)
 	{
 	}
 

@@ -3,7 +3,10 @@
 
 namespace Engine
 {
-	Ticker::Ticker() : lastTime(0), t(0), dt(0)
+	Ticker::Ticker()
+		: lastTime(0),
+		t(0),
+		dt(0)
 	{
 	}
 

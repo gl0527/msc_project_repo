@@ -5,7 +5,10 @@
 namespace Engine
 {
 	InputHandler::InputHandler()
-		: inputManager(nullptr), keyboard(nullptr), mouse(nullptr), renderWindow(nullptr)
+		: inputManager(nullptr),
+		keyboard(nullptr),
+		mouse(nullptr),
+		renderWindow(nullptr)
 	{
 		
 	}
