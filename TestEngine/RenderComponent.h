@@ -8,12 +8,11 @@ namespace Engine
 	protected:
 		Ogre::SceneNode* parentNode;
 		Ogre::SceneNode* currentNode;
-		Ogre::Entity* entity;
-		const std::string entityName;
-		const std::string meshName;
+		Ogre::MovableObject* object;
+		Ogre::SceneManager* sceneMgr;
+		std::string objName;
 
 		void createNode();
-		void createEntity();
 	public:
 		class InitStruct : public Component::InitStruct
 		{
@@ -23,7 +22,7 @@ namespace Engine
 			InitStruct(const char* en, const char* mn) : eName(en), mName(mn){}
 		};
 
-		RenderComponent(const char* eName, const char* mName = "");
+		RenderComponent(const char* name);
 		RenderComponent(const InitStruct& init);
 
 		virtual void onStart() override;
@@ -31,8 +30,9 @@ namespace Engine
 		virtual void onDestroy() override;
 
 		Ogre::SceneNode* getNode() const { return currentNode; }
-		Ogre::Entity* getEntity() const { return entity; }
-		const std::string& getEntityName() const { return entityName; }
+
+		void setCastShadows(bool cast);
+		void setVisible(bool visible);
 
 		virtual ~RenderComponent();
 	};

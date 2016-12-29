@@ -19,16 +19,16 @@ int main(int argc, char** argv)
 	GameObject* archway = ObjectManager::getInstance().createGameObject(1);
 	archway->setPosition(Ogre::Vector3(0.0f, 0.0f, -550.0f));
 	archway->setScale(Ogre::Vector3(1.5f, 1.5f, 1.5f));
-	RenderComponent* renderer = new RenderComponent("aw", "Archway.mesh");
+	RenderComponent* renderer = new MeshComponent("aw", "Archway.mesh");
 	archway->addComponent(renderer);
 
-	for (int i = 10; i < 50; ++i)
+	for (int i = 10; i < 30; ++i)
 	{
 		GameObject* box = ObjectManager::getInstance().createGameObject(200+i);
 		box->setPosition(Ogre::Vector3(-20.0f, 4*i + 10, -500.0f));
 		box->setScale(Ogre::Vector3(10, 10, 10));
 		std::string s = "box" + Ogre::StringConverter::toString(i);
-		RenderComponent* boxRenderer = new RenderComponent(s.c_str(), "doboz.mesh");
+		RenderComponent* boxRenderer = new MeshComponent(s.c_str(), "doboz.mesh");
 		AudioComponent* boxAudio = new AudioComponent("media/sound/human_dead.wav", mainCamera);
 		PhysicsComponent* boxCollider = new PhysicsComponent(1.0f, PhysicsComponent::DYNAMIC);
 		boxCollider->setOnCollision([](PhysicsComponent* other)
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
 	GameObject* ball = ObjectManager::getInstance().createGameObject(10);
 	ball->setPosition(Ogre::Vector3(-50.0f, 400.0f, -500.0f));
 	ball->setScale(Ogre::Vector3(10, 10, 10));
-	RenderComponent* ballRenderer = new RenderComponent("ball", "strippedBall.mesh");
+	RenderComponent* ballRenderer = new MeshComponent("ball", "strippedBall.mesh");
 	PhysicsComponent* ballCollider = new PhysicsComponent(1.0f, PhysicsComponent::DYNAMIC);
 	btCollisionShape* ballShape = new btSphereShape(10);
 	ballCollider->addShape(ballShape);
@@ -61,8 +61,25 @@ int main(int argc, char** argv)
 	GameObject* ball2 = ObjectManager::getInstance().createGameObject(11);
 	ball2->setPosition(Ogre::Vector3(-1.0f, 0.0f, -2.0f));
 	ball2->setScale(Ogre::Vector3(2, 2, 2));
-	RenderComponent* ball2Renderer = new RenderComponent("ball2", "strippedBall.mesh");
+	RenderComponent* ball2Renderer = new MeshComponent("ball2", "strippedBall.mesh");
+	BillboardComponent* ball2bb = new BillboardComponent("bb");
+	ball2bb->getBillboardSet()->setBillboardType(Ogre::BBT_PERPENDICULAR_SELF);
+	ball2bb->getBillboardSet()->setMaterialName("TreeLeaves");
+	ball2bb->getBillboardSet()->setSortingEnabled(true);
+
+	for (int i = 0; i < 10; i++)
+	{
+		float h = Ogre::Math::RangeRandom(5, 10);
+		Ogre::Vector3 pos(0, h, 0);
+		Ogre::Vector3 dir(Ogre::Math::RangeRandom(-0.6f, 0.6f), 1, Ogre::Math::RangeRandom(-0.6f, 0.6f));
+		dir.normalise();
+		Ogre::Billboard* bb = ball2bb->getBillboardSet()->createBillboard(pos);
+		bb->setDimensions(15.0f - h, 15.0f - h);
+		bb->mDirection = dir;
+	}
+
 	ball2->addComponent(ball2Renderer);
+	ball2->addComponent(ball2bb);
 
 	// ha mind a kettonek van fizikai komponense, akkor nem mukodik
 	ball->addChild(ball2); // igy az iment megadott transzformacios ertekek a szulohoz kepest relativen ertendok
@@ -70,12 +87,14 @@ int main(int argc, char** argv)
 	GameObject* triggerObject = ObjectManager::getInstance().createGameObject(100);
 	triggerObject->setPosition(Ogre::Vector3(-50.0f, 0.0f, -500.0f));
 	triggerObject->setScale(Ogre::Vector3(30.0f, 30.0f, 30.0f));
-	RenderComponent* triggerRenderer = new RenderComponent("triggerRenderer", "explosive.mesh");
+	RenderComponent* triggerRenderer = new MeshComponent("triggerRenderer", "explosive.mesh");
+	ParticleComponent* triggerParticle = new ParticleComponent("dragonfire", "DragonFire");
 	PhysicsComponent* triggerCollider = new PhysicsComponent(100.0f, PhysicsComponent::KINEMATIC);
 	btCollisionShape* triggerShape = new btBoxShape(btVector3(15, 30, 15));
 	triggerCollider->addShape(triggerShape);
 	triggerCollider->setOnTriggerEnter([](PhysicsComponent* other){ other->addForce(100, 1000, 0); });
 	triggerObject->addComponent(triggerRenderer);
+	triggerObject->addComponent(triggerParticle);
 	triggerObject->addComponent(triggerCollider);
 	triggerCollider->setTrigger(true);
 
@@ -83,12 +102,12 @@ int main(int argc, char** argv)
 
 	GameObject* ground = ObjectManager::getInstance().createGameObject(3);
 	ground->setScale(Ogre::Vector3(5000.0f, 0.0f, 5000.0f));
-	RenderComponent* groundRender = new RenderComponent("mainGround", "ground");
+	MeshComponent* groundRender = new MeshComponent("mainGround", "ground");
 	PhysicsComponent* groundCollider = new PhysicsComponent(0.0f, PhysicsComponent::STATIC);
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
 	groundCollider->addShape(groundShape);
-	groundRender->getEntity()->setCastShadows(false);
-	groundRender->getEntity()->setMaterialName("Ground");
+	groundRender->setCastShadows(false);
+	groundRender->setMaterial("Ground");
 	ground->addComponent(groundRender);
 	ground->addComponent(groundCollider);
 	groundCollider->getRigidBody()->setRestitution(1.0f);

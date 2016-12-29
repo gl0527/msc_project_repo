@@ -10,21 +10,24 @@ namespace Engine
 		zOrder(zDepth),
 		camera(nullptr),
 		viewport(nullptr),
+		renderWnd(nullptr),
 		renderTexture(nullptr),
 		clearColor(clear),
 		targetObject(nullptr)
 	{
-		camera = Game::getInstance().getRenderSystem()->getSceneManager()->createCamera(name);
-		viewport = Game::getInstance().getRenderSystem()->getRenderWindow()->addViewport(camera, zOrder);
+		camera = sceneMgr->createCamera(name);
+		object = camera;
+		renderWnd = Game::getInstance().getRenderSystem()->getRenderWindow();
+		viewport = renderWnd->addViewport(camera, zOrder);
 		camera->setAspectRatio(Ogre::Real(viewport->getActualWidth()) / Ogre::Real(viewport->getActualHeight()));
 	}
 
 
-	void CameraComponent::onStart()
+	/*void CameraComponent::onStart()
 	{
 		createNode();
 		currentNode->attachObject(camera);
-	}
+	}*/
 
 
 	void CameraComponent::onPostUpdate(float t, float dt)
@@ -49,12 +52,11 @@ namespace Engine
 
 	void CameraComponent::onDestroy()
 	{
-		Game::getInstance().getRenderSystem()->getRenderWindow()->removeViewport(zOrder);
-		Game::getInstance().getRenderSystem()->getSceneManager()->destroyCamera(entityName);
-		Game::getInstance().getRenderSystem()->getSceneManager()->destroySceneNode(currentNode);
+		renderWnd->removeViewport(zOrder);
+		//Game::getInstance().getRenderSystem()->getSceneManager()->destroyCamera(entityName);
+		sceneMgr->destroySceneNode(currentNode);
 		currentNode = nullptr;
-		Game::getInstance().getRenderSystem()->getSceneManager()->destroyEntity(entityName);
-		entity = nullptr;
+		//sceneMgr->destroyEntity(entityName);
 	}
 
 

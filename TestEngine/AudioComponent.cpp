@@ -11,7 +11,7 @@ namespace Engine
 		buffer = alutCreateBufferFromFile(fileName);
 		ALenum error = alutGetError();
 		if (error != AL_NO_ERROR)
-			std::cout << "Cannot load audio file";
+			std::cout << "Cannot load audio file.\n";
 		alGenSources(1, &source);
 		alSourcei(source, AL_BUFFER, buffer);
 	}
@@ -24,21 +24,18 @@ namespace Engine
 	}
 
 
+	void AudioComponent::updatePose(const Ogre::Vector3& pos, const Ogre::Vector3& dir)
+	{
+		alSource3f(source, AL_POSITION, pos.x, pos.y, pos.z);
+		alSource3f(source, AL_VELOCITY, dir.x, dir.y, dir.z);
+		alSource3f(source, AL_DIRECTION, dir.x, dir.y, dir.z);
+	}
+
+
 	void AudioComponent::onPreUpdate(float t, float dt)
 	{
-		const Ogre::Vector3& ownerPos = ownerObject->getPosition();
-		const Ogre::Vector3& ownerDir = ownerObject->getDirection();
-
-		const Ogre::Vector3& listenerPos = listener->getPosition();
-		const Ogre::Vector3& listenerDir = listener->getDirection();
-		
-		alSource3f(source, AL_POSITION, ownerPos.x, ownerPos.y, ownerPos.z);
-		alSource3f(source, AL_VELOCITY, ownerDir.x, ownerDir.y, ownerDir.z);
-		alSource3f(source, AL_DIRECTION, ownerDir.x, ownerDir.y, ownerDir.z);
-		
-		alListener3f(AL_POSITION, listenerPos.x, listenerPos.y, listenerPos.z);
-		alListener3f(AL_VELOCITY, listenerDir.x, listenerDir.y, listenerDir.z);
-		alListener3f(AL_DIRECTION, listenerDir.x, listenerDir.y, listenerDir.z);
+		updatePose(ownerObject->getPosition(), ownerObject->getDirection());
+		updatePose(listener->getPosition(), listener->getDirection());
 	}
 
 
@@ -71,6 +68,18 @@ namespace Engine
 		ALenum state;
 		alGetSourcei(source, AL_SOURCE_STATE, &state);
 		return (state == AL_PLAYING);
+	}
+
+
+	void AudioComponent::setVolume(float volume)
+	{
+		alSourcef(source, AL_GAIN, volume);
+	}
+
+
+	void AudioComponent::setSpeed(float speed)
+	{
+		alSourcef(source, AL_PITCH, speed);
 	}
 }
 

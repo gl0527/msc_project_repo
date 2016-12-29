@@ -3,34 +3,32 @@
 
 namespace Engine
 {
-	RenderComponent::RenderComponent(const char* eName, const char* mName)
+	RenderComponent::RenderComponent(const char* name)
 		: Component(1),
 		parentNode(nullptr),
 		currentNode(nullptr),
-		entity(nullptr),
-		entityName(eName),
-		meshName(mName)
+		object(nullptr),
+		objName(name)
 	{
 		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
-		createEntity();
+		sceneMgr = Game::getInstance().getRenderSystem()->getSceneManager();
 	}
+
 
 	RenderComponent::RenderComponent(const InitStruct& init)
 		: Component(1),
 		parentNode(nullptr),
-		currentNode(nullptr),
-		entity(nullptr),
-		entityName(init.eName),
-		meshName(init.mName)
+		currentNode(nullptr)
 	{
 		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
-		createEntity();
+		sceneMgr = Game::getInstance().getRenderSystem()->getSceneManager();
 	}
 
 
 	void RenderComponent::onStart()
 	{
 		createNode();
+		currentNode->attachObject(object);
 	}
 
 
@@ -51,31 +49,33 @@ namespace Engine
 				parentNode = pNode;
 		}
 		currentNode = parentNode->createChildSceneNode();
-		
-		if (entity)
-			currentNode->attachObject(entity);
-	}
-
-
-	void RenderComponent::createEntity()
-	{
-		if (meshName != "")
-			entity = Game::getInstance().getRenderSystem()->getSceneManager()->createEntity(entityName, meshName);
 	}
 
 
 	void RenderComponent::onDestroy()
 	{
-		Game::getInstance().getRenderSystem()->getSceneManager()->destroySceneNode(currentNode);
+		sceneMgr->destroySceneNode(currentNode);
 		currentNode = nullptr;
-		Game::getInstance().getRenderSystem()->getSceneManager()->destroyEntity(entityName);
-		entity = nullptr;
 	}
 
 
 	RenderComponent::~RenderComponent()
 	{
 		std::cout << "RenderComponent destructor called.\n";
+	}
+
+
+	void RenderComponent::setCastShadows(bool cast)
+	{
+		if (object)
+			object->setCastShadows(cast);
+	}
+
+
+	void RenderComponent::setVisible(bool visible)
+	{
+		if (object)
+			object->setVisible(visible);
 	}
 
 

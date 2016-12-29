@@ -9,6 +9,7 @@ namespace Engine
 		ALuint buffer;
 		ALuint source;
 		GameObject* listener;
+		void updatePose(const Ogre::Vector3& pos, const Ogre::Vector3& dir);
 	public:
 		AudioComponent(const char* fileName, GameObject* observer);
 		virtual ~AudioComponent();
@@ -19,6 +20,9 @@ namespace Engine
 		void pause();
 		void stop();
 		bool isPlaying();
+
+		void setVolume(float volume);
+		void setSpeed(float speed);
 	};
 }
 

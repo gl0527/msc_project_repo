@@ -11,13 +11,14 @@ namespace Engine
 		float zOrder;
 		Ogre::Camera* camera;
 		Ogre::Viewport* viewport;
+		Ogre::RenderWindow* renderWnd;
 		Ogre::RenderTexture* renderTexture;
 		Ogre::ColourValue clearColor;
 		GameObject* targetObject;
 	public:
 		CameraComponent(const char* name, float zDepth, const Ogre::ColourValue& clear = Ogre::ColourValue(0,0,0));
 		
-		virtual void onStart() override;
+		//virtual void onStart() override;
 		virtual void onDestroy() override;
 		virtual void onPostUpdate(float t, float dt) override;
 

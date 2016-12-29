@@ -16,6 +16,7 @@ namespace Engine
 		shape = new btCompoundShape();
 	}
 
+
 	PhysicsComponent::PhysicsComponent(float m, RigidBodyType t)
 		: Component(0),
 		mass(m),

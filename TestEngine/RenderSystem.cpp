@@ -21,9 +21,11 @@ namespace Engine
 #ifdef _DEBUG
 		ogreRoot->loadPlugin("RenderSystem_Direct3D9_d");
 		ogreRoot->loadPlugin("RenderSystem_GL_d");
+		ogreRoot->loadPlugin("Plugin_ParticleFX_d");
 #else
 		ogreRoot->loadPlugin("RenderSystem_Direct3D9");
 		ogreRoot->loadPlugin("RenderSystem_GL");
+		ogreRoot->loadPlugin("Plugin_ParticleFX");
 #endif
 		const Ogre::RenderSystemList& list = ogreRoot->getAvailableRenderers();
 		
