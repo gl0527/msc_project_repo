@@ -4,10 +4,9 @@ namespace Engine
 {
 	MeshComponent::MeshComponent(const char* eName, const char* mName)
 		: RenderComponent(eName),
-		meshName(mName),
 		entity(nullptr)
 	{
-		entity = sceneMgr->createEntity(objName, meshName);
+		entity = sceneMgr->createEntity(objName, mName);
 		object = entity;
 	}
 

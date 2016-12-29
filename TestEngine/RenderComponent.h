@@ -33,6 +33,7 @@ namespace Engine
 
 		void setCastShadows(bool cast);
 		void setVisible(bool visible);
+		void setRenderDist(float dist);
 
 		virtual ~RenderComponent();
 	};

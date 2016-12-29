@@ -5,7 +5,6 @@ namespace Engine
 {
 	class DLL_SPEC MeshComponent : public RenderComponent
 	{
-		const std::string meshName;
 		Ogre::Entity* entity;
 	public:
 		MeshComponent(const char* eName, const char* mName);
