@@ -79,12 +79,5 @@ namespace Engine
 	}
 
 
-	void RenderComponent::setRenderDist(float dist)
-	{
-		if (object)
-			object->setRenderingDistance(dist);
-	}
-
-
 }
 

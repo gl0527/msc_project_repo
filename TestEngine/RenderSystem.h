@@ -34,7 +34,14 @@ namespace Engine
 		Ogre::OverlayElement* getOverlayElement(const char* elementName) const;
 		Ogre::Overlay* getOverlay(const char* overlayName) const;
 		Ogre::OverlayContainer* getContainer(const char* containerName) const;
+		Ogre::OverlayManager* getOverlayMgr() const { return overlayManager; }
+
+		Ogre::Overlay* createOverlay(const char* name) { return overlayManager->create(name); }
+		
+		template<typename T>
+		T* createOverlayElement(const char* typeName, const char* name)
+		{
+			return static_cast<T*>(overlayManager->createOverlayElement(typeName, name));
+		}
 	};
 }
-
-

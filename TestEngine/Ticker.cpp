@@ -13,10 +13,10 @@ namespace Engine
 
 	void Ticker::tick()
 	{
-		unsigned int currentTime = timeGetTime();
-		dt = (currentTime - lastTime) * 0.001f;
+		unsigned int now = timeGetTime();
+		dt = (now - lastTime) * 0.001f;
 		t += dt;
-		lastTime = currentTime;
+		lastTime = now;
 	}
 
 

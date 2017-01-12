@@ -1,5 +1,6 @@
 #include "TestEngine.h"
 #include "InputComponent.h"
+#include "FPSComponent.h"
 
 using namespace Engine;
 
@@ -22,7 +23,7 @@ int main(int argc, char** argv)
 	RenderComponent* renderer = new MeshComponent("aw", "Archway.mesh");
 	archway->addComponent(renderer);
 
-	for (int i = 10; i < 30; ++i)
+	for (int i = 10; i < 60; ++i)
 	{
 		GameObject* box = ObjectManager::getInstance().createGameObject(200+i);
 		box->setPosition(Ogre::Vector3(-20.0f, 4*i + 10, -500.0f));
@@ -114,6 +115,10 @@ int main(int argc, char** argv)
 	AudioComponent* groundAudio = new AudioComponent("media/sound/main_theme.wav", mainCamera);
 	ground->addComponent(groundAudio);
 	groundAudio->play(0.5f, 1.0f, true); // ezt egy esemenykezelobe kellene tenni
+
+	GameObject* fps = ObjectManager::getInstance().createGameObject(112);
+	FPSComponent* fpsc = new FPSComponent("FPS");
+	fps->addComponent(fpsc);
 	
 	// setting up environment
 	Ogre::Light* mainLight = Game::getInstance().getRenderSystem()->getSceneManager()->createLight("mainlight");
