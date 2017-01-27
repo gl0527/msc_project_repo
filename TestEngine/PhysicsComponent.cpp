@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	PhysicsComponent::PhysicsComponent(const InitStruct& init)
+	/*PhysicsComponent::PhysicsComponent(const InitStruct& init)
 		: Component(0),
 		mass(init.mass),
 		trigger(false),
@@ -14,11 +14,11 @@ namespace Engine
 		collision(defaultCollision)
 	{
 		shape = new btCompoundShape();
-	}
+	}*/
 
 
-	PhysicsComponent::PhysicsComponent(float m, RigidBodyType t)
-		: Component(0),
+	PhysicsComponent::PhysicsComponent(const std::string& name, float m, RigidBodyType t)
+		: Component(name),
 		mass(m),
 		trigger(false),
 		rigidBody(nullptr),
@@ -58,7 +58,7 @@ namespace Engine
 		rigidBody = new btRigidBody(rigidBodyCI);
 		rigidBody->setMassProps(mass, inertia);
 
-		if (type == RigidBodyType::KINEMATIC)
+		if (type == KINEMATIC)
 		{
 			rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 			rigidBody->setActivationState(DISABLE_DEACTIVATION);
@@ -71,8 +71,8 @@ namespace Engine
 	{
 		ownerObject = object;
 
-		const Ogre::Quaternion& q = ownerObject->getOrientation();
-		const Ogre::Vector3& p = ownerObject->getPosition();
+		const Ogre::Quaternion& q = ownerObject->getTransform()->getRotation();
+		const Ogre::Vector3& p = ownerObject->getTransform()->getPosition();
 
 		btTransform pose(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z));
 		motionState = new btDefaultMotionState(pose);
@@ -90,10 +90,10 @@ namespace Engine
 	
 	void PhysicsComponent::onUpdate(float t, float dt)
 	{
-		if (type == RigidBodyType::DYNAMIC)
+		if (type == DYNAMIC)
 		{
-			ownerObject->setPosition(getPosition());
-			ownerObject->setOrientation(getOrientation());
+			ownerObject->getTransform()->setPosition(getPosition());
+			ownerObject->getTransform()->setRotation(getOrientation());
 			//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
 			//shape->setLocalScaling(ownerScaling);
 		}
@@ -102,10 +102,10 @@ namespace Engine
 
 	void PhysicsComponent::onPostUpdate(float t, float dt)
 	{
-		if (type == RigidBodyType::KINEMATIC)
+		if (type == KINEMATIC)
 		{
-			setPosition(ownerObject->getPosition());
-			setOrientation(ownerObject->getOrientation());
+			setPosition(ownerObject->getTransform()->getPosition());
+			setOrientation(ownerObject->getTransform()->getRotation());
 			//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
 			//shape->setLocalScaling(ownerScaling);
 		}
@@ -155,7 +155,7 @@ namespace Engine
 
 	void PhysicsComponent::addForce(float fx, float fy, float fz)
 	{
-		if (type == RigidBodyType::DYNAMIC && rigidBody)
+		if (type == DYNAMIC && rigidBody)
 		{
 			btVector3 centralForce(fx, fy, fz);
 			rigidBody->applyCentralForce(centralForce);
@@ -186,22 +186,22 @@ namespace Engine
 
 	void PhysicsComponent::setAngularFactor(float x, float y, float z)
 	{
-		if (type == RigidBodyType::DYNAMIC && rigidBody)
+		if (type == DYNAMIC && rigidBody)
 			rigidBody->setAngularFactor(btVector3(x,y,z));
 	}
 
 
 	void PhysicsComponent::disableRotation()
 	{
-		if (type == RigidBodyType::DYNAMIC && rigidBody)
+		if (type == DYNAMIC && rigidBody)
 			rigidBody->setAngularFactor(0);
 	}
 
 
 	void PhysicsComponent::setMass()
 	{
-		if (mass == 0 && type != RigidBodyType::STATIC)
-			setType(RigidBodyType::STATIC);
+		if (mass == 0 && type != STATIC)
+			setType(STATIC);
 
 		if (mass > 0)
 		{

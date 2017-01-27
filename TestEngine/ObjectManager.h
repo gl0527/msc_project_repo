@@ -9,7 +9,7 @@ namespace Engine
 
 	class DLL_SPEC ObjectManager
 	{
-		std::map<unsigned int, std::shared_ptr<GameObject>> gameObjects;
+		std::map<std::string, std::shared_ptr<GameObject>> gameObjects;
 		ObjectManager();
 		static ObjectManager* instance;
 	public:
@@ -17,8 +17,8 @@ namespace Engine
 		static void deleteInstance();
 		static bool exists();
 
-		GameObject* createGameObject(unsigned int id);
-		void removeGameObject(unsigned int id);
+		GameObject* createGameObject(const std::string& id);
+		void removeGameObject(const std::string& id);
 
 		void start();
 		void preUpdate(float t, float dt);

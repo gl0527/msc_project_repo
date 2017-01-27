@@ -16,10 +16,10 @@ namespace Engine
 
 	bool PhysicsSystem::init()
 	{
-		collisionConfiguration = new btDefaultCollisionConfiguration();
+		collisionConfiguration = new btDefaultCollisionConfiguration;
 		dispatcher = new btCollisionDispatcher(collisionConfiguration);
-		overlappingPairCache = new btDbvtBroadphase();
-		solver = new btSequentialImpulseConstraintSolver();
+		overlappingPairCache = new btDbvtBroadphase;
+		solver = new btSequentialImpulseConstraintSolver;
 
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 		dynamicsWorld->setGravity(gravity);

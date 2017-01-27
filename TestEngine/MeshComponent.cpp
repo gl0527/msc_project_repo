@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	MeshComponent::MeshComponent(const char* eName, const char* mName)
+	MeshComponent::MeshComponent(const std::string& eName, const std::string& mName)
 		: RenderComponent(eName),
 		entity(nullptr)
 	{
@@ -13,6 +13,14 @@ namespace Engine
 
 	MeshComponent::~MeshComponent()
 	{
+	}
+
+
+	void MeshComponent::onPostUpdate(float t, float dt)
+	{
+		RenderComponent::onPostUpdate(t, dt);
+		for (auto&& it = animations.cbegin(); it != animations.cend(); ++it)
+			(*it)->addTime(dt);
 	}
 
 

@@ -1,8 +1,8 @@
 #include "InputComponent.h"
 #include "GameObject.h"
 
-InputComponent::InputComponent() : 
-	Component(11),
+InputComponent::InputComponent(const std::string& ident) :
+	Component(ident),
 	inputHandler(nullptr),
 	moveSpeed(200.0f),
 	turnSpeed(10.0f),
@@ -55,9 +55,9 @@ void InputComponent::onPreUpdate(float t, float dt)
 		std::cout << "rmb: " << ms.X.rel << ", " << ms.Y.rel << std::endl;
 
 	moveDir.normalise();
-	moveDir = ownerObject->getOrientation() * moveDir; // azert, hogy a movedir az ownerObject koordinata-rendszereben legyen ertve
+	moveDir = ownerObject->getTransform()->getRotation() * moveDir; // azert, hogy a movedir az ownerObject koordinata-rendszereben legyen ertve
 	
-	ownerObject->setPosition(ownerObject->getPosition() + moveDir * dt * moveSpeed); // a dt miatt a mozgas sebessege fuggetlen a gep sebessegetol
+	ownerObject->getTransform()->setPosition(ownerObject->getTransform()->getPosition() + moveDir * dt * moveSpeed); // a dt miatt a mozgas sebessege fuggetlen a gep sebessegetol
 }
 
 

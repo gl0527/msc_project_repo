@@ -39,7 +39,7 @@ namespace Engine
 		renderWindow = ogreRoot->createRenderWindow(windowName, windowWidth, windowHeight, false);
 		sceneManager = ogreRoot->createSceneManager(Ogre::ST_GENERIC);
 
-		overlaySystem = new Ogre::OverlaySystem();
+		overlaySystem = new Ogre::OverlaySystem;
 		sceneManager->addRenderQueueListener(overlaySystem);
 		overlayManager = Ogre::OverlayManager::getSingletonPtr();
 
@@ -88,10 +88,13 @@ namespace Engine
 	}
 
 
-	void RenderSystem::createPlaneMeshXZ(const char* planeMeshName, float y, unsigned int u, unsigned int v)
+	Ogre::MeshPtr RenderSystem::createPlaneMeshXZ(const char* planeMeshName, float y, unsigned int u, unsigned int v)
 	{
-		Ogre::Plane plane(Ogre::Vector3::UNIT_Y, y);
-		Ogre::MeshManager::getSingleton().createPlane(
+		Ogre::MovablePlane plane(planeMeshName);
+		plane.d = y;
+		plane.normal = Ogre::Vector3::UNIT_Y;
+		
+		Ogre::MeshPtr mp = Ogre::MeshManager::getSingleton().createPlane(
 			planeMeshName,
 			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 			plane,
@@ -104,6 +107,24 @@ namespace Engine
 			u, // u-tile
 			v, // v-tile
 			Ogre::Vector3::UNIT_Z);
+
+		return mp;
+	}
+
+
+	Ogre::TexturePtr RenderSystem::createTexture(const char* texName, unsigned int w, unsigned int h)
+	{
+		Ogre::TexturePtr tp = Ogre::TextureManager::getSingleton().createManual(
+			texName,
+			Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			Ogre::TEX_TYPE_2D,
+			w,
+			h,
+			0,
+			Ogre::PF_R8G8B8,
+			Ogre::TU_RENDERTARGET);
+
+		return tp;
 	}
 
 

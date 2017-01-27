@@ -3,15 +3,13 @@
 
 namespace Engine
 {
-	CameraComponent::CameraComponent(const char* name, float zDepth, const Ogre::ColourValue& clear)
+	CameraComponent::CameraComponent(const std::string& name, int zDepth)
 		: RenderComponent(name),
 		zOrder(zDepth),
 		camera(nullptr),
 		viewport(nullptr),
 		renderWnd(nullptr),
-		renderTexture(nullptr),
-		clearColor(clear),
-		targetObject(nullptr)
+		renderTexture(nullptr)
 	{
 		camera = sceneMgr->createCamera(name);
 		object = camera;
@@ -31,9 +29,18 @@ namespace Engine
 	}
 
 
-	const Ogre::Ray& CameraComponent::getRay(float screenX, float screenY) const
+	Ogre::Ray CameraComponent::getRay(float screenX, float screenY) const
 	{
 		return camera->getCameraToViewportRay(screenX, screenY);
+	}
+
+
+	void CameraComponent::setRenderTexture(Ogre::RenderTexture* rt)
+	{
+		renderTexture = rt;
+		viewport = renderTexture->addViewport(camera, zOrder + 1);
+		//renderWnd->removeViewport(zOrder);
+		
 	}
 
 

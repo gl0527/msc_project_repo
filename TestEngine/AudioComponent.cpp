@@ -4,11 +4,11 @@
 
 namespace Engine
 {
-	AudioComponent::AudioComponent(const char* fileName, GameObject* observer)
-		: Component(0),
+	AudioComponent::AudioComponent(const std::string& fileName, GameObject* observer)
+		: Component(fileName),
 		listener(observer)
 	{
-		buffer = alutCreateBufferFromFile(fileName);
+		buffer = alutCreateBufferFromFile(fileName.c_str());
 		ALenum error = alutGetError();
 		if (error != AL_NO_ERROR)
 			std::cout << "Cannot load audio file.\n";
@@ -34,8 +34,8 @@ namespace Engine
 
 	void AudioComponent::onPreUpdate(float t, float dt)
 	{
-		updatePose(ownerObject->getPosition(), ownerObject->getDirection());
-		updatePose(listener->getPosition(), listener->getDirection());
+		updatePose(ownerObject->getTransform()->getPosition(), ownerObject->getTransform()->getForward());
+		updatePose(listener->getTransform()->getPosition(), listener->getTransform()->getForward());
 	}
 
 

@@ -35,7 +35,7 @@ namespace Engine
 	}
 
 
-	GameObject* ObjectManager::createGameObject(unsigned int id)
+	GameObject* ObjectManager::createGameObject(const std::string& id)
 	{
 		auto it = gameObjects.find(id);	
 		if (it == gameObjects.end())
@@ -47,15 +47,15 @@ namespace Engine
 	}
 
 
-	void ObjectManager::removeGameObject(unsigned int id)
+	void ObjectManager::removeGameObject(const std::string& id)
 	{
-
+		gameObjects.erase(id);
 	}
 
 
 	void ObjectManager::start()
 	{
-		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
 		{
 			it->second->onStart();
 		}
@@ -64,7 +64,7 @@ namespace Engine
 
 	void ObjectManager::preUpdate(float t, float dt)
 	{
-		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
 		{
 			it->second->onPreUpdate(t, dt);
 		}
@@ -73,7 +73,7 @@ namespace Engine
 
 	void ObjectManager::update(float t, float dt)
 	{
-		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
 		{
 			it->second->onUpdate(t, dt);
 		}
@@ -82,7 +82,7 @@ namespace Engine
 
 	void ObjectManager::postUpdate(float t, float dt)
 	{
-		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
 		{
 			it->second->onPostUpdate(t, dt);
 		}
@@ -91,7 +91,7 @@ namespace Engine
 
 	void ObjectManager::destroy()
 	{
-		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
 		{
 			it->second->onDestroy();
 		}

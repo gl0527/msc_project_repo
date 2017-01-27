@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	ParticleComponent::ParticleComponent(const char* name, const char* partName)
+	ParticleComponent::ParticleComponent(const std::string& name, const std::string& partName)
 		: RenderComponent(name),
 		partSys(nullptr)
 	{

@@ -6,6 +6,7 @@
 #include "ParticleComponent.h"
 #include "MeshComponent.h"
 #include "CameraComponent.h"
+#include "TPCameraComponent.h"
 #include "RenderComponent.h"
 #include "PhysicsComponent.h"
 #include "ObjectManager.h"

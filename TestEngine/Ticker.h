@@ -1,4 +1,5 @@
 #pragma once
+#include <windows.h>
 
 namespace Engine
 {
@@ -8,11 +9,11 @@ namespace Engine
 		float t;
 		float dt;
 	public:
-		Ticker();
+		Ticker() : lastTime(0), t(0), dt(0) {}
 		void tick();
-		void pause();
-		float uptime() const;
-		float elapsedTime() const;
+		void pause() { lastTime = timeGetTime(); }
+		float uptime() const { return t; }
+		float elapsedTime() const { return dt; }
 	};
 }
 

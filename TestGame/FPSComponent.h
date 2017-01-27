@@ -10,7 +10,7 @@ class FPSComponent : public Component
 	Ogre::RenderWindow* renderWnd;
 	Ogre::TextAreaOverlayElement* text;
 public:
-	FPSComponent(const char* name);
+	FPSComponent(const std::string& name);
 	~FPSComponent();
 
 	virtual void onPostUpdate(float t, float dt) override;

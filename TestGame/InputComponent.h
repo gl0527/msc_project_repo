@@ -13,7 +13,7 @@ class InputComponent : public Component
 	unsigned int delay;
 	unsigned int maxDelay;
 public:
-	InputComponent();
+	InputComponent(const std::string& ident);
 
 	virtual void onStart() override;
 	virtual void onPreUpdate(float t, float dt) override;

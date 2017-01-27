@@ -14,16 +14,16 @@ namespace Engine
 
 		void createNode();
 	public:
-		class InitStruct : public Component::InitStruct
+		/*class InitStruct : public Component::InitStruct
 		{
 		public:
 			const char* eName;
 			const char* mName;
 			InitStruct(const char* en, const char* mn) : eName(en), mName(mn){}
-		};
+		};*/
 
-		RenderComponent(const char* name);
-		RenderComponent(const InitStruct& init);
+		RenderComponent(const std::string& name);
+		//RenderComponent(const InitStruct& init);
 
 		virtual void onStart() override;
 		virtual void onPostUpdate(float t, float dt) override;

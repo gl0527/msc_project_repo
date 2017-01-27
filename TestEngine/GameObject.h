@@ -1,26 +1,19 @@
 #pragma once
 #include "stdafx.h"
-#include <vector>
 #include <memory>
-#include "Component.h"
+#include "TransformComponent.h"
 
 namespace Engine
 {
 	class DLL_SPEC GameObject
 	{
-		Ogre::Vector3 position;
-		Ogre::Quaternion orientation;
-		Ogre::Vector3 scale;
-
+		const std::string name;
+		bool destroyed;
 		GameObject* parent;
-		std::vector<GameObject*> children;
-
 		std::vector<std::shared_ptr<Component>> components;
-		std::vector<unsigned int> tags;
-		const unsigned int ID;
-		bool isDestroyed;
+		std::unordered_set<std::string> tags;
 	public:
-		GameObject(unsigned int id);
+		GameObject(const std::string& id);
 		~GameObject();
 
 		void addComponent(Component* comp);
@@ -28,8 +21,9 @@ namespace Engine
 		void removeComponent(Component* component);
 		void removeComponent();
 
-		void addChild(GameObject* child);
-		void removeChild(unsigned int childID);
+		void addTag(const std::string& tag);
+		void removeTag(const std::string& tag);
+		void removeTag();
 
 		void onStart();
 		void onPreUpdate(float t, float dt);
@@ -37,22 +31,11 @@ namespace Engine
 		void onPostUpdate(float t, float dt);
 		void onDestroy();
 
-		unsigned int getID() const { return ID; }
-
-		const Ogre::Vector3& getPosition() const { return position; }
-		const Ogre::Quaternion& getOrientation() const { return orientation; }
-		const Ogre::Vector3& getScale() const { return scale; }
-		
-		Ogre::Vector3 getDirection() const { return orientation * (-Ogre::Vector3::UNIT_Z); }
-		Ogre::Vector3 getUp() const { return orientation * Ogre::Vector3::UNIT_Y; }
-		Ogre::Vector3 getRight() const { return orientation * Ogre::Vector3::UNIT_X; }
-		Ogre::Vector3 getLocalVector(const Ogre::Vector3& vec) const { return orientation * vec; }
-		
-		Component* getComponent(unsigned int cID) const;
+		const std::string& getName() const { return name; }
+		TransformComponent* getTransform() const { return (TransformComponent*)components[0].get(); }
+		Component* getComponent(const std::string& cID) const;
 		GameObject* getParent() const { return parent; }
-		GameObject* getChild(unsigned int childID) const;
-		const std::vector<GameObject*>& getChildren() const { return children; }
-		// TODO: rekurziv komponenskereses a gyerekek kozott is kellene
+		
 		template<typename T>
 		T* getFirstComponentByType()
 		{
@@ -77,15 +60,13 @@ namespace Engine
 			return returnVector;
 		}
 
-		void setPosition(const Ogre::Vector3& pos) { position = pos; }
-		void setOrientation(const Ogre::Quaternion& q) { orientation = q; }
-		void setScale(const Ogre::Vector3& s) { scale = s; }
 		void clearParent() { parent = nullptr; }
-
 		bool hasParent() const { return parent != 0; }
-		bool hasTag(unsigned int t);
+		void setParent(GameObject* p) { parent = p; }
+		bool hasTag(const std::string& t);
+		bool isDestroyed() const { return destroyed; }
 
-		bool operator==(const GameObject& other) { return ID == other.getID(); }
+		bool operator==(const GameObject& other) { return name == other.getName(); }
 	};
 
 

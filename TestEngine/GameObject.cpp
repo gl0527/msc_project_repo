@@ -3,14 +3,13 @@
 
 namespace Engine
 {
-	GameObject::GameObject(unsigned int id)
-		: position(Ogre::Vector3::ZERO),
-		orientation(Ogre::Quaternion::IDENTITY),
-		scale(Ogre::Vector3(1.0f, 1.0f, 1.0f)),
-		parent(nullptr),
-		ID(id),
-		isDestroyed(false)
+	GameObject::GameObject(const std::string& id)
+		: name(id),
+		destroyed(false),
+		parent(nullptr)
 	{
+		TransformComponent* transform = new TransformComponent(id);
+		addComponent(transform);
 	}
 
 
@@ -27,7 +26,7 @@ namespace Engine
 
 	void GameObject::removeComponent(Component* component)
 	{
-		for (auto it = components.begin(); it != components.end(); it++)
+		for (auto&& it = components.begin(); it != components.end(); it++)
 		{
 			if ((*it).get() == component)
 				it = components.erase(it);
@@ -41,85 +40,74 @@ namespace Engine
 	}
 
 
-	void GameObject::addChild(GameObject* child)
+	void GameObject::addTag(const std::string& tag)
 	{
-		if (child)
-		{
-			child->parent = this;
-			children.push_back(child);
-		}
+		tags.insert(tag);
 	}
 
 
-	void GameObject::removeChild(unsigned int childID)
+	void GameObject::removeTag(const std::string& tag)
 	{
-		std::vector<GameObject*>::iterator it;
+		tags.erase(tag);
+	}
 
-		for (it = children.begin(); it != children.end() && (*it)->getID() != childID; ++it);
-		
-		if (it != children.end())
-			children.erase(it);
+
+	void GameObject::removeTag()
+	{
+		tags.clear();
 	}
 
 
 	void GameObject::onStart()
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto&& it = components.begin(); it != components.end(); ++it)
 			(*it)->onStart();
 	}
 
 
 	void GameObject::onPreUpdate(float t, float dt)
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto&& it = components.begin(); it != components.end(); ++it)
 			(*it)->onPreUpdate(t, dt);
 	}
 
 
 	void GameObject::onUpdate(float t, float dt)
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto&& it = components.begin(); it != components.end(); ++it)
 			(*it)->onUpdate(t, dt);
 	}
 
 
 	void GameObject::onPostUpdate(float t, float dt)
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto&& it = components.begin(); it != components.end(); ++it)
 			(*it)->onPostUpdate(t, dt);
 	}
 
 
 	void GameObject::onDestroy()
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto&& it = components.begin(); it != components.end(); ++it)
 		{
 			(*it)->onDestroy();
 		}
+		destroyed = true;
 	}
 
 
-	Component* GameObject::getComponent(unsigned int cID) const
+	Component* GameObject::getComponent(const std::string& cID) const
 	{
-		for (auto it = components.cbegin(); it != components.cend(); ++it)
+		for (auto&& it = components.cbegin(); it != components.cend(); ++it)
 			if ((*it)->getID() == cID)
 				return (*it).get();
 		return nullptr;
 	}
 
 
-	GameObject* GameObject::getChild(unsigned int childID) const
+	bool GameObject::hasTag(const std::string& t)
 	{
-		for (auto it = children.cbegin(); it != children.cend(); ++it)
-			if ((*it)->getID() == childID)
-				return *it;
-		return nullptr;
-	}
-
-
-	bool GameObject::hasTag(unsigned int t)
-	{
-		for (auto it = tags.cbegin(); it != tags.cend(); ++it)
+		for (auto&& it = tags.cbegin(); it != tags.cend(); ++it)
 		{
 			if (*it == t)
 				return true;
@@ -131,6 +119,7 @@ namespace Engine
 	GameObject::~GameObject()
 	{
 		removeComponent();
+		removeTag();
 	}
 
 

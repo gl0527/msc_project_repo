@@ -28,17 +28,17 @@ namespace Engine
 		typedef enum{ STATIC, DYNAMIC, KINEMATIC } RigidBodyType;
 		RigidBodyType type;
 
-		class InitStruct : public Component::InitStruct
+		/*class InitStruct : public Component::InitStruct
 		{
 		public:
 			float mass;
 			RigidBodyType type;
 
 			InitStruct(float m, RigidBodyType rbt) : mass(m), type(rbt){}
-		};
+		};*/
 
-		PhysicsComponent(const InitStruct& init);
-		PhysicsComponent(float m, RigidBodyType rbt);
+		//PhysicsComponent(const InitStruct& init);
+		PhysicsComponent(const std::string& name, float m, RigidBodyType rbt);
 		void addShape(btCollisionShape* collShape, const Ogre::Vector3& p = Ogre::Vector3::ZERO, const Ogre::Quaternion& q = Ogre::Quaternion::IDENTITY);
 		void createBody();
 

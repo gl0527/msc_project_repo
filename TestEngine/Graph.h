@@ -3,24 +3,28 @@
 
 namespace Engine
 {
-	typedef struct Vertex
+	struct Node
 	{
 		std::string name;
 		Ogre::Vector3 pos;
-	} Vertex;
+	};
 
-	bool operator<(const Vertex& v1, const Vertex& v2) { return v1.name < v2.name; }
-
+	bool operator<(const Node& v1, const Node& v2) { return v1.name < v2.name; }
+	
 	class Graph
 	{
-		std::map<Vertex, std::set<std::pair<Vertex, int>>> adjList;
+		typedef std::pair<Node, int> Neighbor;
+		typedef std::set<Neighbor> Neighbors;
+		typedef std::map<Node, Neighbors> AdjacencyList;
+
+		AdjacencyList adjList;
 		const bool directed;
 	public:
 		Graph(bool dir);
 		~Graph();
 
-		void addVertex(const Vertex& v);
-		void addEdge(const Vertex& v, const Vertex& u, int w);
+		void addNode(const Node& v);
+		void addEdge(const Node& v, const Node& u, int w);
 		
 		bool isDirected() const { return directed; }
 	};

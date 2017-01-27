@@ -7,7 +7,7 @@ namespace Engine
 	{
 		Ogre::BillboardSet* billboardSet;
 	public:
-		BillboardComponent(const char* bbName);
+		BillboardComponent(const std::string& bbName);
 		virtual ~BillboardComponent();
 
 		virtual void onDestroy() override;

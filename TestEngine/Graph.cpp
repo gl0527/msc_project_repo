@@ -14,29 +14,29 @@ namespace Engine
 	}
 
 
-	void Graph::addVertex(const Vertex& v)
+	void Graph::addNode(const Node& v)
 	{
 		if (adjList.find(v) == adjList.end())
 		{
-			std::set<std::pair<Vertex, int>> s;
+			Neighbors s;
 			adjList[v] = s;
 		}
 	}
 
 
-	void Graph::addEdge(const Vertex& v, const Vertex& u, int w)
+	void Graph::addEdge(const Node& v, const Node& u, int w)
 	{
 		if (adjList.find(v) == adjList.end())
 		{
-			std::set<std::pair<Vertex, int>> s;
-			s.insert(std::pair<Vertex, int>(u, w));
+			Neighbors s;
+			s.insert(std::pair<Node, int>(u, w));
 			adjList[v] = s;
 			if (!directed)
 				addEdge(u, v, w);
 		}
 		else
 		{
-			std::pair<Vertex, int> pair(u, w);
+			Neighbor pair(u, w);
 			if (adjList[v].find(pair) == adjList[v].end())
 			{
 				adjList[v].insert(pair);

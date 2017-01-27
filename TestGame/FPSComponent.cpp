@@ -1,8 +1,8 @@
 #include "FPSComponent.h"
 
 
-FPSComponent::FPSComponent(const char* name)
-	: Component(0),
+FPSComponent::FPSComponent(const std::string& name)
+	: Component(name),
 	renderSys(nullptr),
 	renderWnd(nullptr),
 	text(nullptr)
@@ -10,16 +10,16 @@ FPSComponent::FPSComponent(const char* name)
 	renderSys = Game::getInstance().getRenderSystem();
 	renderWnd = renderSys->getRenderWindow();
 
-	text = renderSys->createOverlayElement<Ogre::TextAreaOverlayElement>("TextArea", name);
+	text = renderSys->createOverlayElement<Ogre::TextAreaOverlayElement>("TextArea", name.c_str());
 	text->setFontName("TrebuchetMSBold");
 	text->setMetricsMode(Ogre::GMM_PIXELS);
 	text->setCharHeight(20);
-	text->setColour(Ogre::ColourValue(0.8f, 0.8f, 0.0f));
 
 	Ogre::OverlayContainer* panel = renderSys->createOverlayElement<Ogre::OverlayContainer>("Panel", "PanelName");
 	panel->setMetricsMode(Ogre::GMM_PIXELS);
 	panel->setPosition(10, 10);
-	panel->setDimensions(100, 100);
+	panel->setDimensions(180, 50);
+	panel->setMaterialName("TreeTrunk");
 
 	Ogre::Overlay* overlay = renderSys->createOverlay("OverlayName");
 	overlay->add2D(panel);

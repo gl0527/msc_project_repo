@@ -3,8 +3,8 @@
 
 namespace Engine
 {
-	RenderComponent::RenderComponent(const char* name)
-		: Component(1),
+	RenderComponent::RenderComponent(const std::string& name)
+		: Component(name),
 		parentNode(nullptr),
 		currentNode(nullptr),
 		object(nullptr),
@@ -15,14 +15,14 @@ namespace Engine
 	}
 
 
-	RenderComponent::RenderComponent(const InitStruct& init)
-		: Component(1),
+	/*RenderComponent::RenderComponent(const InitStruct& init)
+		: Component(init.eName),
 		parentNode(nullptr),
 		currentNode(nullptr)
 	{
 		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
 		sceneMgr = Game::getInstance().getRenderSystem()->getSceneManager();
-	}
+	}*/
 
 
 	void RenderComponent::onStart()
@@ -34,9 +34,9 @@ namespace Engine
 
 	void RenderComponent::onPostUpdate(float t, float dt)
 	{
-		currentNode->setPosition(ownerObject->getPosition());
-		currentNode->setOrientation(ownerObject->getOrientation());
-		currentNode->setScale(ownerObject->getScale());	
+		currentNode->setPosition(ownerObject->getTransform()->getPosition());
+		currentNode->setOrientation(ownerObject->getTransform()->getRotation());
+		currentNode->setScale(ownerObject->getTransform()->getScale());
 	}
 
 

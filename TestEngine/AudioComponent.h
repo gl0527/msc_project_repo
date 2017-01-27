@@ -11,7 +11,7 @@ namespace Engine
 		GameObject* listener;
 		void updatePose(const Ogre::Vector3& pos, const Ogre::Vector3& dir);
 	public:
-		AudioComponent(const char* fileName, GameObject* observer);
+		AudioComponent(const std::string& fileName, GameObject* observer);
 		virtual ~AudioComponent();
 
 		virtual void onPreUpdate(float t, float dt) override;

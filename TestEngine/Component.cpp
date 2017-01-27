@@ -3,8 +3,8 @@
 
 namespace Engine
 {
-	Component::Component(unsigned int id, bool uniq)
-		: ID(id),
+	Component::Component(const std::string& ident, bool uniq)
+		: id(ident),
 		unique(uniq),
 		enabled(true),
 		ownerObject(nullptr)

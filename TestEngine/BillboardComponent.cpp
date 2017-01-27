@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	BillboardComponent::BillboardComponent(const char* bbName)
+	BillboardComponent::BillboardComponent(const std::string& bbName)
 		: RenderComponent(bbName),
 		billboardSet(nullptr)
 	{

@@ -7,7 +7,7 @@ namespace Engine
 	{
 		Ogre::ParticleSystem* partSys;
 	public:
-		ParticleComponent(const char* name, const char* partName);
+		ParticleComponent(const std::string& name, const std::string& partName);
 		virtual ~ParticleComponent();
 
 		virtual void onDestroy() override;
