@@ -39,6 +39,6 @@ void FPSComponent::onPostUpdate(float t, float dt)
 {
 	unsigned char fps = renderWnd->getLastFPS();
 	unsigned int triCount = renderWnd->getTriangleCount();
-	text->setCaption(Ogre::String("FPS: ") + Ogre::StringConverter::toString(fps) + "\n" 
+	text->setCaption(Ogre::String("Frames/sec: ") + Ogre::StringConverter::toString(fps) + "\n" 
 		+ Ogre::String("Triangles: ") + Ogre::StringConverter::toString(triCount));
 }

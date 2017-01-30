@@ -8,7 +8,7 @@ namespace Engine
 		camHeight(200.0f),
 		targetHeight(80.0f),
 		camDist(400.0f),
-		motBlend(3.0f),
+		motBlend(2.0f),
 		fixed(fix)
 	{}
 
@@ -33,9 +33,10 @@ namespace Engine
 		Ogre::Vector3& dir = ownerObject->getTransform()->getForward();
 		dir.normalise();
 		Ogre::Vector3 newPos = ownerObject->getTransform()->getPosition() - dir*camDist + Ogre::Vector3(0, camHeight, 0);
-		
+		float w = motBlend * dt;
+
 		if (!fixed)
-			camera->setPosition(motBlend * dt * newPos + (1.0f - motBlend * dt) * camera->getPosition());
+			camera->setPosition(w * newPos + (1.0f - w) * camera->getPosition());
 		camera->lookAt(ownerObject->getTransform()->getPosition() + Ogre::Vector3(0, targetHeight, 0));
 	}
 }

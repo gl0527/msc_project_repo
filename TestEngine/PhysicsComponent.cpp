@@ -3,20 +3,6 @@
 
 namespace Engine
 {
-	/*PhysicsComponent::PhysicsComponent(const InitStruct& init)
-		: Component(0),
-		mass(init.mass),
-		trigger(false),
-		rigidBody(nullptr),
-		motionState(nullptr),
-		type(init.type),
-		triggerEnter(defaultTriggerEnter),
-		collision(defaultCollision)
-	{
-		shape = new btCompoundShape();
-	}*/
-
-
 	PhysicsComponent::PhysicsComponent(const std::string& name, float m, RigidBodyType t)
 		: Component(name),
 		mass(m),
@@ -27,7 +13,7 @@ namespace Engine
 		triggerEnter(defaultTriggerEnter),
 		collision(defaultCollision)
 	{
-		shape = new btCompoundShape();
+		shape = new btCompoundShape;
 	}
 
 

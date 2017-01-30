@@ -15,16 +15,6 @@ namespace Engine
 	}
 
 
-	/*RenderComponent::RenderComponent(const InitStruct& init)
-		: Component(init.eName),
-		parentNode(nullptr),
-		currentNode(nullptr)
-	{
-		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
-		sceneMgr = Game::getInstance().getRenderSystem()->getSceneManager();
-	}*/
-
-
 	void RenderComponent::onStart()
 	{
 		createNode();

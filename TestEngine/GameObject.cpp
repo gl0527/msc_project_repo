@@ -24,11 +24,24 @@ namespace Engine
 	}
 
 
-	void GameObject::removeComponent(Component* component)
+	void GameObject::removeComponent(const char* compName)
 	{
 		for (auto&& it = components.begin(); it != components.end(); it++)
 		{
-			if ((*it).get() == component)
+			if (strcmp((*it)->getName().c_str(), compName) == 0)
+			{
+				components.erase(it);
+				break;
+			}
+		}
+	}
+
+
+	void GameObject::removeComponent(Component* comp)
+	{
+		for (auto&& it = components.begin(); it != components.end(); it++)
+		{
+			if ((*it).get() == comp)
 				it = components.erase(it);
 		}
 	}
@@ -99,7 +112,7 @@ namespace Engine
 	Component* GameObject::getComponent(const std::string& cID) const
 	{
 		for (auto&& it = components.cbegin(); it != components.cend(); ++it)
-			if ((*it)->getID() == cID)
+			if ((*it)->getName() == cID)
 				return (*it).get();
 		return nullptr;
 	}

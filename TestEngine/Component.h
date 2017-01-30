@@ -10,12 +10,11 @@ namespace Engine
 	class DLL_SPEC Component
 	{
 	protected:
-		const std::string id;
+		const std::string name;
 		const bool unique;
 		bool enabled;
 		GameObject* ownerObject;
 	public:
-		struct InitStruct{};
 		Component(const std::string& ident, bool uniq = false);
 
 		// runs when this component is added to a gameobject
@@ -30,7 +29,7 @@ namespace Engine
 		virtual void onPostUpdate(float t, float dt) { }
 		virtual void onDestroy() { }
 
-		const std::string& getID() const { return id; }
+		const std::string& getName() const { return name; }
 		bool isUnique() const { return unique; }
 		bool isEnabled() const { return enabled; }
 		void enable() { enabled = true; }

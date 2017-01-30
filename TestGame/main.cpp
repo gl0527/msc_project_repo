@@ -9,6 +9,11 @@ int main(int argc, char** argv)
 	if (!Game::getInstance().init())
 		return -1;
 
+	TransformProcessor tp;
+
+	XMLParser::getInstance().load("media/map/minath_tirith.xml");
+	XMLParser::getInstance().process();
+
 	Game::getInstance().getRenderSystem()->createPlaneMeshXZ("ground", 0, 10, 10);
 	Ogre::RenderTexture* rtt = Game::getInstance().getRenderSystem()->createTexture("sepia", 100, 100)->getBuffer()->getRenderTarget();
 
@@ -33,7 +38,7 @@ int main(int argc, char** argv)
 	for (int i = 10; i < 60; ++i)
 	{
 		GameObject* box = ObjectManager::getInstance().createGameObject("box" + Ogre::StringConverter::toString(i));
-		box->getTransform()->setPosition(Ogre::Vector3(-20.0f, 4*i + 10.0f, -500.0f));
+		box->getTransform()->setPosition(Ogre::Vector3(-20.0f, 10*i + 30.0f, -500.0f));
 		box->getTransform()->setScale(Ogre::Vector3(10, 10, 10));
 		RenderComponent* boxRenderer = new MeshComponent(box->getName().c_str(), "doboz.mesh");
 		AudioComponent* boxAudio = new AudioComponent("media/sound/human_dead.wav", mainCamera);
@@ -64,6 +69,9 @@ int main(int argc, char** argv)
 	ball->addComponent(ballRenderer);
 	ball->addComponent(ballCollider);
 	ballCollider->setRestitution(0.9f);
+
+	/*tpCam->setTargetHeight(30.0f);
+	ball->addComponent(tpCam);*/
 
 	GameObject* ball2 = ObjectManager::getInstance().createGameObject("ball2");
 	ball2->getTransform()->setPosition(Ogre::Vector3(-1.0f, 0.0f, -2.0f));

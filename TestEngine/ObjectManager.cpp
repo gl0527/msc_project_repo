@@ -37,8 +37,7 @@ namespace Engine
 
 	GameObject* ObjectManager::createGameObject(const std::string& id)
 	{
-		auto it = gameObjects.find(id);	
-		if (it == gameObjects.end())
+		if (gameObjects.find(id) == gameObjects.end())
 		{
 			gameObjects[id] = std::shared_ptr<GameObject>(new GameObject(id));
 			return gameObjects[id].get();

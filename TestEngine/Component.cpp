@@ -4,7 +4,7 @@
 namespace Engine
 {
 	Component::Component(const std::string& ident, bool uniq)
-		: id(ident),
+		: name(ident),
 		unique(uniq),
 		enabled(true),
 		ownerObject(nullptr)
