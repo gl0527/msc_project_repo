@@ -18,6 +18,11 @@ public:
 	virtual void onStart() override;
 	virtual void onPreUpdate(float t, float dt) override;
 
+	void setMoveSpeed(float ms) { moveSpeed = ms; }
+	void setTurnSpeed(float ts) { turnSpeed = ts; }
+	void setMouseSens(float ms) { mouseSensitivity = ms; }
+	void setMaxDelay(unsigned int d) { maxDelay = d; }
+
 	~InputComponent();
 };
 

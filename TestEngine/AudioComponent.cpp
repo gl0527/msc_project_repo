@@ -1,12 +1,12 @@
 #include "AudioComponent.h"
 #include "GameObject.h"
+#include "ObjectManager.h"
 #include <iostream>
 
 namespace Engine
 {
-	AudioComponent::AudioComponent(const std::string& fileName, GameObject* observer)
-		: Component(fileName),
-		listener(observer)
+	AudioComponent::AudioComponent(const std::string& fileName, const std::string& listenerName)
+		: Component(fileName)
 	{
 		buffer = alutCreateBufferFromFile(fileName.c_str());
 		ALenum error = alutGetError();
@@ -14,6 +14,7 @@ namespace Engine
 			std::cout << "Cannot load audio file.\n";
 		alGenSources(1, &source);
 		alSourcei(source, AL_BUFFER, buffer);
+		listener = ObjectManager::getInstance().getGameObject(listenerName);
 	}
 
 

@@ -15,3 +15,4 @@
 #include "RenderSystem.h"
 #include "XMLParser.h"
 #include "TransformProcessor.h"
+#include "CameraProcessor.h"

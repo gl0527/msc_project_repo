@@ -1,6 +1,7 @@
 #include "TestEngine.h"
 #include "InputComponent.h"
 #include "FPSComponent.h"
+#include "InputProcessor.h"
 
 using namespace Engine;
 
@@ -10,23 +11,14 @@ int main(int argc, char** argv)
 		return -1;
 
 	TransformProcessor tp;
+	CameraProcessor cp;
+	InputProcessor ip;
 
 	XMLParser::getInstance().load("media/map/minath_tirith.xml");
 	XMLParser::getInstance().process();
 
 	Game::getInstance().getRenderSystem()->createPlaneMeshXZ("ground", 0, 10, 10);
 	Ogre::RenderTexture* rtt = Game::getInstance().getRenderSystem()->createTexture("sepia", 100, 100)->getBuffer()->getRenderTarget();
-
-	GameObject* mainCamera = ObjectManager::getInstance().createGameObject("mainCamera");
-	mainCamera->getTransform()->setPosition(Ogre::Vector3(0.0f, 400.0f, 0.0f));
-	mainCamera->getTransform()->setRotation(Ogre::Quaternion(Ogre::Radian(-Ogre::Math::PI / 4), Ogre::Vector3::UNIT_X));
-	//CameraComponent* cameraComponent = new CameraComponent("mainCamera", 0.0f);
-	//mainCamera->addComponent(cameraComponent);
-	TPCameraComponent* tpCam = new TPCameraComponent("tpCam", 0);
-	//tpCam->setRenderTexture(rtt);
-	mainCamera->addComponent(tpCam);
-	InputComponent* inputComponent = new InputComponent("input");
-	mainCamera->addComponent(inputComponent);
 
 	GameObject* archway = ObjectManager::getInstance().createGameObject("archway");
 	archway->getTransform()->setPosition(Ogre::Vector3(0.0f, 0.0f, -550.0f));
@@ -41,7 +33,6 @@ int main(int argc, char** argv)
 		box->getTransform()->setPosition(Ogre::Vector3(-20.0f, 10*i + 30.0f, -500.0f));
 		box->getTransform()->setScale(Ogre::Vector3(10, 10, 10));
 		RenderComponent* boxRenderer = new MeshComponent(box->getName().c_str(), "doboz.mesh");
-		AudioComponent* boxAudio = new AudioComponent("media/sound/human_dead.wav", mainCamera);
 		PhysicsComponent* boxCollider = new PhysicsComponent("box", 1.0f, PhysicsComponent::DYNAMIC);
 		boxCollider->setOnCollision([](PhysicsComponent* other)
 		{
@@ -56,7 +47,6 @@ int main(int argc, char** argv)
 		boxCollider->addShape(cs);
 		box->addComponent(boxRenderer);
 		box->addComponent(boxCollider);
-		box->addComponent(boxAudio);
 	}
 
 	GameObject* ball = ObjectManager::getInstance().createGameObject("ball");
@@ -113,7 +103,7 @@ int main(int argc, char** argv)
 	triggerCollider->setTrigger(true);
 
 	GameObject* ground = ObjectManager::getInstance().createGameObject("ground");
-	ground->getTransform()->setScale(Ogre::Vector3(3000.0f, 0.1f, 3000.0f));
+	ground->getTransform()->setScale(Ogre::Vector3(4000.0f, 0.1f, 4000.0f));
 	MeshComponent* groundRender = new MeshComponent("mainGround", "ground");
 	PhysicsComponent* groundCollider = new PhysicsComponent("ground", 0.0f, PhysicsComponent::STATIC);
 	btCollisionShape* groundShape = new btStaticPlaneShape(btVector3(0, 1, 0), 0);
@@ -123,7 +113,7 @@ int main(int argc, char** argv)
 	ground->addComponent(groundRender);
 	ground->addComponent(groundCollider);
 	groundCollider->getRigidBody()->setRestitution(1.0f);
-	AudioComponent* groundAudio = new AudioComponent("media/sound/main_theme.wav", mainCamera);
+	AudioComponent* groundAudio = new AudioComponent("media/sound/main_theme.wav", "cam");
 	ground->addComponent(groundAudio);
 	groundAudio->play(0.5f, 1.0f, true); // ezt egy esemenykezelobe kellene tenni
 

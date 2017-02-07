@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "tinyxml.h"
 #include "stdafx.h"
+#include "XMLParser.h"
 
 namespace Engine
 {

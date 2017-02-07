@@ -1,6 +1,7 @@
 #include "XMLParser.h"
 #include "ObjectManager.h"
 #include "GameObject.h"
+#include "TagProcessor.h"
 
 namespace Engine
 {
@@ -64,6 +65,7 @@ namespace Engine
 			{
 				const char* name = child->Attribute("name");
 				object = ObjectManager::getInstance().createGameObject(name);
+				object->removeComponent(name); // a régi transform kitörlése
 			}
 			if (procs[tagName])
 			{
@@ -78,6 +80,60 @@ namespace Engine
 	void XMLParser::process()
 	{
 		traverse(root);
+	}
+
+
+	float XMLParser::parse1f(TiXmlElement* tag, const char* attrName)
+	{
+		float value;
+		if (tag->QueryFloatAttribute(attrName, &value) != 0)
+			throw std::exception("Float attribute cannot be parsed.\n");
+		else return value;
+	}
+
+
+	int XMLParser::parse1i(TiXmlElement* tag, const char* attrName)
+	{
+		int value;
+		if (tag->QueryIntAttribute(attrName, &value) != 0)
+			throw std::exception("Int attribute cannot be parsed.\n");
+		return value;
+	}
+
+
+	Ogre::Vector3 XMLParser::parse3f_XYZ(TiXmlElement* tag)
+	{
+		const char* att[] = { "x", "y", "z" };
+		std::vector<const char*> attrs(att, att + elemCount(att));
+
+		const auto& posv = parse<float>(tag, attrs);
+		Ogre::Vector3 pos(posv[0], posv[1], posv[2]);
+
+		return pos;
+	}
+
+
+	Ogre::Vector3 XMLParser::parse3f_RGB(TiXmlElement* tag)
+	{
+		const char* att[] = { "r", "g", "b" };
+		std::vector<const char*> attrs(att, att + elemCount(att));
+
+		const auto& colv = parse<float>(tag, attrs);
+		Ogre::Vector3 col(colv[0], colv[1], colv[2]);
+
+		return col;
+	}
+
+
+	Ogre::Quaternion XMLParser::parse4f_WXYZ(TiXmlElement* tag)
+	{
+		const char* att[] = { "qw", "qx", "qy", "qz" };
+		std::vector<const char*> attrs(att, att + elemCount(att));
+
+		const auto& qv = XMLParser::getInstance().parse<float>(tag, attrs);
+		Ogre::Quaternion q(qv[0], qv[1], qv[2], qv[3]);
+		
+		return q;
 	}
 }
 

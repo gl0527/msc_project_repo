@@ -25,7 +25,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -54,8 +54,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>e:\dev\ws\cpp\TestEngine\$(ConfigurationName);$(OGRE_HOME)\boost\lib\;$(OGRE_HOME)\lib\$(ConfigurationName);e:\dev\tools\bullet-2.82-r2704\lib\;e:\dev\tools\OpenAL\lib\;e:\dev\tools\tinyxml\Debugtinyxml\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>TestEngine_d.lib;tinyxml.lib;OpenAL32.lib;alut.lib;OgreOverlay_d.lib;LinearMath_vs2010_debug.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;OIS_d.lib;OgreMain_d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>e:\dev\ws\cpp\TestEngine\$(ConfigurationName);$(OGRE_HOME)\boost\lib\;$(OGRE_HOME)\lib\$(ConfigurationName);e:\dev\tools\bullet-2.82-r2704\lib\;e:\dev\tools\OpenAL\lib\;e:\dev\tools\tinyxml\Debugtinyxml\;e:\dev\tools\tinyxml\DebugtinyxmlSTL\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>TestEngine_d.lib;tinyxml.lib;tinyxmlSTL.lib;OpenAL32.lib;alut.lib;OgreOverlay_d.lib;LinearMath_vs2010_debug.lib;BulletCollision_vs2010_debug.lib;BulletDynamics_vs2010_debug.lib;OIS_d.lib;OgreMain_d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(TargetPath)" "$(SolutionDir)\bin"</Command>
@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="InputComponent.cpp" />
+    <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="InputProcessor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

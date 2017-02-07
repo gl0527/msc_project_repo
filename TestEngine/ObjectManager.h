@@ -26,6 +26,8 @@ namespace Engine
 		void postUpdate(float t, float dt);
 		void destroy();
 
+		GameObject* getGameObject(const std::string& objName) const { return gameObjects.at(objName).get(); }
+
 		~ObjectManager();
 	};
 }
