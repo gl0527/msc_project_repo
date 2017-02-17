@@ -35,8 +35,8 @@ namespace Engine
 
 	void AudioComponent::onPreUpdate(float t, float dt)
 	{
-		updatePose(ownerObject->getTransform()->getPosition(), ownerObject->getTransform()->getForward());
-		updatePose(listener->getTransform()->getPosition(), listener->getTransform()->getForward());
+		updatePose(ownerObject->transform()->position(), ownerObject->transform()->forward());
+		updatePose(listener->transform()->position(), listener->transform()->forward());
 	}
 
 

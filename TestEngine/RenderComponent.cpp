@@ -24,9 +24,9 @@ namespace Engine
 
 	void RenderComponent::onPostUpdate(float t, float dt)
 	{
-		currentNode->setPosition(ownerObject->getTransform()->getPosition());
-		currentNode->setOrientation(ownerObject->getTransform()->getRotation());
-		currentNode->setScale(ownerObject->getTransform()->getScale());
+		currentNode->setPosition(ownerObject->transform()->position());
+		currentNode->setOrientation(ownerObject->transform()->rotation());
+		currentNode->setScale(ownerObject->transform()->scale());
 	}
 
 

@@ -49,7 +49,7 @@ namespace Engine
 		
 		void setMass();
 		void setTrigger(bool trigger);
-		void setType(RigidBodyType rbt);
+		void setType(RigidBodyType rbt); 
 
 		void setOnTriggerEnter(std::function<void(PhysicsComponent*)>&& f) { triggerEnter = f; }
 		void setOnCollision(std::function<void(PhysicsComponent*)>&& f) { collision = f; }

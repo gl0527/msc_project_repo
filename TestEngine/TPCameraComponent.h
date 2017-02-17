@@ -11,7 +11,7 @@ namespace Engine
 		float motBlend;
 		bool fixed;
 	public:
-		TPCameraComponent(const std::string& name, int zDepth, bool fix = false);
+		TPCameraComponent(const std::string& name, int zDepth);
 		~TPCameraComponent();
 		
 		virtual void onInit(GameObject* object) override;

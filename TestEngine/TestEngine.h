@@ -16,3 +16,6 @@
 #include "XMLParser.h"
 #include "TransformProcessor.h"
 #include "CameraProcessor.h"
+#include "MeshProcessor.h"
+#include "TPCameraProcessor.h"
+#include "PhysicsProcessor.h"

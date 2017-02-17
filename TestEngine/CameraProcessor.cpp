@@ -5,8 +5,8 @@ namespace Engine
 {
 	Component* CameraProcessor::process(TiXmlElement* elem)
 	{
-		const char* name = elem->Attribute("name");
-		int zOrder = XMLParser::getInstance().parse1i(elem, "zOrder");
+		const char* name = XMLParser::getInstance().parseString(elem, "name");
+		int zOrder = XMLParser::getInstance().parseInt(elem, "zOrder");
 
 		CameraComponent* cam = new CameraComponent(name, zOrder);
 	
@@ -16,12 +16,12 @@ namespace Engine
 
 			if (strcmp(childName, "lookat") == 0)
 			{
-				Ogre::Vector3 lookat = XMLParser::getInstance().parse3f_XYZ(child);
+				Ogre::Vector3 lookat = XMLParser::getInstance().parseFloat3_XYZ(child);
 				cam->setLookAt(lookat);
 			}
 			else if (strcmp(childName, "renderdist") == 0)
 			{
-				float renderDist = XMLParser::getInstance().parse1f(child, "dist");
+				float renderDist = XMLParser::getInstance().parseFloat(child, "dist");
 				cam->setRenderDist(renderDist);
 			}
 		}

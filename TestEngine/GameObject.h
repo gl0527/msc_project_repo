@@ -32,7 +32,7 @@ namespace Engine
 		void onDestroy();
 
 		const std::string& getName() const { return name; }
-		TransformComponent* getTransform() const { return (TransformComponent*)components[0].get(); }
+		TransformComponent* transform() const { return (TransformComponent*)components[0].get(); }
 		Component* getComponent(const std::string& cID) const;
 		GameObject* getParent() const { return parent; }
 		
@@ -65,8 +65,6 @@ namespace Engine
 		void setParent(GameObject* p) { parent = p; }
 		bool hasTag(const std::string& t);
 		bool isDestroyed() const { return destroyed; }
-
-		bool operator==(const GameObject& other) { return name == other.getName(); }
 	};
 
 

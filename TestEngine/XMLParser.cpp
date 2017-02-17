@@ -63,7 +63,7 @@ namespace Engine
 
 			if (strcmp(tagName, "gameobject") == 0)
 			{
-				const char* name = child->Attribute("name");
+				const char* name = parseString(child, "name");
 				object = ObjectManager::getInstance().createGameObject(name);
 				object->removeComponent(name); // a régi transform kitörlése
 			}
@@ -76,6 +76,13 @@ namespace Engine
 		}
 	}
 
+
+	void XMLParser::errorMessage(const std::string & msg) const
+	{
+		Ogre::LogManager::getSingleton().logMessage(msg);
+		std::cout << msg << std::endl;
+	}
+
 	
 	void XMLParser::process()
 	{
@@ -83,25 +90,61 @@ namespace Engine
 	}
 
 
-	float XMLParser::parse1f(TiXmlElement* tag, const char* attrName)
+	float XMLParser::parseFloat(TiXmlElement* tag, const char* attrName) const
 	{
 		float value;
 		if (tag->QueryFloatAttribute(attrName, &value) != 0)
-			throw std::exception("Float attribute cannot be parsed.\n");
-		else return value;
-	}
-
-
-	int XMLParser::parse1i(TiXmlElement* tag, const char* attrName)
-	{
-		int value;
-		if (tag->QueryIntAttribute(attrName, &value) != 0)
-			throw std::exception("Int attribute cannot be parsed.\n");
+		{
+			std::string errorMsg(
+				"Float parsing error: " + std::string(attrName) + " attribute of " + std::string(tag->Value()) + " tag not found.");
+			errorMessage(errorMsg);
+			return 0.0f;
+		}
 		return value;
 	}
 
 
-	Ogre::Vector3 XMLParser::parse3f_XYZ(TiXmlElement* tag)
+	int XMLParser::parseInt(TiXmlElement* tag, const char* attrName) const
+	{
+		int value;
+		if (tag->QueryIntAttribute(attrName, &value) != 0)
+		{
+			std::string errorMsg(
+				"Int parsing error: " + std::string(attrName) + " attribute of " + std::string(tag->Value()) + " tag not found.");
+			errorMessage(errorMsg);
+			return 0.0f;
+		}
+		return value;
+	}
+
+
+	const char* XMLParser::parseString(TiXmlElement* tag, const char* attrName) const
+	{
+		const char* str = tag->Attribute(attrName);
+		if (str == nullptr)
+		{
+			std::string errorMsg(
+				"String parsing error: " + std::string(attrName) + " attribute of " + std::string(tag->Value()) + " tag not found.");
+			errorMessage(errorMsg);
+		}
+		return str;
+	}
+
+
+	bool XMLParser::parseBoolean(TiXmlElement* tag, const char* attrName) const
+	{
+		bool value;
+		if (tag->QueryBoolAttribute(attrName, &value) != 0)
+		{
+			std::string errorMsg(
+				"Boolean parsing error: " + std::string(attrName) + " attribute of " + std::string(tag->Value()) + " tag not found.");
+			errorMessage(errorMsg);
+		}
+		return value;
+	}
+
+
+	Ogre::Vector3 XMLParser::parseFloat3_XYZ(TiXmlElement* tag) const
 	{
 		const char* att[] = { "x", "y", "z" };
 		std::vector<const char*> attrs(att, att + elemCount(att));
@@ -113,7 +156,7 @@ namespace Engine
 	}
 
 
-	Ogre::Vector3 XMLParser::parse3f_RGB(TiXmlElement* tag)
+	Ogre::Vector3 XMLParser::parseFloat3_RGB(TiXmlElement* tag) const
 	{
 		const char* att[] = { "r", "g", "b" };
 		std::vector<const char*> attrs(att, att + elemCount(att));
@@ -125,7 +168,7 @@ namespace Engine
 	}
 
 
-	Ogre::Quaternion XMLParser::parse4f_WXYZ(TiXmlElement* tag)
+	Ogre::Quaternion XMLParser::parseFloat4_WXYZ(TiXmlElement* tag) const
 	{
 		const char* att[] = { "qw", "qx", "qy", "qz" };
 		std::vector<const char*> attrs(att, att + elemCount(att));

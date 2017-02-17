@@ -105,6 +105,7 @@
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="PhysicsComponent.h" />
+    <ClInclude Include="PhysicsProcessor.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="RenderSystem.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="TestEngine.h" />
     <ClInclude Include="Ticker.h" />
     <ClInclude Include="TPCameraComponent.h" />
+    <ClInclude Include="TPCameraProcessor.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="TransformProcessor.h" />
     <ClInclude Include="XMLParser.h" />
@@ -137,6 +139,7 @@
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="PhysicsComponent.cpp" />
+    <ClCompile Include="PhysicsProcessor.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
@@ -144,6 +147,7 @@
     <ClCompile Include="TagProcessor.cpp" />
     <ClCompile Include="Ticker.cpp" />
     <ClCompile Include="TPCameraComponent.cpp" />
+    <ClCompile Include="TPCameraProcessor.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="TransformProcessor.cpp" />
     <ClCompile Include="XMLParser.cpp" />

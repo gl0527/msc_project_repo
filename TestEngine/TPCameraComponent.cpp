@@ -3,13 +3,13 @@
 
 namespace Engine
 {
-	TPCameraComponent::TPCameraComponent(const std::string& name, int zDepth, bool fix)
+	TPCameraComponent::TPCameraComponent(const std::string& name, int zDepth)
 		: CameraComponent(name, zDepth),
 		camHeight(200.0f),
 		targetHeight(80.0f),
 		camDist(400.0f),
 		motBlend(2.0f),
-		fixed(fix)
+		fixed(false)
 	{}
 
 
@@ -20,23 +20,23 @@ namespace Engine
 	void TPCameraComponent::onInit(GameObject* object)
 	{
 		ownerObject = object;
-		Ogre::Vector3& dir = ownerObject->getTransform()->getForward();
+		Ogre::Vector3& dir = ownerObject->transform()->forward();
 		dir.normalise();
 		
-		camera->setPosition(ownerObject->getTransform()->getPosition() - dir*camDist + Ogre::Vector3(0, camHeight, 0));
-		camera->lookAt(ownerObject->getTransform()->getPosition() + Ogre::Vector3(0, targetHeight, 0));
+		camera->setPosition(ownerObject->transform()->position() - dir*camDist + Ogre::Vector3(0, camHeight, 0));
+		camera->lookAt(ownerObject->transform()->position() + Ogre::Vector3(0, targetHeight, 0));
 	}
 
 
 	void TPCameraComponent::onPostUpdate(float t, float dt)
 	{
-		Ogre::Vector3& dir = ownerObject->getTransform()->getForward();
+		Ogre::Vector3& dir = ownerObject->transform()->forward();
 		dir.normalise();
-		Ogre::Vector3 newPos = ownerObject->getTransform()->getPosition() - dir*camDist + Ogre::Vector3(0, camHeight, 0);
+		Ogre::Vector3 newPos = ownerObject->transform()->position() - dir*camDist + Ogre::Vector3(0, camHeight, 0);
 		float w = motBlend * dt;
 
 		if (!fixed)
 			camera->setPosition(w * newPos + (1.0f - w) * camera->getPosition());
-		camera->lookAt(ownerObject->getTransform()->getPosition() + Ogre::Vector3(0, targetHeight, 0));
+		camera->lookAt(ownerObject->transform()->position() + Ogre::Vector3(0, targetHeight, 0));
 	}
 }

@@ -23,6 +23,8 @@ namespace Engine
 		TiXmlElement* root;
 
 		void traverse(TiXmlElement* elem);
+
+		void errorMessage(const std::string& msg) const;
 	public:
 		static XMLParser& getInstance();
 		static void deleteInstance();
@@ -33,23 +35,41 @@ namespace Engine
 		void load(const char* fileName);
 		void process();
 
-		float parse1f(TiXmlElement* tag, const char* attrName);
-		int parse1i(TiXmlElement* tag, const char* attrName);
-		//const char* parseString(TiXmlElement* tag, const char* attrName);
-		Ogre::Vector3 parse3f_XYZ(TiXmlElement* tag);
-		Ogre::Vector3 parse3f_RGB(TiXmlElement* tag);
-		Ogre::Quaternion parse4f_WXYZ(TiXmlElement* tag);
+		float parseFloat(TiXmlElement* tag, const char* attrName) const;
+		int parseInt(TiXmlElement* tag, const char* attrName) const;
+		const char* parseString(TiXmlElement* tag, const char* attrName) const;
+		bool parseBoolean(TiXmlElement* tag, const char* attrName) const;
+
+		Ogre::Vector3 parseFloat3_XYZ(TiXmlElement* tag) const;
+		Ogre::Vector3 parseFloat3_RGB(TiXmlElement* tag) const;
+		Ogre::Quaternion parseFloat4_WXYZ(TiXmlElement* tag) const;
 
 		template<typename T>
-		std::vector<T> parse(TiXmlElement* tag, const std::vector<const char*>& attrs)
+		std::vector<T> parse(TiXmlElement* tag, const std::vector<const char*>& attrs) const
 		{
 			std::vector<T> attrValues;
 			for (int i = 0; i < attrs.size(); ++i)
 			{
+				const char* attribute = tag->Attribute(attrs[i]);
+				
+				if (attribute == nullptr)
+				{
+					std::string errorMsg(
+						std::string(attribute) + " attribute of " + std::string(tag->Value()) + " tag not found.");
+					errorMessage(errorMsg);
+					return attrValues;
+				}
+				std::stringstream ss(attribute);
 				T value;
-				std::stringstream ss(tag->Attribute(attrs[i]));
-				ss >> value;
-				attrValues.push_back(value);
+				
+				if (ss >> value)
+					attrValues.push_back(value);
+				else
+				{
+					std::string errorMsg("Conversion from string to T failed.\n");
+					errorMessage(errorMsg);
+					return attrValues;
+				}
 			}
 			return attrValues;
 		}

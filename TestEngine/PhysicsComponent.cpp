@@ -35,7 +35,7 @@ namespace Engine
 		}
 		
 		btVector3 inertia(0, 0, 0);
-		if (type == STATIC)
+		if (type == RigidBodyType::STATIC)
 			mass = 0;
 		else
 			shape->calculateLocalInertia(mass, inertia);
@@ -44,7 +44,7 @@ namespace Engine
 		rigidBody = new btRigidBody(rigidBodyCI);
 		rigidBody->setMassProps(mass, inertia);
 
-		if (type == KINEMATIC)
+		if (type == RigidBodyType::KINEMATIC)
 		{
 			rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() | btCollisionObject::CF_KINEMATIC_OBJECT);
 			rigidBody->setActivationState(DISABLE_DEACTIVATION);
@@ -57,8 +57,8 @@ namespace Engine
 	{
 		ownerObject = object;
 
-		const Ogre::Quaternion& q = ownerObject->getTransform()->getRotation();
-		const Ogre::Vector3& p = ownerObject->getTransform()->getPosition();
+		const Ogre::Quaternion& q = ownerObject->transform()->rotation();
+		const Ogre::Vector3& p = ownerObject->transform()->position();
 
 		btTransform pose(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z));
 		motionState = new btDefaultMotionState(pose);
@@ -76,24 +76,20 @@ namespace Engine
 	
 	void PhysicsComponent::onUpdate(float t, float dt)
 	{
-		if (type == DYNAMIC)
+		if (type == RigidBodyType::DYNAMIC)
 		{
-			ownerObject->getTransform()->setPosition(getPosition());
-			ownerObject->getTransform()->setRotation(getOrientation());
-			//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
-			//shape->setLocalScaling(ownerScaling);
+			ownerObject->transform()->setPosition(getPosition());
+			ownerObject->transform()->setRotation(getOrientation());
 		}
 	}
 
 
 	void PhysicsComponent::onPostUpdate(float t, float dt)
 	{
-		if (type == KINEMATIC)
+		if (type == RigidBodyType::KINEMATIC)
 		{
-			setPosition(ownerObject->getTransform()->getPosition());
-			setOrientation(ownerObject->getTransform()->getRotation());
-			//btVector3 ownerScaling(ownerObject->getScale().x, ownerObject->getScale().y, ownerObject->getScale().z);
-			//shape->setLocalScaling(ownerScaling);
+			setPosition(ownerObject->transform()->position());
+			setOrientation(ownerObject->transform()->rotation());
 		}
 	}
 
@@ -141,7 +137,7 @@ namespace Engine
 
 	void PhysicsComponent::addForce(float fx, float fy, float fz)
 	{
-		if (type == DYNAMIC && rigidBody)
+		if (type == RigidBodyType::DYNAMIC && rigidBody)
 		{
 			btVector3 centralForce(fx, fy, fz);
 			rigidBody->applyCentralForce(centralForce);
@@ -172,22 +168,22 @@ namespace Engine
 
 	void PhysicsComponent::setAngularFactor(float x, float y, float z)
 	{
-		if (type == DYNAMIC && rigidBody)
+		if (type == RigidBodyType::DYNAMIC && rigidBody)
 			rigidBody->setAngularFactor(btVector3(x,y,z));
 	}
 
 
 	void PhysicsComponent::disableRotation()
 	{
-		if (type == DYNAMIC && rigidBody)
+		if (type == RigidBodyType::DYNAMIC && rigidBody)
 			rigidBody->setAngularFactor(0);
 	}
 
 
 	void PhysicsComponent::setMass()
 	{
-		if (mass == 0 && type != STATIC)
-			setType(STATIC);
+		if (mass == 0 && type != RigidBodyType::STATIC)
+			setType(RigidBodyType::STATIC);
 
 		if (mass > 0)
 		{
@@ -207,16 +203,23 @@ namespace Engine
 		}
 		else
 		{
-			// torolni kene az elobb beallitott flag-eket
+			if (rigidBody)
+				rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() & !btCollisionObject::CF_NO_CONTACT_RESPONSE);
 		}
 	}
 
 
 	void PhysicsComponent::setType(RigidBodyType rbt)
 	{
+		if (type == RigidBodyType::KINEMATIC && rbt != RigidBodyType::KINEMATIC)
+		{
+			if (rigidBody)
+			{
+				rigidBody->setCollisionFlags(rigidBody->getCollisionFlags() & !btCollisionObject::CF_KINEMATIC_OBJECT);
+				//rigidBody->setActivationState(DISABLE_DEACTIVATION);
+			}
+		}
 		type = rbt;
-		// eddig beallitott flag-ek torlese
-		// ...
 		createBody();
 	}
 
