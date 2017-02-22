@@ -17,7 +17,7 @@ namespace Engine
 		~GameObject();
 
 		void addComponent(Component* comp);
-		void removeComponent(const char* compName);
+		void removeComponent(const std::string& compName);
 		void removeComponent(Component* comp);
 		void removeComponent();
 

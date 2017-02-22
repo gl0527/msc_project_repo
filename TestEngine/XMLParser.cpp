@@ -63,7 +63,7 @@ namespace Engine
 
 			if (strcmp(tagName, "gameobject") == 0)
 			{
-				const char* name = parseString(child, "name");
+				const std::string& name = parseString(child, "name");
 				object = ObjectManager::getInstance().createGameObject(name);
 				object->removeComponent(name); // a régi transform kitörlése
 			}
@@ -111,13 +111,13 @@ namespace Engine
 			std::string errorMsg(
 				"Int parsing error: " + std::string(attrName) + " attribute of " + std::string(tag->Value()) + " tag not found.");
 			errorMessage(errorMsg);
-			return 0.0f;
+			return 0;
 		}
 		return value;
 	}
 
 
-	const char* XMLParser::parseString(TiXmlElement* tag, const char* attrName) const
+	std::string XMLParser::parseString(TiXmlElement* tag, const char* attrName) const
 	{
 		const char* str = tag->Attribute(attrName);
 		if (str == nullptr)
@@ -125,6 +125,7 @@ namespace Engine
 			std::string errorMsg(
 				"String parsing error: " + std::string(attrName) + " attribute of " + std::string(tag->Value()) + " tag not found.");
 			errorMessage(errorMsg);
+			return std::string();
 		}
 		return str;
 	}
@@ -138,6 +139,7 @@ namespace Engine
 			std::string errorMsg(
 				"Boolean parsing error: " + std::string(attrName) + " attribute of " + std::string(tag->Value()) + " tag not found.");
 			errorMessage(errorMsg);
+			return false;
 		}
 		return value;
 	}
@@ -149,9 +151,7 @@ namespace Engine
 		std::vector<const char*> attrs(att, att + elemCount(att));
 
 		const auto& posv = parse<float>(tag, attrs);
-		Ogre::Vector3 pos(posv[0], posv[1], posv[2]);
-
-		return pos;
+		return Ogre::Vector3(posv[0], posv[1], posv[2]);
 	}
 
 
@@ -161,9 +161,7 @@ namespace Engine
 		std::vector<const char*> attrs(att, att + elemCount(att));
 
 		const auto& colv = parse<float>(tag, attrs);
-		Ogre::Vector3 col(colv[0], colv[1], colv[2]);
-
-		return col;
+		return Ogre::Vector3(colv[0], colv[1], colv[2]);
 	}
 
 
@@ -173,9 +171,7 @@ namespace Engine
 		std::vector<const char*> attrs(att, att + elemCount(att));
 
 		const auto& qv = XMLParser::getInstance().parse<float>(tag, attrs);
-		Ogre::Quaternion q(qv[0], qv[1], qv[2], qv[3]);
-		
-		return q;
+		return Ogre::Quaternion(qv[0], qv[1], qv[2], qv[3]);
 	}
 }
 

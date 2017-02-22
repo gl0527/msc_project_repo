@@ -37,7 +37,7 @@ namespace Engine
 
 		float parseFloat(TiXmlElement* tag, const char* attrName) const;
 		int parseInt(TiXmlElement* tag, const char* attrName) const;
-		const char* parseString(TiXmlElement* tag, const char* attrName) const;
+		std::string parseString(TiXmlElement* tag, const char* attrName) const;
 		bool parseBoolean(TiXmlElement* tag, const char* attrName) const;
 
 		Ogre::Vector3 parseFloat3_XYZ(TiXmlElement* tag) const;

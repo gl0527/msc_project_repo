@@ -5,21 +5,21 @@ namespace Engine
 {
 	void Engine::MeshProcessor::process(TiXmlElement* elem, GameObject* object)
 	{
-		const char* entityName = XMLParser::getInstance().parseString(elem, "ename");
-		const char* meshName = XMLParser::getInstance().parseString(elem, "mname");
+		const std::string& entityName = XMLParser::getInstance().parseString(elem, "ename");
+		const std::string& meshName = XMLParser::getInstance().parseString(elem, "mname");
 
 		MeshComponent* meshRenderer = new MeshComponent(entityName, meshName);
 
 		for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
 		{
-			const char* childName = child->Value();
+			std::string childName(child->Value());
 
-			if (strcmp(childName, "material") == 0)
+			if (childName == "material")
 			{
-				const char* material = XMLParser::getInstance().parseString(child, "name");
-				meshRenderer->setMaterial(material);
+				const std::string& material = XMLParser::getInstance().parseString(child, "name");
+				meshRenderer->setMaterial(material.c_str());
 			}
-			else if (strcmp(childName, "shadows") == 0)
+			else if (childName == "shadows")
 			{
 				bool castShadows = XMLParser::getInstance().parseBoolean(child, "value");
 				meshRenderer->setCastShadows(castShadows);

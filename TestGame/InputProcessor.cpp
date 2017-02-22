@@ -3,29 +3,29 @@
 
 void InputProcessor::process(TiXmlElement * elem, GameObject* object)
 {
-	const char* name = XMLParser::getInstance().parseString(elem, "name");
+	const std::string& name = XMLParser::getInstance().parseString(elem, "name");
 	InputComponent* input = new InputComponent(name);
 
 	for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
 	{
-		const char* childName = child->Value();
+		std::string childName(child->Value());
 
-		if (strcmp(childName, "movespeed") == 0)
+		if (childName == "movespeed")
 		{
 			float value = XMLParser::getInstance().parseFloat(child, "value");
 			input->setMoveSpeed(value);
 		}
-		else if (strcmp(childName, "turnspeed") == 0)
+		else if (childName == "turnspeed")
 		{
 			float value = XMLParser::getInstance().parseFloat(child, "value");
 			input->setTurnSpeed(value);
 		}
-		else if (strcmp(childName, "mousesens") == 0)
+		else if (childName == "mousesens")
 		{
 			float value = XMLParser::getInstance().parseFloat(child, "value");
 			input->setMouseSens(value);
 		}
-		else if (strcmp(childName, "maxdelay") == 0)
+		else if (childName == "maxdelay")
 		{
 			int value = XMLParser::getInstance().parseInt(child, "value");
 			input->setMaxDelay(value);

@@ -24,11 +24,11 @@ namespace Engine
 	}
 
 
-	void GameObject::removeComponent(const char* compName)
+	void GameObject::removeComponent(const std::string& compName)
 	{
 		for (auto&& it = components.begin(); it != components.end(); it++)
 		{
-			if (strcmp((*it)->getName().c_str(), compName) == 0)
+			if ((*it)->getName() == compName)
 			{
 				components.erase(it);
 				break;
