@@ -7,7 +7,7 @@ namespace Engine
 	{
 	public:
 		TransformProcessor() : TagProcessor("transformcomponent") {}
-		virtual Component* process(TiXmlElement* elem) override;
+		virtual void process(TiXmlElement* elem, GameObject* object) override;
 	};
 
 }

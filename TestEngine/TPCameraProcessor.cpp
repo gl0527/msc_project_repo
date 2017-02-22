@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	Component* TPCameraProcessor::process(TiXmlElement* elem)
+	void TPCameraProcessor::process(TiXmlElement* elem, GameObject* object)
 	{
 		const char* name = XMLParser::getInstance().parseString(elem, "name");
 		int zDepth = XMLParser::getInstance().parseInt(elem, "zdepth");
@@ -39,7 +39,7 @@ namespace Engine
 				tpcam->setFixed(isFixed);
 			}
 		}
-		return tpcam;
+		object->addComponent(tpcam);
 	}
 }
 

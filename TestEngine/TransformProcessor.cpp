@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	Component* TransformProcessor::process(TiXmlElement* elem)
+	void TransformProcessor::process(TiXmlElement* elem, GameObject* object)
 	{	
 		const char* name = XMLParser::getInstance().parseString(elem, "name");
 		TransformComponent* transform = new TransformComponent(name);
@@ -28,6 +28,6 @@ namespace Engine
 				transform->setScale(scale);
 			}
 		}
-		return transform;
+		object->addComponent(transform);
 	}
 }

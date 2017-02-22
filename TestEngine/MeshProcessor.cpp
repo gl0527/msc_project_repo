@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	Component* Engine::MeshProcessor::process(TiXmlElement* elem)
+	void Engine::MeshProcessor::process(TiXmlElement* elem, GameObject* object)
 	{
 		const char* entityName = XMLParser::getInstance().parseString(elem, "ename");
 		const char* meshName = XMLParser::getInstance().parseString(elem, "mname");
@@ -25,7 +25,7 @@ namespace Engine
 				meshRenderer->setCastShadows(castShadows);
 			}
 		}
-		return meshRenderer;
+		object->addComponent(meshRenderer);
 	}
 }
 

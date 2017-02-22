@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	Component* PhysicsProcessor::process(TiXmlElement* elem)
+	void PhysicsProcessor::process(TiXmlElement* elem, GameObject* object)
 	{
 		const char* name = XMLParser::getInstance().parseString(elem, "name");
 		float mass = XMLParser::getInstance().parseFloat(elem, "mass");
@@ -58,6 +58,7 @@ namespace Engine
 					collShape = new btSphereShape(radius);
 				}
 				collider->addShape(collShape);
+				object->addComponent(collider);
 			}
 			else if (strcmp(childName, "friction") == 0)
 			{
@@ -89,6 +90,5 @@ namespace Engine
 				collider->setTrigger(trigger);
 			}
 		}
-		return collider;
 	}
 }

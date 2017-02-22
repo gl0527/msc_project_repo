@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	Component* CameraProcessor::process(TiXmlElement* elem)
+	void CameraProcessor::process(TiXmlElement* elem, GameObject* object)
 	{
 		const char* name = XMLParser::getInstance().parseString(elem, "name");
 		int zOrder = XMLParser::getInstance().parseInt(elem, "zOrder");
@@ -25,6 +25,6 @@ namespace Engine
 				cam->setRenderDist(renderDist);
 			}
 		}
-		return cam;
+		object->addComponent(cam);
 	}
 }

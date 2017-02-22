@@ -3,6 +3,7 @@
 #include "tinyxml.h"
 #include "stdafx.h"
 #include "XMLParser.h"
+#include "GameObject.h"
 
 namespace Engine
 {
@@ -11,9 +12,13 @@ namespace Engine
 	protected:
 		std::string tag;
 	public:
-		TagProcessor(const char* tagName);
+		TagProcessor(const std::string& tagName)
+			: tag(tagName)
+		{
+			XMLParser::getInstance().addProcessor(this); 
+		}
 
-		virtual Component* process(TiXmlElement* elem) = 0;
+		virtual void process(TiXmlElement* elem, GameObject* object) = 0;
 		const std::string& getTag() const { return tag; }
 	};
 }

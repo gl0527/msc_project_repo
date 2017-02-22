@@ -3,10 +3,6 @@
 
 namespace Engine
 {
-	TagProcessor::TagProcessor(const char* tagName)
-		: tag(tagName)
-	{
-		XMLParser::getInstance().addProcessor(this);
-	}
+
 }
 

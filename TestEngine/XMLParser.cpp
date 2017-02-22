@@ -69,8 +69,7 @@ namespace Engine
 			}
 			if (procs[tagName])
 			{
-				Component* comp = procs[tagName]->process(child);
-				object->addComponent(comp);
+				procs[tagName]->process(child, object);
 			}
 			traverse(child);
 		}

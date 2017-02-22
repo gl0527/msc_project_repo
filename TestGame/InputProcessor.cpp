@@ -1,7 +1,7 @@
 #include "InputProcessor.h"
 #include "InputComponent.h"
 
-Component* InputProcessor::process(TiXmlElement * elem)
+void InputProcessor::process(TiXmlElement * elem, GameObject* object)
 {
 	const char* name = XMLParser::getInstance().parseString(elem, "name");
 	InputComponent* input = new InputComponent(name);
@@ -31,5 +31,5 @@ Component* InputProcessor::process(TiXmlElement * elem)
 			input->setMaxDelay(value);
 		}
 	}
-	return input;
+	object->addComponent(input);
 }
