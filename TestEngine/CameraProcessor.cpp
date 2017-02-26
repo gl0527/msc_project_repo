@@ -3,12 +3,12 @@
 
 namespace Engine
 {
-	void CameraProcessor::process(TiXmlElement* elem, GameObject* object)
+	void CameraProcessor::process(TiXmlElement* elem)
 	{
 		const auto& name = XMLParser::getInstance().parseString(elem, "name");
 		int zOrder = XMLParser::getInstance().parseInt(elem, "zOrder");
 
-		auto* comp = new CameraComponent(name, zOrder);
+		std::shared_ptr<CameraComponent> comp(new CameraComponent(name, zOrder));
 	
 		foreach_child(elem)
 		{
@@ -25,6 +25,8 @@ namespace Engine
 				comp->setRenderDist(renderDist);
 			}
 		}
+		const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
+		const auto& object = ObjectManager::getInstance().getGameObject(objectName);
 		object->addComponent(comp);
 	}
 }

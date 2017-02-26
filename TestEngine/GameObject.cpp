@@ -8,17 +8,17 @@ namespace Engine
 		destroyed(false),
 		parent(nullptr)
 	{
-		TransformComponent* transform = new TransformComponent(id);
+		std::shared_ptr<TransformComponent> transform(new TransformComponent(id));
 		addComponent(transform);
 	}
 
 
-	void GameObject::addComponent(Component* comp)
+	void GameObject::addComponent(const Component_sptr& comp)
 	{
 		// TODO: unicitást ellenorizni kellene!
 		if (comp)
 		{
-			components.push_back(std::shared_ptr<Component>(comp));
+			components.push_back(comp);
 			comp->onInit(this);
 		}
 	}
@@ -37,11 +37,11 @@ namespace Engine
 	}
 
 
-	void GameObject::removeComponent(Component* comp)
+	void GameObject::removeComponent(const Component_sptr& comp)
 	{
 		for (auto&& it = components.begin(); it != components.end(); it++)
 		{
-			if ((*it).get() == comp)
+			if ((*it) == comp)
 				it = components.erase(it);
 		}
 	}
@@ -109,11 +109,11 @@ namespace Engine
 	}
 
 
-	Component* GameObject::getComponent(const std::string& cID) const
+	const Component_sptr& GameObject::getComponent(const std::string& cID) const
 	{
 		for (auto&& it = components.cbegin(); it != components.cend(); ++it)
 			if ((*it)->getName() == cID)
-				return (*it).get();
+				return *it;
 		return nullptr;
 	}
 

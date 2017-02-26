@@ -7,6 +7,6 @@ namespace Engine
 	{
 	public:
 		TPCameraProcessor() : TagProcessor("tpcameracomponent") {}
-		virtual void process(TiXmlElement* elem, GameObject* object) override;
+		virtual void process(TiXmlElement* elem) override;
 	};
 }

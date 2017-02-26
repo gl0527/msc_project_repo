@@ -3,10 +3,10 @@
 
 namespace Engine
 {
-	class DLL_SPEC PhysicsProcessor : public TagProcessor
+	class DLL_SPEC GameObjectProcessor : public TagProcessor
 	{
 	public:
-		PhysicsProcessor() : TagProcessor("physicscomponent") {}
+		GameObjectProcessor() : TagProcessor("gameobject") {}
 		virtual void process(TiXmlElement* elem) override;
 	};
 }

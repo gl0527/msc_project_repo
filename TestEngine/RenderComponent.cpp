@@ -32,7 +32,7 @@ namespace Engine
 
 	void RenderComponent::createNode()
 	{
-		GameObject* ownerParent = ownerObject->getParent();
+		const auto& ownerParent = ownerObject->getParent();
 		if (ownerParent)
 		{	
 			if (Ogre::SceneNode* pNode = ownerParent->getFirstComponentByType<RenderComponent>()->getNode())

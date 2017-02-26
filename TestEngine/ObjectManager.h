@@ -26,7 +26,7 @@ namespace Engine
 		void postUpdate(float t, float dt);
 		void destroy();
 
-		const GameObject_sptr& getGameObject(const std::string& objName) const { return gameObjects.at(objName); }
+		const GameObject_sptr& getGameObject(const std::string& objName) const;
 
 		~ObjectManager();
 	};

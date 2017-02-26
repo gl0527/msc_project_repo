@@ -97,6 +97,15 @@ namespace Engine
 	}
 
 
+	const GameObject_sptr& ObjectManager::getGameObject(const std::string& objName) const
+	{
+		if (gameObjects.at(objName))
+			return gameObjects.at(objName);
+		else
+			return nullptr;
+	}
+
+
 	ObjectManager::~ObjectManager()
 	{
 		gameObjects.clear();

@@ -9,16 +9,16 @@ namespace Engine
 	{
 		const std::string name;
 		bool destroyed;
-		GameObject* parent;
+		GameObject_sptr parent;
 		std::vector<Component_sptr> components;
 		std::unordered_set<std::string> tags;
 	public:
 		GameObject(const std::string& id);
 		~GameObject();
 
-		void addComponent(Component* comp);
+		void addComponent(const Component_sptr& comp);
 		void removeComponent(const std::string& compName);
-		void removeComponent(Component* comp);
+		void removeComponent(const Component_sptr& comp);
 		void removeComponent();
 
 		void addTag(const std::string& tag);
@@ -33,8 +33,8 @@ namespace Engine
 
 		const std::string& getName() const { return name; }
 		TransformComponent* transform() const { return (TransformComponent*)components[0].get(); }
-		Component* getComponent(const std::string& cID) const;
-		GameObject* getParent() const { return parent; }
+		const Component_sptr& getComponent(const std::string& cID) const;
+		const GameObject_sptr& getParent() const { return parent; }
 		
 		template<typename T>
 		T* getFirstComponentByType()
@@ -62,7 +62,7 @@ namespace Engine
 
 		void clearParent() { parent = nullptr; }
 		bool hasParent() const { return parent != 0; }
-		void setParent(GameObject* p) { parent = p; }
+		void setParent(const GameObject_sptr& p) { parent = p; }
 		bool hasTag(const std::string& t);
 		bool isDestroyed() const { return destroyed; }
 	};

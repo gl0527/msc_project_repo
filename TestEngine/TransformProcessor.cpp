@@ -3,10 +3,10 @@
 
 namespace Engine
 {
-	void TransformProcessor::process(TiXmlElement* elem, GameObject* object)
+	void TransformProcessor::process(TiXmlElement* elem)
 	{	
 		const auto& name = XMLParser::getInstance().parseString(elem, "name");
-		auto* comp = new TransformComponent(name);
+		std::shared_ptr<TransformComponent> comp(new TransformComponent(name));
 
 		foreach_child(elem)
 		{
@@ -28,6 +28,8 @@ namespace Engine
 				comp->setScale(scale);
 			}
 		}
+		const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
+		const auto& object = ObjectManager::getInstance().getGameObject(objectName);
 		object->addComponent(comp);
 	}
 }

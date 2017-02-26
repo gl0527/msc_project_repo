@@ -16,6 +16,7 @@ int main(int argc, char** argv)
 	InputProcessor ip;
 	MeshProcessor mp;
 	PhysicsProcessor pp;
+	GameObjectProcessor gp;
 
 	Game::getInstance().getRenderSystem()->createPlaneMeshXZ("ground", 0, 10, 10);
 	Ogre::RenderTexture* rtt = Game::getInstance().getRenderSystem()->createTexture("sepia", 100, 100)->getBuffer()->getRenderTarget();
@@ -35,8 +36,8 @@ int main(int argc, char** argv)
 	const auto& ball = ObjectManager::getInstance().createGameObject("ball");
 	ball->transform()->setPosition(Ogre::Vector3(-50.0f, 400.0f, -500.0f));
 	ball->transform()->setScale(Ogre::Vector3(10, 10, 10));
-	RenderComponent* ballRenderer = new MeshComponent("ball", "strippedBall.mesh");
-	PhysicsComponent* ballCollider = new PhysicsComponent("ball", 1.0f, PhysicsComponent::DYNAMIC);
+	std::shared_ptr<MeshComponent> ballRenderer(new MeshComponent("ball", "strippedBall.mesh"));
+	std::shared_ptr<PhysicsComponent> ballCollider(new PhysicsComponent("ball", 1.0f, PhysicsComponent::DYNAMIC));
 	btCollisionShape* ballShape = new btSphereShape(10);
 	ballCollider->addShape(ballShape);
 	ball->addComponent(ballRenderer);
@@ -46,8 +47,8 @@ int main(int argc, char** argv)
 	const auto& ball2 = ObjectManager::getInstance().createGameObject("ball2");
 	ball2->transform()->setPosition(Ogre::Vector3(-1.0f, 0.0f, -2.0f));
 	ball2->transform()->setScale(Ogre::Vector3(2, 2, 2));
-	RenderComponent* ball2Renderer = new MeshComponent("ball2", "strippedBall.mesh");
-	BillboardComponent* ball2bb = new BillboardComponent("bb");
+	std::shared_ptr<MeshComponent>ball2Renderer(new MeshComponent("ball2", "strippedBall.mesh"));
+	std::shared_ptr<BillboardComponent> ball2bb(new BillboardComponent("bb"));
 	ball2bb->getBillboardSet()->setBillboardType(Ogre::BBT_PERPENDICULAR_SELF);
 	ball2bb->getBillboardSet()->setMaterialName("TreeLeaves");
 	ball2bb->getBillboardSet()->setSortingEnabled(true);
@@ -67,14 +68,14 @@ int main(int argc, char** argv)
 	ball2->addComponent(ball2bb);
 
 	// ha mind a kettonek van fizikai komponense, akkor nem mukodik
-	ball2->setParent(ball.get());
+	ball2->setParent(ball);
 
 	const auto& triggerObject = ObjectManager::getInstance().createGameObject("trigger");
 	triggerObject->transform()->setPosition(Ogre::Vector3(-50.0f, 0.0f, -500.0f));
 	triggerObject->transform()->setScale(Ogre::Vector3(30.0f, 30.0f, 30.0f));
-	RenderComponent* triggerRenderer = new MeshComponent("triggerRenderer", "explosive.mesh");
-	ParticleComponent* triggerParticle = new ParticleComponent("dragonfire", "DragonFire");
-	PhysicsComponent* triggerCollider = new PhysicsComponent("trigger", 100.0f, PhysicsComponent::KINEMATIC);
+	std::shared_ptr<RenderComponent> triggerRenderer(new MeshComponent("triggerRenderer", "explosive.mesh"));
+	std::shared_ptr<ParticleComponent> triggerParticle(new ParticleComponent("dragonfire", "DragonFire"));
+	std::shared_ptr<PhysicsComponent> triggerCollider(new PhysicsComponent("trigger", 100.0f, PhysicsComponent::KINEMATIC));
 	btCollisionShape* triggerShape = new btBoxShape(btVector3(15, 30, 15));
 	triggerCollider->addShape(triggerShape);
 	triggerCollider->setOnTriggerEnter([](PhysicsComponent* other){ other->addForce(100, 1000, 0); });
@@ -84,7 +85,7 @@ int main(int argc, char** argv)
 	triggerCollider->setTrigger(true);
 
 	const auto& fps = ObjectManager::getInstance().createGameObject("fps");
-	FPSComponent* fpsc = new FPSComponent("FPS");
+	std::shared_ptr<FPSComponent> fpsc(new FPSComponent("FPS"));
 	fps->addComponent(fpsc);
 	
 	// setting up environment
@@ -99,9 +100,6 @@ int main(int argc, char** argv)
 
 	Game::getInstance().start();
 	Game::getInstance().deleteInstance();
-
-	int i;
-	scanf("%d", &i);
 
 	return 0;
 }

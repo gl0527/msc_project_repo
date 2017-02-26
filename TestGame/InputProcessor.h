@@ -7,5 +7,5 @@ class InputProcessor : public TagProcessor
 {
 public:
 	InputProcessor() : TagProcessor("inputcomponent") {}
-	virtual void process(TiXmlElement* elem, GameObject* object) override;
+	virtual void process(TiXmlElement* elem) override;
 };

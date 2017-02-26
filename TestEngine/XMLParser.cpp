@@ -55,28 +55,19 @@ namespace Engine
 
 	void XMLParser::traverse(TiXmlElement* elem)
 	{
-		static std::shared_ptr<GameObject> object = nullptr;
-		
 		for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
 		{
 			std::string tagName(child->Value());
-
-			if (tagName == "gameobject")
-			{
-				const auto& name = parseString(child, "name");
-				object = ObjectManager::getInstance().createGameObject(name);
-				object->removeComponent(name); // a régi transform kitörlése
-			}
+			
 			if (procs[tagName])
-			{
-				procs[tagName]->process(child, object.get());
-			}
+				procs[tagName]->process(child);
+
 			traverse(child);
 		}
 	}
 
 
-	void XMLParser::errorMessage(const std::string & msg) const
+	void XMLParser::errorMessage(const std::string& msg) const
 	{
 		Ogre::LogManager::getSingleton().logMessage(msg);
 		std::cout << msg << std::endl;

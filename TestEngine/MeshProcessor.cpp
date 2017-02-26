@@ -1,14 +1,15 @@
+
 #include "MeshProcessor.h"
 #include "MeshComponent.h"
 
 namespace Engine
 {
-	void Engine::MeshProcessor::process(TiXmlElement* elem, GameObject* object)
+	void Engine::MeshProcessor::process(TiXmlElement* elem)
 	{
 		const auto& entityName = XMLParser::getInstance().parseString(elem, "ename");
 		const auto& meshName = XMLParser::getInstance().parseString(elem, "mname");
 
-		auto* comp = new MeshComponent(entityName, meshName);
+		std::shared_ptr<MeshComponent> comp(new MeshComponent(entityName, meshName));
 
 		foreach_child(elem)
 		{
@@ -25,6 +26,8 @@ namespace Engine
 				comp->setCastShadows(castShadows);
 			}
 		}
+		const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
+		const auto& object = ObjectManager::getInstance().getGameObject(objectName);
 		object->addComponent(comp);
 	}
 }

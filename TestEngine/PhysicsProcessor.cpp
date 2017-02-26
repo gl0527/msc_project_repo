@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	void PhysicsProcessor::process(TiXmlElement* elem, GameObject* object)
+	void PhysicsProcessor::process(TiXmlElement* elem)
 	{
 		const auto& name = XMLParser::getInstance().parseString(elem, "name");
 		float mass = XMLParser::getInstance().parseFloat(elem, "mass");
@@ -17,7 +17,7 @@ namespace Engine
 		else if (typeName == "static")
 			type = PhysicsComponent::STATIC;
 
-		auto* comp = new PhysicsComponent(name, mass, type);
+		std::shared_ptr<PhysicsComponent>comp(new PhysicsComponent(name, mass, type));
 
 		foreach_child(elem)
 		{
@@ -55,6 +55,8 @@ namespace Engine
 					collShape = new btSphereShape(radius);
 				}
 				comp->addShape(collShape);
+				const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
+				const auto& object = ObjectManager::getInstance().getGameObject(objectName);
 				object->addComponent(comp);
 			}
 			else if (childName == "friction")

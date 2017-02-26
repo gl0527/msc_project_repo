@@ -19,3 +19,4 @@
 #include "MeshProcessor.h"
 #include "TPCameraProcessor.h"
 #include "PhysicsProcessor.h"
+#include "GameObjectProcessor.h"
