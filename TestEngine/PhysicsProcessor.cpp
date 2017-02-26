@@ -5,9 +5,9 @@ namespace Engine
 {
 	void PhysicsProcessor::process(TiXmlElement* elem, GameObject* object)
 	{
-		const std::string& name = XMLParser::getInstance().parseString(elem, "name");
+		const auto& name = XMLParser::getInstance().parseString(elem, "name");
 		float mass = XMLParser::getInstance().parseFloat(elem, "mass");
-		const std::string& typeName = XMLParser::getInstance().parseString(elem, "type");
+		const auto& typeName = XMLParser::getInstance().parseString(elem, "type");
 		PhysicsComponent::RigidBodyType type;
 		
 		if (typeName == "dynamic")
@@ -17,20 +17,20 @@ namespace Engine
 		else if (typeName == "static")
 			type = PhysicsComponent::STATIC;
 
-		PhysicsComponent* collider = new PhysicsComponent(name, mass, type);
+		auto* comp = new PhysicsComponent(name, mass, type);
 
-		for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+		foreach_child(elem)
 		{
 			std::string childName(child->Value());
 
 			if (childName == "shape")
 			{
-				const std::string& shapeType = XMLParser::getInstance().parseString(child, "type");
+				const auto& shapeType = XMLParser::getInstance().parseString(child, "type");
 				btCollisionShape* collShape = nullptr;
 				
 				if (shapeType == "box")
 				{
-					const Ogre::Vector3& size = XMLParser::getInstance().parseFloat3_XYZ(child);
+					const auto& size = XMLParser::getInstance().parseFloat3_XYZ(child);
 					collShape = new btBoxShape(btVector3(size.x, size.y, size.z));
 				}
 				else if (shapeType == "staticplane")
@@ -54,34 +54,34 @@ namespace Engine
 					float radius = XMLParser::getInstance().parseFloat(child, "r");
 					collShape = new btSphereShape(radius);
 				}
-				collider->addShape(collShape);
-				object->addComponent(collider);
+				comp->addShape(collShape);
+				object->addComponent(comp);
 			}
 			else if (childName == "friction")
 			{
 				float friction = XMLParser::getInstance().parseFloat(child, "value");
-				collider->setFriction(friction);
+				comp->setFriction(friction);
 			}
 			else if (childName == "damping")
 			{
 				float linearDamping = XMLParser::getInstance().parseFloat(child, "linear");
 				float angularDamping = XMLParser::getInstance().parseFloat(child, "angular");
-				collider->setDamping(linearDamping, angularDamping);
+				comp->setDamping(linearDamping, angularDamping);
 			}
 			else if (childName == "restitution")
 			{
 				float restitution = XMLParser::getInstance().parseFloat(child, "value");
-				collider->setRestitution(restitution);
+				comp->setRestitution(restitution);
 			}
 			else if (childName == "angularfactor")
 			{
-				const Ogre::Vector3 angularfactor = XMLParser::getInstance().parseFloat3_XYZ(child);
-				collider->setAngularFactor(angularfactor.x, angularfactor.y, angularfactor.z);
+				const auto& angularfactor = XMLParser::getInstance().parseFloat3_XYZ(child);
+				comp->setAngularFactor(angularfactor.x, angularfactor.y, angularfactor.z);
 			}
 			else if (childName == "trigger")
 			{
 				bool trigger = XMLParser::getInstance().parseBoolean(child, "value");
-				collider->setTrigger(trigger);
+				comp->setTrigger(trigger);
 			}
 		}
 	}

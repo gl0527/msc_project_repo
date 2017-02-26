@@ -5,29 +5,29 @@ namespace Engine
 {
 	void TransformProcessor::process(TiXmlElement* elem, GameObject* object)
 	{	
-		const std::string& name = XMLParser::getInstance().parseString(elem, "name");
-		TransformComponent* transform = new TransformComponent(name);
+		const auto& name = XMLParser::getInstance().parseString(elem, "name");
+		auto* comp = new TransformComponent(name);
 
-		for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+		foreach_child(elem)
 		{
 			std::string childName(child->Value());
 			
 			if (childName == "position")
 			{	
-				const Ogre::Vector3& pos = XMLParser::getInstance().parseFloat3_XYZ(child);
-				transform->setPosition(pos);
+				const auto& pos = XMLParser::getInstance().parseFloat3_XYZ(child);
+				comp->setPosition(pos);
 			}
 			else if (childName == "rotation")
 			{
-				const Ogre::Quaternion& rot = XMLParser::getInstance().parseFloat4_WXYZ(child);
-				transform->setRotation(rot);
+				const auto& rot = XMLParser::getInstance().parseFloat4_WXYZ(child);
+				comp->setRotation(rot);
 			}
 			else if (childName == "scale")
 			{
-				const Ogre::Vector3& scale = XMLParser::getInstance().parseFloat3_XYZ(child);
-				transform->setScale(scale);
+				const auto& scale = XMLParser::getInstance().parseFloat3_XYZ(child);
+				comp->setScale(scale);
 			}
 		}
-		object->addComponent(transform);
+		object->addComponent(comp);
 	}
 }

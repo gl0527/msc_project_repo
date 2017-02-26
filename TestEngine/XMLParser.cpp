@@ -55,21 +55,21 @@ namespace Engine
 
 	void XMLParser::traverse(TiXmlElement* elem)
 	{
-		static GameObject* object = nullptr;
+		static std::shared_ptr<GameObject> object = nullptr;
 		
 		for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
 		{
-			const char* tagName = child->Value();
+			std::string tagName(child->Value());
 
-			if (strcmp(tagName, "gameobject") == 0)
+			if (tagName == "gameobject")
 			{
-				const std::string& name = parseString(child, "name");
+				const auto& name = parseString(child, "name");
 				object = ObjectManager::getInstance().createGameObject(name);
 				object->removeComponent(name); // a régi transform kitörlése
 			}
 			if (procs[tagName])
 			{
-				procs[tagName]->process(child, object);
+				procs[tagName]->process(child, object.get());
 			}
 			traverse(child);
 		}

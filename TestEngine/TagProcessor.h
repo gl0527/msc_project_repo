@@ -5,6 +5,8 @@
 #include "XMLParser.h"
 #include "GameObject.h"
 
+#define foreach_child(elem) for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+
 namespace Engine
 {
 	class DLL_SPEC TagProcessor

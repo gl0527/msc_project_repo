@@ -10,7 +10,7 @@ namespace Engine
 		const std::string name;
 		bool destroyed;
 		GameObject* parent;
-		std::vector<std::shared_ptr<Component>> components;
+		std::vector<Component_sptr> components;
 		std::unordered_set<std::string> tags;
 	public:
 		GameObject(const std::string& id);

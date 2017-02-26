@@ -23,7 +23,16 @@ int main(int argc, char** argv)
 	XMLParser::getInstance().load("media/map/minath_tirith.xml");
 	XMLParser::getInstance().process();
 
-	GameObject* ball = ObjectManager::getInstance().createGameObject("ball");
+	/*const GameObject_sptr& sold = ObjectManager::getInstance().getGameObject("soldier");
+	MeshComponent* soldMesh = sold->getFirstComponentByType<MeshComponent>();
+	if (soldMesh)
+	{
+		std::cout << soldMesh->getName() << std::endl;
+		Ogre::Quaternion q(Ogre::Radian(Ogre::Math::PI), Ogre::Vector3::UNIT_Y);
+		soldMesh->getNode()->setOrientation(q);
+	}*/
+		
+	const auto& ball = ObjectManager::getInstance().createGameObject("ball");
 	ball->transform()->setPosition(Ogre::Vector3(-50.0f, 400.0f, -500.0f));
 	ball->transform()->setScale(Ogre::Vector3(10, 10, 10));
 	RenderComponent* ballRenderer = new MeshComponent("ball", "strippedBall.mesh");
@@ -34,7 +43,7 @@ int main(int argc, char** argv)
 	ball->addComponent(ballCollider);
 	ballCollider->setRestitution(0.9f);
 
-	GameObject* ball2 = ObjectManager::getInstance().createGameObject("ball2");
+	const auto& ball2 = ObjectManager::getInstance().createGameObject("ball2");
 	ball2->transform()->setPosition(Ogre::Vector3(-1.0f, 0.0f, -2.0f));
 	ball2->transform()->setScale(Ogre::Vector3(2, 2, 2));
 	RenderComponent* ball2Renderer = new MeshComponent("ball2", "strippedBall.mesh");
@@ -58,9 +67,9 @@ int main(int argc, char** argv)
 	ball2->addComponent(ball2bb);
 
 	// ha mind a kettonek van fizikai komponense, akkor nem mukodik
-	ball2->setParent(ball);
+	ball2->setParent(ball.get());
 
-	GameObject* triggerObject = ObjectManager::getInstance().createGameObject("trigger");
+	const auto& triggerObject = ObjectManager::getInstance().createGameObject("trigger");
 	triggerObject->transform()->setPosition(Ogre::Vector3(-50.0f, 0.0f, -500.0f));
 	triggerObject->transform()->setScale(Ogre::Vector3(30.0f, 30.0f, 30.0f));
 	RenderComponent* triggerRenderer = new MeshComponent("triggerRenderer", "explosive.mesh");
@@ -74,7 +83,7 @@ int main(int argc, char** argv)
 	triggerObject->addComponent(triggerCollider);
 	triggerCollider->setTrigger(true);
 
-	GameObject* fps = ObjectManager::getInstance().createGameObject("fps");
+	const auto& fps = ObjectManager::getInstance().createGameObject("fps");
 	FPSComponent* fpsc = new FPSComponent("FPS");
 	fps->addComponent(fpsc);
 	
@@ -90,6 +99,9 @@ int main(int argc, char** argv)
 
 	Game::getInstance().start();
 	Game::getInstance().deleteInstance();
+
+	int i;
+	scanf("%d", &i);
 
 	return 0;
 }

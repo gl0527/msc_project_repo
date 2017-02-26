@@ -5,41 +5,41 @@ namespace Engine
 {
 	void TPCameraProcessor::process(TiXmlElement* elem, GameObject* object)
 	{
-		const std::string& name = XMLParser::getInstance().parseString(elem, "name");
+		const auto& name = XMLParser::getInstance().parseString(elem, "name");
 		int zDepth = XMLParser::getInstance().parseInt(elem, "zdepth");
-		TPCameraComponent* tpcam = new TPCameraComponent(name, zDepth);
+		auto* comp = new TPCameraComponent(name, zDepth);
 
-		for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+		foreach_child(elem)
 		{
 			std::string childName(child->Value());
 
 			if (childName == "height")
 			{
 				float height = XMLParser::getInstance().parseFloat(child, "value");
-				tpcam->setCameraHeight(height);
+				comp->setCameraHeight(height);
 			}
 			else if (childName == "targetHeight")
 			{
 				float targetHeight = XMLParser::getInstance().parseFloat(child, "value");
-				tpcam->setTargetHeight(targetHeight);
+				comp->setTargetHeight(targetHeight);
 			}
 			else if (childName == "distfromtarget")
 			{
 				float distFromTarget = XMLParser::getInstance().parseFloat(child, "value");
-				tpcam->setCameraDist(distFromTarget);
+				comp->setCameraDist(distFromTarget);
 			}
 			else if (childName == "motionblend")
 			{
 				float motionBlend = XMLParser::getInstance().parseFloat(child, "value");
-				tpcam->setMotionBlend(motionBlend);
+				comp->setMotionBlend(motionBlend);
 			}
 			else if (childName == "fixed")
 			{
 				bool isFixed = XMLParser::getInstance().parseBoolean(child, "value");
-				tpcam->setFixed(isFixed);
+				comp->setFixed(isFixed);
 			}
 		}
-		object->addComponent(tpcam);
+		object->addComponent(comp);
 	}
 }
 

@@ -1,35 +1,35 @@
 #include "InputProcessor.h"
 #include "InputComponent.h"
 
-void InputProcessor::process(TiXmlElement * elem, GameObject* object)
+void InputProcessor::process(TiXmlElement* elem, GameObject* object)
 {
-	const std::string& name = XMLParser::getInstance().parseString(elem, "name");
-	InputComponent* input = new InputComponent(name);
+	const auto& name = XMLParser::getInstance().parseString(elem, "name");
+	auto* comp = new InputComponent(name);
 
-	for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())
+	foreach_child(elem)
 	{
 		std::string childName(child->Value());
 
 		if (childName == "movespeed")
 		{
 			float value = XMLParser::getInstance().parseFloat(child, "value");
-			input->setMoveSpeed(value);
+			comp->setMoveSpeed(value);
 		}
 		else if (childName == "turnspeed")
 		{
 			float value = XMLParser::getInstance().parseFloat(child, "value");
-			input->setTurnSpeed(value);
+			comp->setTurnSpeed(value);
 		}
 		else if (childName == "mousesens")
 		{
 			float value = XMLParser::getInstance().parseFloat(child, "value");
-			input->setMouseSens(value);
+			comp->setMouseSens(value);
 		}
 		else if (childName == "maxdelay")
 		{
 			int value = XMLParser::getInstance().parseInt(child, "value");
-			input->setMaxDelay(value);
+			comp->setMaxDelay(value);
 		}
 	}
-	object->addComponent(input);
+	object->addComponent(comp);
 }

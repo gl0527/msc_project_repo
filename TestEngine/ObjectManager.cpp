@@ -35,12 +35,12 @@ namespace Engine
 	}
 
 
-	GameObject* ObjectManager::createGameObject(const std::string& id)
+	const GameObject_sptr& ObjectManager::createGameObject(const std::string& id)
 	{
 		if (gameObjects.find(id) == gameObjects.end())
 		{
 			gameObjects[id] = std::shared_ptr<GameObject>(new GameObject(id));
-			return gameObjects[id].get();
+			return gameObjects[id];
 		}
 		return nullptr;
 	}
