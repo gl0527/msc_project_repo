@@ -14,7 +14,7 @@ namespace Engine
 			std::cout << "Cannot load audio file.\n";
 		alGenSources(1, &source);
 		alSourcei(source, AL_BUFFER, buffer);
-		listener = ObjectManager::getInstance().getGameObject(listenerName).get();
+		listener = ObjectManager::getInstance().getGameObject(listenerName);
 	}
 
 

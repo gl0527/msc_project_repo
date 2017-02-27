@@ -8,7 +8,7 @@ namespace Engine
 	{
 		ALuint buffer;
 		ALuint source;
-		GameObject* listener;
+		GameObject_sptr listener;
 		void updatePose(const Ogre::Vector3& pos, const Ogre::Vector3& dir);
 	public:
 		AudioComponent(const std::string& fileName, const std::string& listenerName);
