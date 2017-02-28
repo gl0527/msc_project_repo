@@ -24,9 +24,9 @@ namespace Engine
 		void stop();
 		bool isPlaying();
 
-		void setVolume(float volume);
-		void setSpeed(float speed);
-		void setLooping(bool looping);
+		void setVolume(float vol);
+		void setSpeed(float spd);
+		void setLooping(bool loop);
 	};
 }
 

@@ -21,7 +21,7 @@ namespace Engine
 			else if (childName == "speed")
 			{
 				float speed = XMLParser::getInstance().parseFloat(child, "value");
-				comp->setVolume(speed);
+				comp->setSpeed(speed);
 			}
 			else if (childName == "loop")
 			{

@@ -59,12 +59,14 @@ namespace Engine
 
 	void AudioComponent::pause()
 	{
+		alGetError();
 		alSourcePause(source);
 	}
 
 
 	void AudioComponent::stop()
 	{
+		alGetError();
 		alSourceStop(source);
 	}
 
@@ -77,24 +79,36 @@ namespace Engine
 	}
 
 
-	void AudioComponent::setVolume(float volume)
+	void AudioComponent::setVolume(float vol)
 	{
+		volume = vol;
+		alGetError();
 		alSourcef(source, AL_GAIN, volume);
+		if (alGetError() != AL_NO_ERROR)
+			std::cout << "AudioComponent::setVolume: Error occured during setting volume.\n";
 	}
 
 
-	void AudioComponent::setSpeed(float speed)
+	void AudioComponent::setSpeed(float spd)
 	{
+		speed = spd;
+		alGetError();
 		alSourcef(source, AL_PITCH, speed);
+		if (alGetError() != AL_NO_ERROR)
+			std::cout << "AudioComponent::setVolume: Error occured during setting speed.\n";
 	}
 
 
-	void AudioComponent::setLooping(bool looping)
+	void AudioComponent::setLooping(bool loop)
 	{
+		looping = loop;
+		alGetError();
 		if (looping)
 			alSourcei(source, AL_LOOPING, AL_TRUE);
 		else
 			alSourcei(source, AL_LOOPING, AL_FALSE);
+		if (alGetError() != AL_NO_ERROR)
+			std::cout << "AudioComponent::setVolume: Error occured during setting looping.\n";
 	}
 }
 
