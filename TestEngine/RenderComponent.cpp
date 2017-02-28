@@ -35,7 +35,7 @@ namespace Engine
 		const auto& ownerParent = ownerObject->getParent();
 		if (ownerParent)
 		{	
-			if (Ogre::SceneNode* pNode = ownerParent->getFirstComponentByType<RenderComponent>()->getNode())
+			if (auto pNode = ownerParent->getFirstComponentByType<RenderComponent>()->getNode())
 				parentNode = pNode;
 		}
 		currentNode = parentNode->createChildSceneNode();

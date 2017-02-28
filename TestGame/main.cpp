@@ -17,12 +17,17 @@ int main(int argc, char** argv)
 	MeshProcessor mp;
 	PhysicsProcessor pp;
 	GameObjectProcessor gp;
+	AudioProcessor ap;
 
 	Game::getInstance().getRenderSystem()->createPlaneMeshXZ("ground", 0, 10, 10);
 	Ogre::RenderTexture* rtt = Game::getInstance().getRenderSystem()->createTexture("sepia", 100, 100)->getBuffer()->getRenderTarget();
 
 	XMLParser::getInstance().load("media/map/minath_tirith.xml");
 	XMLParser::getInstance().process();
+
+	const auto& ball3 = ObjectManager::getInstance().getGameObject("ball3");
+	auto ball3Audio = ball3->getFirstComponentByType<AudioComponent>();
+	ball3Audio->play();
 
 	/*const GameObject_sptr& sold = ObjectManager::getInstance().getGameObject("soldier");
 	MeshComponent* soldMesh = sold->getFirstComponentByType<MeshComponent>();
@@ -38,8 +43,7 @@ int main(int argc, char** argv)
 	ball->transform()->setScale(Ogre::Vector3(10, 10, 10));
 	std::shared_ptr<MeshComponent> ballRenderer(new MeshComponent("ball", "strippedBall.mesh"));
 	std::shared_ptr<PhysicsComponent> ballCollider(new PhysicsComponent("ball", 1.0f, PhysicsComponent::DYNAMIC));
-	btCollisionShape* ballShape = new btSphereShape(10);
-	ballCollider->addShape(ballShape);
+	ballCollider->addShape(new btSphereShape(10));
 	ball->addComponent(ballRenderer);
 	ball->addComponent(ballCollider);
 	ballCollider->setRestitution(0.9f);
@@ -76,8 +80,7 @@ int main(int argc, char** argv)
 	std::shared_ptr<RenderComponent> triggerRenderer(new MeshComponent("triggerRenderer", "explosive.mesh"));
 	std::shared_ptr<ParticleComponent> triggerParticle(new ParticleComponent("dragonfire", "DragonFire"));
 	std::shared_ptr<PhysicsComponent> triggerCollider(new PhysicsComponent("trigger", 100.0f, PhysicsComponent::KINEMATIC));
-	btCollisionShape* triggerShape = new btBoxShape(btVector3(15, 30, 15));
-	triggerCollider->addShape(triggerShape);
+	triggerCollider->addShape(new btBoxShape(btVector3(15, 30, 15)));
 	triggerCollider->setOnTriggerEnter([](PhysicsComponent* other){ other->addForce(100, 1000, 0); });
 	triggerObject->addComponent(triggerRenderer);
 	triggerObject->addComponent(triggerParticle);

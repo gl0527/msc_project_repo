@@ -88,6 +88,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioComponent.h" />
+    <ClInclude Include="AudioProcessor.h" />
     <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="BillboardComponent.h" />
     <ClInclude Include="CameraComponent.h" />
@@ -123,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioComponent.cpp" />
+    <ClCompile Include="AudioProcessor.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
     <ClCompile Include="BillboardComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />

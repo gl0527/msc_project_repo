@@ -99,10 +99,13 @@ namespace Engine
 
 	const GameObject_sptr& ObjectManager::getGameObject(const std::string& objName) const
 	{
-		if (gameObjects.at(objName))
+		if (gameObjects.find(objName) != gameObjects.end())
 			return gameObjects.at(objName);
 		else
+		{
+			std::cout << "GameObject not found.\n";
 			return nullptr;
+		}
 	}
 
 

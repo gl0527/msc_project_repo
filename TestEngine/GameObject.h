@@ -61,7 +61,7 @@ namespace Engine
 		}
 
 		void clearParent() { parent = nullptr; }
-		bool hasParent() const { return parent != 0; }
+		bool hasParent() const { return parent != nullptr; }
 		void setParent(const GameObject_sptr& p) { parent = p; }
 		bool hasTag(const std::string& t);
 		bool isDestroyed() const { return destroyed; }

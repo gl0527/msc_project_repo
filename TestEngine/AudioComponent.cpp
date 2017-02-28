@@ -6,7 +6,10 @@
 namespace Engine
 {
 	AudioComponent::AudioComponent(const std::string& fileName, const std::string& listenerName)
-		: Component(fileName)
+		: Component(fileName),
+		volume(0.5f),
+		speed(1.0f),
+		looping(false)
 	{
 		buffer = alutCreateBufferFromFile(fileName.c_str());
 		ALenum error = alutGetError();
@@ -35,12 +38,14 @@ namespace Engine
 
 	void AudioComponent::onPreUpdate(float t, float dt)
 	{
-		updatePose(ownerObject->transform()->position(), ownerObject->transform()->forward());
-		updatePose(listener->transform()->position(), listener->transform()->forward());
+		if (ownerObject)
+			updatePose(ownerObject->transform()->position(), ownerObject->transform()->forward());
+		if (listener)
+			updatePose(listener->transform()->position(), listener->transform()->forward());
 	}
 
 
-	void AudioComponent::play(float volume, float speed, bool looping)
+	void AudioComponent::play()
 	{
 		if (isPlaying())
 			return;
@@ -81,6 +86,15 @@ namespace Engine
 	void AudioComponent::setSpeed(float speed)
 	{
 		alSourcef(source, AL_PITCH, speed);
+	}
+
+
+	void AudioComponent::setLooping(bool looping)
+	{
+		if (looping)
+			alSourcei(source, AL_LOOPING, AL_TRUE);
+		else
+			alSourcei(source, AL_LOOPING, AL_FALSE);
 	}
 }
 
