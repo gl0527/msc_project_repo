@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "btBulletDynamicsCommon.h"
 #include <functional>
+#include "PhysicsMaterial.h"
 
 namespace Engine
 {
@@ -10,8 +11,10 @@ namespace Engine
 		float mass;
 		bool trigger;
 		btRigidBody* rigidBody;
-		btCompoundShape* shape;
-		btMotionState* motionState;
+		btCompoundShape shape;
+		btDefaultMotionState motionState;
+		PhysicsMaterial physicsMaterial;
+		btDynamicsWorld* world;
 
 		Ogre::Vector3 getPosition() const;
 		Ogre::Quaternion getOrientation() const;
@@ -29,27 +32,25 @@ namespace Engine
 		RigidBodyType type;
 
 		PhysicsComponent(const std::string& name, float m, RigidBodyType rbt);
-		void addShape(btCollisionShape* collShape, const Ogre::Vector3& p = Ogre::Vector3::ZERO, const Ogre::Quaternion& q = Ogre::Quaternion::IDENTITY);
+		void addShape(btCollisionShape* collShape, const Ogre::Vector3& p, const Ogre::Quaternion& q);
+		void removeShape(btCollisionShape* collShape);
 		void createBody();
 
 		virtual void onInit(GameObject* object) override;
-		virtual void onStart() override;
 		virtual void onUpdate(float t, float dt) override;
-		virtual void onPostUpdate(float t, float dt) override;
 		virtual void onDestroy() override;
 		
 		btRigidBody* getRigidBody() const { return rigidBody; }
+		const PhysicsMaterial& getPhysicsMaterial() const { return physicsMaterial; }
+		void setPhysicsMaterial(PhysicsMaterial phyMat);
 
 		void addForce(float fx, float fy, float fz);
-		void setFriction(float friction);
-		void setDamping(float linear, float angular);
-		void setRestitution(float restitution);
 		void setAngularFactor(float x, float y, float z);
 		void disableRotation();
 		
 		void setMass();
 		void setTrigger(bool trigger);
-		void setType(RigidBodyType rbt); 
+		void setType(RigidBodyType rbt);
 
 		void setOnTriggerEnter(std::function<void(PhysicsComponent*)>&& f) { triggerEnter = f; }
 		void setOnCollision(std::function<void(PhysicsComponent*)>&& f) { collision = f; }

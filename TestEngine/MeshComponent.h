@@ -23,7 +23,7 @@ namespace Engine
 		void setAnimationLoop(const char* animState, bool loop); // getter
 		void setAnimationTimePosition(const char* animState, unsigned int time); // animation ended
 
-		void setMaterial(const char* matName);
+		void setMaterial(const std::string& matName);
 	};
 }
 

@@ -33,6 +33,7 @@ namespace Engine
 		void addProcessor(TagProcessor* proc);
 
 		void load(const char* fileName);
+		void save(const char* fileName);
 		void process();
 
 		float parseFloat(TiXmlElement* tag, const char* attrName) const;
@@ -48,6 +49,13 @@ namespace Engine
 		std::vector<T> parse(TiXmlElement* tag, const std::vector<const char*>& attrs) const
 		{
 			std::vector<T> attrValues;
+
+			if (tag == nullptr)
+			{
+				errorMessage("Tag not found.");
+				return attrValues;
+			}
+
 			for (int i = 0; i < attrs.size(); ++i)
 			{
 				const char* attribute = tag->Attribute(attrs[i]);

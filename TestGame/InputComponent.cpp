@@ -30,6 +30,8 @@ void InputComponent::onPreUpdate(float t, float dt)
 		Game::getInstance().destroy();
 		return;
 	}
+	/*if (inputHandler->isKeyDown(OIS::KC_P))
+		Game::getInstance().pause();*/
 	if (inputHandler->isKeyDown(OIS::KC_W))
 		moveDir += Ogre::Vector3(0.0f, 1.0f, -1.0f);
 	if (inputHandler->isKeyDown(OIS::KC_S))

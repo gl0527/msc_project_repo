@@ -15,8 +15,9 @@ namespace Engine
 	}
 
 
-	void RenderComponent::onStart()
+	void RenderComponent::onInit(GameObject* obj)
 	{
+		ownerObject = obj;
 		createNode();
 		currentNode->attachObject(object);
 	}
@@ -32,11 +33,13 @@ namespace Engine
 
 	void RenderComponent::createNode()
 	{
-		const auto& ownerParent = ownerObject->getParent();
-		if (ownerParent)
+		if (const auto& ownerParent = ownerObject->getParent())
 		{	
-			if (auto pNode = ownerParent->getFirstComponentByType<RenderComponent>()->getNode())
-				parentNode = pNode;
+			if (auto ownerRenderer = ownerParent->getFirstComponentByType<RenderComponent>())
+			{
+				if (auto pNode = ownerRenderer->getNode())
+					parentNode = pNode;
+			}
 		}
 		currentNode = parentNode->createChildSceneNode();
 	}

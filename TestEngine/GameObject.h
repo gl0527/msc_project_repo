@@ -10,6 +10,7 @@ namespace Engine
 		const std::string name;
 		bool destroyed;
 		GameObject_sptr parent;
+		std::vector<GameObject_wptr> children;
 		std::vector<Component_sptr> components;
 		std::unordered_set<std::string> tags;
 	public:
@@ -25,6 +26,10 @@ namespace Engine
 		void removeTag(const std::string& tag);
 		void removeTag();
 
+		void addChild(const std::string& childName);
+		void removeChild(const std::string& childName);
+		void removeChildren();
+
 		void onStart();
 		void onPreUpdate(float t, float dt);
 		void onUpdate(float t, float dt);
@@ -35,13 +40,14 @@ namespace Engine
 		TransformComponent* transform() const { return (TransformComponent*)components[0].get(); }
 		const Component_sptr& getComponent(const std::string& cID) const;
 		const GameObject_sptr& getParent() const { return parent; }
+		std::vector<std::string> getChildrenNames() const;
 		
 		template<typename T>
 		T* getFirstComponentByType()
 		{
 			for (auto it = components.begin(); it != components.end(); ++it)
 			{
-				if (T* castedComponent = dynamic_cast<T*>((*it).get()))
+				if (auto castedComponent = dynamic_cast<T*>((*it).get()))
 					return castedComponent;
 			}
 			return nullptr;
@@ -60,9 +66,9 @@ namespace Engine
 			return returnVector;
 		}
 
-		void clearParent() { parent = nullptr; }
+		void clearParent() { parent.reset(); }
 		bool hasParent() const { return parent != nullptr; }
-		void setParent(const GameObject_sptr& p) { parent = p; }
+		void setParent(const std::string& parentName);
 		bool hasTag(const std::string& t);
 		bool isDestroyed() const { return destroyed; }
 	};

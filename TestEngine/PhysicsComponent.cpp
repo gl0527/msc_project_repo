@@ -8,19 +8,25 @@ namespace Engine
 		mass(m),
 		trigger(false),
 		rigidBody(nullptr),
-		motionState(nullptr),
+		world(Game::getInstance().getPhysicsSystem()->getWorld()),
 		type(t),
 		triggerEnter(defaultTriggerEnter),
 		collision(defaultCollision)
 	{
-		shape = new btCompoundShape;
+		
 	}
 
 
 	void PhysicsComponent::addShape(btCollisionShape* collShape, const Ogre::Vector3& p, const Ogre::Quaternion& q)
 	{
 		btTransform pose(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z));
-		shape->addChildShape(pose, collShape);
+		shape.addChildShape(pose, collShape);
+	}
+
+
+	void PhysicsComponent::removeShape(btCollisionShape* collShape)
+	{
+		shape.removeChildShape(collShape);
 	}
 
 
@@ -28,7 +34,7 @@ namespace Engine
 	{
 		if (rigidBody)
 		{
-			Game::getInstance().getPhysicsSystem()->getWorld()->removeRigidBody(rigidBody);
+			world->removeRigidBody(rigidBody);
 			rigidBody->setUserPointer(nullptr);
 			delete rigidBody;
 			rigidBody = nullptr;
@@ -38,9 +44,9 @@ namespace Engine
 		if (type == RigidBodyType::STATIC)
 			mass = 0;
 		else
-			shape->calculateLocalInertia(mass, inertia);
-
-		btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, motionState, shape, inertia);
+			shape.calculateLocalInertia(mass, inertia);
+		
+		btRigidBody::btRigidBodyConstructionInfo rigidBodyCI(mass, &motionState, &shape, inertia);
 		rigidBody = new btRigidBody(rigidBodyCI);
 		rigidBody->setMassProps(mass, inertia);
 
@@ -50,6 +56,7 @@ namespace Engine
 			rigidBody->setActivationState(DISABLE_DEACTIVATION);
 		}
 		rigidBody->setUserPointer(this);
+		world->addRigidBody(rigidBody);
 	}
 
 
@@ -61,16 +68,10 @@ namespace Engine
 		const Ogre::Vector3& p = ownerObject->transform()->position();
 
 		btTransform pose(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z));
-		motionState = new btDefaultMotionState(pose);
+		motionState = /*new */btDefaultMotionState(pose);
 
 		setMass();
 		setType(type);
-	}
-
-
-	void PhysicsComponent::onStart()
-	{
-		Game::getInstance().getPhysicsSystem()->getWorld()->addRigidBody(rigidBody);
 	}
 
 	
@@ -81,12 +82,7 @@ namespace Engine
 			ownerObject->transform()->setPosition(getPosition());
 			ownerObject->transform()->setRotation(getOrientation());
 		}
-	}
-
-
-	void PhysicsComponent::onPostUpdate(float t, float dt)
-	{
-		if (type == RigidBodyType::KINEMATIC)
+		else if (type == RigidBodyType::KINEMATIC)
 		{
 			setPosition(ownerObject->transform()->position());
 			setOrientation(ownerObject->transform()->rotation());
@@ -96,15 +92,15 @@ namespace Engine
 
 	void PhysicsComponent::onDestroy()
 	{
-		delete motionState;
-		delete shape;
+		world->removeRigidBody(rigidBody);
+		delete rigidBody;
 	}
 
 
 	Ogre::Vector3 PhysicsComponent::getPosition() const
 	{
 		btTransform transform;
-		motionState->getWorldTransform(transform);
+		motionState.getWorldTransform(transform);
 		return Ogre::Vector3(transform.getOrigin().x(), transform.getOrigin().y(), transform.getOrigin().z());
 	}
 
@@ -112,7 +108,7 @@ namespace Engine
 	Ogre::Quaternion PhysicsComponent::getOrientation() const
 	{
 		btTransform t;
-		motionState->getWorldTransform(t);
+		motionState.getWorldTransform(t);
 		return Ogre::Quaternion(t.getRotation().w(), t.getRotation().x(), t.getRotation().y(), t.getRotation().z());
 	}
 
@@ -120,18 +116,30 @@ namespace Engine
 	void PhysicsComponent::setPosition(const Ogre::Vector3& p)
 	{
 		btTransform prevTransform;
-		motionState->getWorldTransform(prevTransform);
+		motionState.getWorldTransform(prevTransform);
 		btTransform newTransform(prevTransform.getRotation(), btVector3(p.x, p.y, p.z));
-		motionState->setWorldTransform(newTransform);
+		motionState.setWorldTransform(newTransform);
 	}
 
 
 	void PhysicsComponent::setOrientation(const Ogre::Quaternion& q)
 	{
 		btTransform prevTransform;
-		motionState->getWorldTransform(prevTransform);
+		motionState.getWorldTransform(prevTransform);
 		btTransform newTransform(btQuaternion(q.x, q.y, q.z, q.w), prevTransform.getOrigin());
-		motionState->setWorldTransform(newTransform);
+		motionState.setWorldTransform(newTransform);
+	}
+
+
+	void PhysicsComponent::setPhysicsMaterial(PhysicsMaterial phyMat)
+	{
+		physicsMaterial = phyMat;
+		if (rigidBody)
+		{
+			rigidBody->setFriction(physicsMaterial.getFriction());
+			rigidBody->setDamping(physicsMaterial.getLinearDamping(), physicsMaterial.getAngularDamping());
+			rigidBody->setRestitution(physicsMaterial.getRestitution());
+		}
 	}
 
 
@@ -142,27 +150,6 @@ namespace Engine
 			btVector3 centralForce(fx, fy, fz);
 			rigidBody->applyCentralForce(centralForce);
 		}
-	}
-
-
-	void PhysicsComponent::setFriction(float friction)
-	{
-		if (rigidBody)
-			rigidBody->setFriction(friction);
-	}
-
-
-	void PhysicsComponent::setDamping(float linear, float angular)
-	{
-		if (rigidBody)
-			rigidBody->setDamping(linear, angular);
-	}
-
-
-	void PhysicsComponent::setRestitution(float restitution)
-	{
-		if (rigidBody)
-			rigidBody->setRestitution(restitution);
 	}
 
 
@@ -188,7 +175,7 @@ namespace Engine
 		if (mass > 0)
 		{
 			btVector3 inertia(0, 0, 0);
-			shape->calculateLocalInertia(mass, inertia);
+			shape.calculateLocalInertia(mass, inertia);
 		}
 	}
 

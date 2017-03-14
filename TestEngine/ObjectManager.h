@@ -7,9 +7,11 @@ namespace Engine
 {
 	class GameObject;
 
+	typedef std::map<std::string, GameObject_sptr> GameObjectMap;
+
 	class DLL_SPEC ObjectManager
 	{
-		std::map<std::string, GameObject_sptr> gameObjects;
+		GameObjectMap gameObjects;
 		ObjectManager();
 		static ObjectManager* instance;
 	public:

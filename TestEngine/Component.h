@@ -16,6 +16,12 @@ namespace Engine
 		GameObject* ownerObject;
 	public:
 		Component(const std::string& ident, bool uniq = false);
+		virtual ~Component();
+		struct InitStruct
+		{
+			std::string name;
+			bool unique;
+		};
 
 		// runs when this component is added to a gameobject
 		virtual void onInit(GameObject* object) { ownerObject = object; }
@@ -35,8 +41,6 @@ namespace Engine
 		void enable() { enabled = true; }
 		void disable() { enabled = false; }
 		GameObject* getOwnerObject() const { return ownerObject; }
-
-		virtual ~Component();
 	};
 }
 

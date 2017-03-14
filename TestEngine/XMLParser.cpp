@@ -53,6 +53,20 @@ namespace Engine
 	}
 
 
+	void XMLParser::save(const char * fileName)
+	{
+		TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "", "");
+		document.LinkEndChild(decl);
+
+		root = new TiXmlElement("map");
+		document.LinkEndChild(root);
+
+		// ...
+
+		document.SaveFile(fileName);
+	}
+
+
 	void XMLParser::traverse(TiXmlElement* elem)
 	{
 		for (auto child = elem->FirstChildElement(); child != nullptr; child = child->NextSiblingElement())

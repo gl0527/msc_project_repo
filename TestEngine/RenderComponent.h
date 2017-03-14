@@ -16,7 +16,7 @@ namespace Engine
 	public:
 		RenderComponent(const std::string& name);
 
-		virtual void onStart() override;
+		virtual void onInit(GameObject* obj) override;
 		virtual void onPostUpdate(float t, float dt) override;
 		virtual void onDestroy() override;
 

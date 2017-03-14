@@ -18,7 +18,7 @@ namespace Engine
 			if (childName == "material")
 			{
 				const auto& material = XMLParser::getInstance().parseString(child, "name");
-				comp->setMaterial(material.c_str());
+				comp->setMaterial(material);
 			}
 			else if (childName == "shadows")
 			{

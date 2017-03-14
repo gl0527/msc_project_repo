@@ -74,7 +74,7 @@ namespace Engine
 	}
 
 
-	void MeshComponent::setMaterial(const char* matName)
+	void MeshComponent::setMaterial(const std::string& matName)
 	{
 		entity->setMaterialName(matName);
 	}

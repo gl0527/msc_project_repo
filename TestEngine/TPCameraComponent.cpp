@@ -19,7 +19,7 @@ namespace Engine
 
 	void TPCameraComponent::onInit(GameObject* object)
 	{
-		ownerObject = object;
+		CameraComponent::onInit(object);
 		Ogre::Vector3& dir = ownerObject->transform()->forward();
 		dir.normalise();
 		

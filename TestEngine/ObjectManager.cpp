@@ -48,13 +48,27 @@ namespace Engine
 
 	void ObjectManager::removeGameObject(const std::string& id)
 	{
-		gameObjects.erase(id);
+		auto& removableObject = gameObjects[id];
+		if (removableObject)
+		{
+			// gyerekeket torlom eloszor
+			const auto& removableChildren = removableObject->getChildrenNames();
+			for (auto it = removableChildren.begin(); it != removableChildren.end(); ++it)
+			{
+				removeGameObject(*it); // rekurziv hivas
+			}
+			removableObject->onDestroy();
+			gameObjects.erase(gameObjects.find(id));
+		}
 	}
 
 
 	void ObjectManager::start()
 	{
-		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		auto begin = gameObjects.begin();
+		auto end = gameObjects.end();
+
+		for (auto it = begin; it != end; ++it)
 		{
 			it->second->onStart();
 		}
@@ -63,7 +77,10 @@ namespace Engine
 
 	void ObjectManager::preUpdate(float t, float dt)
 	{
-		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		auto begin = gameObjects.begin();
+		auto end = gameObjects.end();
+
+		for (auto it = begin; it != end; ++it)
 		{
 			it->second->onPreUpdate(t, dt);
 		}
@@ -72,7 +89,10 @@ namespace Engine
 
 	void ObjectManager::update(float t, float dt)
 	{
-		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		auto begin = gameObjects.begin();
+		auto end = gameObjects.end();
+
+		for (auto it = begin; it != end; ++it)
 		{
 			it->second->onUpdate(t, dt);
 		}
@@ -81,7 +101,10 @@ namespace Engine
 
 	void ObjectManager::postUpdate(float t, float dt)
 	{
-		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		auto begin = gameObjects.begin();
+		auto end = gameObjects.end();
+
+		for (auto it = begin; it != end; ++it)
 		{
 			it->second->onPostUpdate(t, dt);
 		}
@@ -90,7 +113,7 @@ namespace Engine
 
 	void ObjectManager::destroy()
 	{
-		for (auto&& it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
 		{
 			it->second->onDestroy();
 		}
@@ -103,8 +126,8 @@ namespace Engine
 			return gameObjects.at(objName);
 		else
 		{
-			std::cout << "GameObject not found.\n";
-			return nullptr;
+			std::cout << "GameObject with name '" << objName << "' not found.\n";
+			return std::shared_ptr<GameObject>(nullptr);
 		}
 	}
 
