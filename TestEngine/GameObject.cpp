@@ -68,11 +68,18 @@ namespace Engine
 	}
 
 
-	void GameObject::addChild(const std::string & childName)
+	void GameObject::addChild(const std::string& childName)
 	{
 		const auto& child = ObjectManager::getInstance().getGameObject(childName);
-		if(child)
-			children.push_back(child);
+		if (auto c = child.lock())
+		{
+			if (c)
+				children.push_back(c);
+		}
+		
+		//child->transform()->setPosition(this->transform()->position() + child->transform()->position());
+		/*child->transform()->setRotation(this->transform()->rotation() * child->transform()->rotation());
+		child->transform()->setScale(this->transform()->position() + child->transform()->position());*/
 	}
 
 
@@ -134,12 +141,12 @@ namespace Engine
 	}
 
 
-	const Component_sptr& GameObject::getComponent(const std::string& cID) const
+	Component_wptr GameObject::getComponent(const std::string& cID) const
 	{
 		for (auto it = components.cbegin(); it != components.cend(); ++it)
 			if ((*it)->getName() == cID)
 				return *it;
-		return nullptr;
+		return std::shared_ptr<Component>(nullptr);
 	}
 
 
@@ -157,8 +164,11 @@ namespace Engine
 	void GameObject::setParent(const std::string& parentName)
 	{
 		const auto& parentObj = ObjectManager::getInstance().getGameObject(parentName);
-		parent = parentObj;
-		parentObj->addChild(name);
+		if (auto ancestor = parentObj.lock())
+		{
+			parent = ancestor;
+			ancestor->addChild(name);
+		}
 	}
 
 

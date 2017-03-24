@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	class DLL_SPEC TPCameraProcessor : public TagProcessor
+	class TPCameraProcessor : public TagProcessor
 	{
 	public:
 		TPCameraProcessor() : TagProcessor("tpcameracomponent") {}

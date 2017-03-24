@@ -11,8 +11,8 @@ namespace Engine
 		float mass;
 		bool trigger;
 		btRigidBody* rigidBody;
-		btCompoundShape shape;
-		btDefaultMotionState motionState;
+		btCompoundShape* shape;
+		btDefaultMotionState* motionState;
 		PhysicsMaterial physicsMaterial;
 		btDynamicsWorld* world;
 
@@ -46,6 +46,8 @@ namespace Engine
 
 		void addForce(float fx, float fy, float fz);
 		void setAngularFactor(float x, float y, float z);
+		void setLinearVelocity(float x, float y, float z);
+		void activate();
 		void disableRotation();
 		
 		void setMass();

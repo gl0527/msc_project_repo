@@ -5,6 +5,7 @@
 #include "PhysicsSystem.h"
 #include "InputHandler.h"
 #include "AudioSystem.h"
+#include "XMLParser.h"
 
 namespace Engine
 {

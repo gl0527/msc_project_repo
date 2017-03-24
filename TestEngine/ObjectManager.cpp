@@ -35,14 +35,18 @@ namespace Engine
 	}
 
 
-	const GameObject_sptr& ObjectManager::createGameObject(const std::string& id)
+	GameObject_wptr ObjectManager::createGameObject(const std::string& id)
 	{
 		if (gameObjects.find(id) == gameObjects.end())
 		{
 			gameObjects[id] = std::shared_ptr<GameObject>(new GameObject(id));
 			return gameObjects[id];
 		}
-		return nullptr;
+		else
+		{
+			std::cout << "Gameobject creation failed: Gameobject with name \"" << id << "\" already existing.\n";
+			return std::shared_ptr<GameObject>(nullptr);
+		}
 	}
 
 
@@ -120,13 +124,13 @@ namespace Engine
 	}
 
 
-	const GameObject_sptr& ObjectManager::getGameObject(const std::string& objName) const
+	GameObject_wptr ObjectManager::getGameObject(const std::string& objName) const
 	{
 		if (gameObjects.find(objName) != gameObjects.end())
 			return gameObjects.at(objName);
 		else
 		{
-			std::cout << "GameObject with name '" << objName << "' not found.\n";
+			std::cout << "Gameobject with name \"" << objName << "\" not found.\n";
 			return std::shared_ptr<GameObject>(nullptr);
 		}
 	}

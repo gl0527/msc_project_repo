@@ -8,6 +8,8 @@ namespace Engine
 		const auto& name = XMLParser::getInstance().parseString(elem, "name");
 		std::shared_ptr<TransformComponent> comp(new TransformComponent(name));
 
+		addToParentObject(elem, comp);
+
 		foreach_child(elem)
 		{
 			std::string childName(child->Value());
@@ -28,8 +30,5 @@ namespace Engine
 				comp->setScale(scale);
 			}
 		}
-		const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
-		const auto& object = ObjectManager::getInstance().getGameObject(objectName);
-		object->addComponent(comp);
 	}
 }

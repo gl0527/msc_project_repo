@@ -1,7 +1,6 @@
 #pragma once
 #include "Component.h"
 #include "tinyxml.h"
-#include "stdafx.h"
 #include "XMLParser.h"
 #include "ObjectManager.h"
 #include "GameObject.h"
@@ -10,10 +9,18 @@
 
 namespace Engine
 {
-	class DLL_SPEC TagProcessor
+	class TagProcessor
 	{
 	protected:
 		std::string tag;
+
+		virtual void addToParentObject(TiXmlElement* elem, const std::shared_ptr<Component>& component)
+		{
+			const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
+			const auto& object = ObjectManager::getInstance().getGameObject(objectName);
+			if (auto& obj = object.lock())
+				obj->addComponent(component);
+		}
 	public:
 		TagProcessor(const std::string& tagName)
 			: tag(tagName)

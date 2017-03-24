@@ -19,7 +19,7 @@ namespace Engine
 		static void deleteInstance();
 		static bool exists();
 
-		const GameObject_sptr& createGameObject(const std::string& id);
+		GameObject_wptr createGameObject(const std::string& id);
 		void removeGameObject(const std::string& id);
 
 		void start();
@@ -28,7 +28,7 @@ namespace Engine
 		void postUpdate(float t, float dt);
 		void destroy();
 
-		const GameObject_sptr& getGameObject(const std::string& objName) const;
+		GameObject_wptr getGameObject(const std::string& objName) const;
 
 		~ObjectManager();
 	};

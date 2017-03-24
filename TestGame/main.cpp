@@ -2,6 +2,8 @@
 #include "InputComponent.h"
 #include "FPSComponent.h"
 #include "InputProcessor.h"
+#include "DynamicMovementComponent.h"
+#include "SoldierComponent.h"
 
 using namespace Engine;
 
@@ -12,15 +14,7 @@ int main(int argc, char** argv)
 	if (!game.init())
 		return -1;
 
-	TransformProcessor tp;
-	//CameraProcessor cp;
-	TPCameraProcessor tpcp;
-	InputProcessor ip;
-	MeshProcessor mp;
-	PhysicsProcessor pp;
-	GameObjectProcessor gp;
-	AudioProcessor ap;
-	ParticleProcessor partp;
+	new InputProcessor;
 
 	auto renderSys = game.getRenderSystem();
 	auto& xmlParser = XMLParser::getInstance();
@@ -29,38 +23,7 @@ int main(int argc, char** argv)
 	renderSys->createPlaneMeshXZ("ground", 0, 10, 10);
 	auto rtt = renderSys->createTexture("sepia", 100, 100)->getBuffer()->getRenderTarget();
 
-	xmlParser.load("media/map/minath_tirith.xml");
-	xmlParser.process();
-
-	const auto& ball = objectMgr.getGameObject("ball");
-	if (ball)
-	{
-		auto ballAudio = ball->getFirstComponentByType<AudioComponent>();
-		if(ballAudio)
-			ballAudio->play();
-	}
-
-	const auto& explosive = objectMgr.getGameObject("explosive");
-	if (explosive)
-	{
-		auto explosivePhysx = explosive->getFirstComponentByType<PhysicsComponent>();
-		if(explosivePhysx)
-			explosivePhysx->setOnTriggerEnter([&objectMgr](PhysicsComponent* other) { 
-				other->addForce(1000, 10000, 0);
-				objectMgr.removeGameObject(other->getOwnerObject()->getName());
-			});
-	}
-
-	const auto& sold = objectMgr.getGameObject("soldier");
-	auto soldMesh = sold->getFirstComponentByType<MeshComponent>();
-	if (soldMesh)
-	{
-		auto soldierNode = soldMesh->getNode();
-		Ogre::Quaternion q(Ogre::Radian(Ogre::Math::PI), Ogre::Vector3::UNIT_Y);
-		soldierNode->rotate(q);
-	}
-
-	const auto& tree = objectMgr.createGameObject("tree");
+	/*const auto& tree = objectMgr.createGameObject("tree");
 	tree->transform()->setPosition(Ogre::Vector3(-30.0f, 0.0f, -900.0f));
 	tree->transform()->setScale(Ogre::Vector3(5, 5, 5));
 	std::shared_ptr<MeshComponent> ball2Renderer(new MeshComponent("treeTrunk", "treetrunk.mesh"));
@@ -68,6 +31,7 @@ int main(int argc, char** argv)
 	ball2bb->getBillboardSet()->setBillboardType(Ogre::BBT_PERPENDICULAR_SELF);
 	ball2bb->getBillboardSet()->setMaterialName("TreeLeaves");
 	ball2bb->getBillboardSet()->setSortingEnabled(true);
+	ball2bb->getBillboardSet()->setCastShadows(true);
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -81,23 +45,58 @@ int main(int argc, char** argv)
 	}
 
 	tree->addComponent(ball2Renderer);
-	tree->addComponent(ball2bb);
+	tree->addComponent(ball2bb);*/
+
+	if (!xmlParser.load("media/map/test.xml"))
+		return -1;
+
+	const auto& explosive = objectMgr.getGameObject("explosive");
+	if (auto& exp = explosive.lock())
+	{
+		auto& explosivePhysx = exp->getFirstComponentByType<PhysicsComponent>();
+		if(explosivePhysx)
+			explosivePhysx->setOnTriggerEnter([&objectMgr, &exp](PhysicsComponent* other) { 
+				const auto& explosiveAudio = exp->getFirstComponentByType<AudioComponent>();
+				explosiveAudio->play();
+				objectMgr.removeGameObject(other->getOwnerObject()->getName());
+			});
+	}
+
+	const auto& soldier = objectMgr.getGameObject("soldier");
+	std::shared_ptr<DynamicMovementComponent> movement(new DynamicMovementComponent("dynamicMvmt"));
+	std::shared_ptr<Engine::AnimationComponent> anim(new Engine::AnimationComponent("soldierAnimation", Ogre::ANIMBLEND_CUMULATIVE));
+	std::shared_ptr<SoldierComponent> data(new SoldierComponent("soldireComp"));
+	if (auto& sld = soldier.lock())
+	{
+		sld->addComponent(movement);
+		sld->addComponent(anim);
+		sld->addComponent(data);
+	}
+	
+	const auto& level = objectMgr.getGameObject("level");
+	if (auto& lvl = level.lock())
+	{
+		auto& levelSound = lvl->getFirstComponentByType<AudioComponent>();
+		if (levelSound)
+		{
+			levelSound->play();
+		}
+	}
 
 	const auto& fps = objectMgr.createGameObject("fps");
-	std::shared_ptr<FPSComponent> fpsc(new FPSComponent("FPS"));
-	fps->addComponent(fpsc);
+	if (auto& frames = fps.lock())
+	{
+		std::shared_ptr<FPSComponent> fpsc(new FPSComponent("FPS"));
+		frames->addComponent(fpsc);
+	}
 	
 	// setting up environment
-	auto mainLight = renderSys->getSceneManager()->createLight("mainlight");
-	mainLight->setType(Ogre::Light::LT_DIRECTIONAL);
-	mainLight->setDirection(-1.0f, -1.0f, -1.0f);
-
 	auto sceneMgr = renderSys->getSceneManager();
 
 	sceneMgr->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f, 1.0f));
-	sceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
-	sceneMgr->setShadowColour(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
-	sceneMgr->setSkyBox(true, "Sunrise");
+	//sceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
+	//sceneMgr->setShadowColour(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
+	sceneMgr->setSkyBox(true, "Sky");
 
 	game.start();
 	game.deleteInstance();

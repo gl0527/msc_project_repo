@@ -1,12 +1,9 @@
 #pragma once
 #include "btBulletDynamicsCommon.h"
 #include "System.h"
-#include <vector>
 
 namespace Engine
 {
-	class PhysicsComponent;
-
 	class PhysicsSystem : public System
 	{
 		btVector3 gravity;

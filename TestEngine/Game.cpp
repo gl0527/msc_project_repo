@@ -11,17 +11,13 @@ namespace Engine
 		: inited(false),
 		running(false),
 		destroyed(false),
-		renderSystem(nullptr),
-		physicsSystem(nullptr),
-		inputHandler(nullptr),
-		audioSystem(nullptr),
-		timer(nullptr)
+		renderSystem(new RenderSystem(title)),
+		physicsSystem(new PhysicsSystem),
+		inputHandler(new InputHandler),
+		audioSystem(new AudioSystem),
+		timer(new Ticker)
 	{
-		renderSystem = new RenderSystem(title);
-		physicsSystem = new PhysicsSystem();
-		inputHandler = new InputHandler();
-		audioSystem = new AudioSystem();
-		timer = new Ticker();
+		
 	}
 
 
@@ -59,6 +55,8 @@ namespace Engine
 		if (!physicsSystem->init())
 			return false;
 		if (!audioSystem->init())
+			return false;
+		if (!XMLParser::getInstance().init())
 			return false;
 		inited = true;
 		return true;
@@ -142,6 +140,7 @@ namespace Engine
 		}
 		else return;
 
+		XMLParser::getInstance().destroy();
 		ObjectManager::getInstance().destroy();
 		inputHandler->destroy();
 		physicsSystem->destroy();

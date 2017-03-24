@@ -7,6 +7,7 @@ namespace Engine
 	{
 	protected:
 		int zOrder;
+		float height;
 		Ogre::Camera* camera;
 		Ogre::Viewport* viewport;
 		Ogre::RenderWindow* renderWnd;
@@ -20,6 +21,7 @@ namespace Engine
 		Ogre::Viewport* getViewPort() const { return viewport; }
 		Ogre::Ray getRay(float screenX, float screenY) const;
 
+		void setHeight(float h) { height = h; }
 		void setCamera(Ogre::Camera* cam) { camera = cam; }
 		void SetPosition(const Ogre::Vector3& newPos) { camera->setPosition(newPos); }
 		void setLookAt(const Ogre::Vector3& newLookAt) { camera->lookAt(newLookAt); }

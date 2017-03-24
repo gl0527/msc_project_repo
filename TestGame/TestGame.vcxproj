@@ -82,10 +82,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DynamicMovementComponent.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SoldierComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TestEngine\TestEngine.vcxproj">
@@ -98,9 +100,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DynamicMovementComponent.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputProcessor.h" />
+    <ClInclude Include="SoldierComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

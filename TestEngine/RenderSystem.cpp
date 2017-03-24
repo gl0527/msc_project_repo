@@ -37,8 +37,8 @@ namespace Engine
 		ogreRoot->initialise(false);
 
 		renderWindow = ogreRoot->createRenderWindow(windowName, windowWidth, windowHeight, false);
-		sceneManager = ogreRoot->createSceneManager(Ogre::ST_GENERIC);
-
+		sceneManager = ogreRoot->createSceneManager(Ogre::ST_GENERIC); 
+		
 		overlaySystem = new Ogre::OverlaySystem;
 		sceneManager->addRenderQueueListener(overlaySystem);
 		overlayManager = Ogre::OverlayManager::getSingletonPtr();
@@ -79,6 +79,10 @@ namespace Engine
 		if (sceneManager)
 		{
 			sceneManager->clearScene();
+		}
+		if (renderWindow)
+		{
+			renderWindow->destroy();
 		}
 		if (ogreRoot)
 		{

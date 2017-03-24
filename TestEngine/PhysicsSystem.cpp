@@ -4,7 +4,7 @@
 namespace Engine
 {
 	PhysicsSystem::PhysicsSystem()
-		: gravity(btVector3(0.0f, -200.0f, 0.0f)),
+		: gravity(btVector3(0.0f, -100.0f, 0.0f)),
 		collisionConfiguration(nullptr),
 		dispatcher(nullptr),
 		overlappingPairCache(nullptr), 
@@ -84,30 +84,31 @@ namespace Engine
 
 	void PhysicsSystem::destroy()
 	{
-		// removing rigid bodies from the world
-		for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+		if (dynamicsWorld)
 		{
-			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
-			dynamicsWorld->removeCollisionObject(obj);
-			delete obj;
+			delete dynamicsWorld;
+			dynamicsWorld = nullptr;
 		}
-		// removing collision shapes
-		// ...
-
-		delete dynamicsWorld;
-		dynamicsWorld = nullptr;
-		
-		delete solver;
-		solver = nullptr;
-
-		delete overlappingPairCache;
-		overlappingPairCache = nullptr;
-
-		delete dispatcher;
-		dispatcher = nullptr;
-
-		delete collisionConfiguration;
-		collisionConfiguration = nullptr;
+		if (solver)
+		{
+			delete solver;
+			solver = nullptr;
+		}
+		if (overlappingPairCache)
+		{
+			delete overlappingPairCache;
+			overlappingPairCache = nullptr;
+		}
+		if (dispatcher)
+		{
+			delete dispatcher;
+			dispatcher = nullptr;
+		}
+		if (collisionConfiguration)
+		{
+			delete collisionConfiguration;
+			collisionConfiguration = nullptr;
+		}
 	}
 
 

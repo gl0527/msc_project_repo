@@ -25,17 +25,17 @@ namespace Engine
 
 		pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 		// kurzor megjelenítése
-#if defined OIS_WIN32_PLATFORM
-		pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_FOREGROUND")));
-		pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
-		pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_FOREGROUND")));
-		pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_NONEXCLUSIVE")));
-#elif defined OIS_LINUX_PLATFORM
-		pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
-		pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
-		pl.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
-		pl.insert(std::make_pair(std::string("XAutoRepeatOn"), std::string("true")));
-#endif
+//#if defined OIS_WIN32_PLATFORM
+//		pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_FOREGROUND")));
+//		pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
+//		pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_FOREGROUND")));
+//		pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_NONEXCLUSIVE")));
+//#elif defined OIS_LINUX_PLATFORM
+//		pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
+//		pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
+//		pl.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
+//		pl.insert(std::make_pair(std::string("XAutoRepeatOn"), std::string("true")));
+//#endif
 		inputManager = OIS::InputManager::createInputSystem(pl);
 		keyboard = static_cast<OIS::Keyboard*>(inputManager->createInputObject(OIS::OISKeyboard, false)); // unbuffered keyboard
 		mouse = static_cast<OIS::Mouse*>(inputManager->createInputObject(OIS::OISMouse, false)); // unbuffered mouse

@@ -13,9 +13,11 @@ namespace Engine
 {
 	class TagProcessor;
 
+	typedef std::map<std::string, TagProcessor*> XMLProcessorMap;
+
 	class DLL_SPEC XMLParser
 	{
-		std::map<std::string, TagProcessor*> procs;
+		XMLProcessorMap procs;
 		XMLParser();
 		static XMLParser* instance;
 
@@ -32,9 +34,9 @@ namespace Engine
 
 		void addProcessor(TagProcessor* proc);
 
-		void load(const char* fileName);
-		void save(const char* fileName);
-		void process();
+		bool init();
+		bool load(const char* fileName);
+		void destroy();
 
 		float parseFloat(TiXmlElement* tag, const char* attrName) const;
 		int parseInt(TiXmlElement* tag, const char* attrName) const;
@@ -42,7 +44,8 @@ namespace Engine
 		bool parseBoolean(TiXmlElement* tag, const char* attrName) const;
 
 		Ogre::Vector3 parseFloat3_XYZ(TiXmlElement* tag) const;
-		Ogre::Vector3 parseFloat3_RGB(TiXmlElement* tag) const;
+		Ogre::ColourValue parseFloat3_RGB(TiXmlElement* tag) const;
+		Ogre::ColourValue parseFloat3_RGBA(TiXmlElement* tag) const;
 		Ogre::Quaternion parseFloat4_WXYZ(TiXmlElement* tag) const;
 
 		template<typename T>

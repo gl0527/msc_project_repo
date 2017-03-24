@@ -38,32 +38,19 @@ namespace Engine
 
 		const std::string& getName() const { return name; }
 		TransformComponent* transform() const { return (TransformComponent*)components[0].get(); }
-		const Component_sptr& getComponent(const std::string& cID) const;
-		const GameObject_sptr& getParent() const { return parent; }
+		Component_wptr getComponent(const std::string& cID) const;
+		GameObject_wptr getParent() const { return parent; }
 		std::vector<std::string> getChildrenNames() const;
 		
 		template<typename T>
-		T* getFirstComponentByType()
+		std::shared_ptr<T> getFirstComponentByType()
 		{
 			for (auto it = components.begin(); it != components.end(); ++it)
 			{
-				if (auto castedComponent = dynamic_cast<T*>((*it).get()))
-					return castedComponent;
+				if (auto casted = std::dynamic_pointer_cast<T>(*it))
+					return casted;
 			}
 			return nullptr;
-		}
-		
-		template<typename T>
-		std::vector<T*> getComponentsByType()
-		{
-			std::vector<T*> returnVector;
-
-			for (auto it = components.begin(); it != components.end(); ++it)
-			{
-				if (T* castedComponent = dynamic_cast<T*>(*it))
-					returnVector.push_back(*it);
-			}
-			return returnVector;
 		}
 
 		void clearParent() { parent.reset(); }

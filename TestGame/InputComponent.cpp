@@ -32,17 +32,13 @@ void InputComponent::onPreUpdate(float t, float dt)
 	}
 	/*if (inputHandler->isKeyDown(OIS::KC_P))
 		Game::getInstance().pause();*/
-	if (inputHandler->isKeyDown(OIS::KC_W))
-		moveDir += Ogre::Vector3(0.0f, 1.0f, -1.0f);
-	if (inputHandler->isKeyDown(OIS::KC_S))
-		moveDir += Ogre::Vector3(0.0f, -1.0f, 1.0f);
 	if (inputHandler->isKeyDown(OIS::KC_D))
 		moveDir += Ogre::Vector3(1.0f, 0.0f, 0.0f);
 	if (inputHandler->isKeyDown(OIS::KC_A))
 		moveDir += Ogre::Vector3(-1.0f, 0.0f, 0.0f);
-	if (inputHandler->isKeyDown(OIS::KC_ADD))
+	if (inputHandler->isKeyDown(OIS::KC_W))
 		moveDir += Ogre::Vector3(0.0f, 0.0f, -1.0f);
-	if (inputHandler->isKeyDown(OIS::KC_SUBTRACT))
+	if (inputHandler->isKeyDown(OIS::KC_S))
 		moveDir += Ogre::Vector3(0.0f, 0.0f, 1.0f);
 	if (inputHandler->isKeyDown(OIS::KC_SYSRQ) && delay > maxDelay)
 	{
@@ -56,17 +52,14 @@ void InputComponent::onPreUpdate(float t, float dt)
 	if (ms.buttonDown(OIS::MB_Right))
 		std::cout << "rmb: " << ms.X.rel << ", " << ms.Y.rel << std::endl;
 	
-	/*if (ms.X.rel != 0 && ms.Y.rel != 0)
-	{
-		Ogre::Radian yaw(-turnSpeed * ms.X.rel);
-		Ogre::Quaternion Qyaw(yaw, Ogre::Vector3::UNIT_Y);
-		ownerObject->getTransform()->setRotation(Qyaw * ownerObject->getTransform()->getRotation());
+	Ogre::Radian yaw(-turnSpeed * ms.X.rel);
+	Ogre::Quaternion Qyaw(yaw, Ogre::Vector3::UNIT_Y);
+	ownerObject->transform()->setRotation(Qyaw * ownerObject->transform()->rotation());
 
-		const Ogre::Vector3& right = ownerObject->getTransform()->getRight();
-		Ogre::Radian pitch(-turnSpeed * ms.Y.rel);
-		Ogre::Quaternion Qpitch(pitch, right);
-		ownerObject->getTransform()->setRotation(Qpitch * ownerObject->getTransform()->getRotation());
-	}*/
+	const Ogre::Vector3& right = ownerObject->transform()->right();
+	Ogre::Radian pitch(-turnSpeed * ms.Y.rel);
+	Ogre::Quaternion Qpitch(pitch, right);
+	ownerObject->transform()->setRotation(Qpitch * ownerObject->transform()->rotation());
 
 	moveDir.normalise();
 	moveDir = ownerObject->transform()->rotation() * moveDir; // azert, hogy a movedir az ownerObject koordinata-rendszereben legyen ertve

@@ -15,19 +15,24 @@ namespace Engine
 		else if (typeName == "static")		type = PhysicsComponent::STATIC;
 
 		std::shared_ptr<PhysicsComponent> comp(new PhysicsComponent(name, mass, type));
+
+		unsigned int shapeCount = 0;
+
 		foreach_child(elem)
 		{
 			std::string childName(child->Value());
-
+			
 			if (childName == "shape") // lehet, hogy ennek a parszolasa kulon fuggvenybe kellene, hogy legyen
 			{
+				shapeCount++;
+				
 				const auto& shapeType = XMLParser::getInstance().parseString(child, "type");
 				btCollisionShape* collShape = nullptr;
 				
 				if (shapeType == "box")
 				{
 					const auto& size = XMLParser::getInstance().parseFloat3_XYZ(child);
-					collShape = new btBoxShape(btVector3(size.x, size.y, size.z));
+					collShape = new btBoxShape(btVector3(size.x * 0.5f, size.y * 0.5f, size.z * 0.5f));
 				}
 				else if (shapeType == "staticplane")
 				{
@@ -58,10 +63,8 @@ namespace Engine
 					if (childName2 == "rotation") shapeRot = XMLParser::getInstance().parseFloat4_WXYZ(child2);
 				}
 				comp->addShape(collShape, shapePos, shapeRot);
-
-				const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
-				const auto& object = ObjectManager::getInstance().getGameObject(objectName);
-				object->addComponent(comp);
+				if (shapeCount == 1)
+					addToParentObject(elem, comp);
 			}
 			else if (childName == "material")
 			{
@@ -82,6 +85,12 @@ namespace Engine
 			else if (childName == "trigger")
 			{
 				comp->setTrigger(XMLParser::getInstance().parseBoolean(child, "value"));
+			}
+			else if (childName == "rotation")
+			{
+				bool enableRotation = XMLParser::getInstance().parseBoolean(child, "enabled");
+				if (!enableRotation)
+					comp->disableRotation();
 			}
 		}
 	}

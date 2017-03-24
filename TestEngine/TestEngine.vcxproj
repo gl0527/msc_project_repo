@@ -87,6 +87,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="AudioProcessor.h" />
     <ClInclude Include="AudioSystem.h" />
@@ -102,6 +103,8 @@
     <ClInclude Include="GameObjectProcessor.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="LightComponent.h" />
+    <ClInclude Include="LightProcessor.h" />
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="MeshProcessor.h" />
     <ClInclude Include="ObjectManager.h" />
@@ -125,6 +128,7 @@
     <ClInclude Include="XMLParser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="AudioProcessor.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
@@ -140,6 +144,8 @@
     <ClCompile Include="GameObjectProcessor.cpp" />
     <ClCompile Include="Graph.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="LightComponent.cpp" />
+    <ClCompile Include="LightProcessor.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="MeshProcessor.cpp" />
     <ClCompile Include="ObjectManager.cpp" />

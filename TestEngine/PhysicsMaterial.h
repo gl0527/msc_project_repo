@@ -4,7 +4,7 @@ namespace Engine
 {
 	class PhysicsMaterial
 	{
-		float friction; // surlodas
+		float friction; // surlodas (static, dynamic)
 		float linearDamping; // linearis csillapitas
 		float angularDamping; // perdulet csillapitas
 		float restitution; // pattogossag

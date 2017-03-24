@@ -5,12 +5,12 @@ namespace Engine
 {
 	TPCameraComponent::TPCameraComponent(const std::string& name, int zDepth)
 		: CameraComponent(name, zDepth),
-		camHeight(200.0f),
 		targetHeight(80.0f),
 		camDist(400.0f),
 		motBlend(2.0f),
 		fixed(false)
-	{}
+	{
+	}
 
 
 	TPCameraComponent::~TPCameraComponent()
@@ -23,7 +23,7 @@ namespace Engine
 		Ogre::Vector3& dir = ownerObject->transform()->forward();
 		dir.normalise();
 		
-		camera->setPosition(ownerObject->transform()->position() - dir*camDist + Ogre::Vector3(0, camHeight, 0));
+		camera->setPosition(ownerObject->transform()->position() - dir*camDist + Ogre::Vector3(0, height, 0));
 		camera->lookAt(ownerObject->transform()->position() + Ogre::Vector3(0, targetHeight, 0));
 	}
 
@@ -32,7 +32,7 @@ namespace Engine
 	{
 		Ogre::Vector3& dir = ownerObject->transform()->forward();
 		dir.normalise();
-		Ogre::Vector3 newPos = ownerObject->transform()->position() - dir*camDist + Ogre::Vector3(0, camHeight, 0);
+		Ogre::Vector3 newPos = ownerObject->transform()->position() - dir*camDist + Ogre::Vector3(0, height, 0);
 		float w = motBlend * dt;
 
 		if (!fixed)

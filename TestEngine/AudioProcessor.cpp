@@ -9,6 +9,8 @@ namespace Engine
 		const auto& listener = XMLParser::getInstance().parseString(elem, "listener");
 		std::shared_ptr<AudioComponent> comp(new AudioComponent(file, listener));
 
+		addToParentObject(elem, comp);
+
 		foreach_child(elem)
 		{
 			std::string childName(child->Value());
@@ -29,9 +31,6 @@ namespace Engine
 				comp->setLooping(loop);
 			}
 		}
-		const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
-		const auto& object = ObjectManager::getInstance().getGameObject(objectName);
-		object->addComponent(comp);
 	}
 }
 

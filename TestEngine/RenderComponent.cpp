@@ -33,9 +33,9 @@ namespace Engine
 
 	void RenderComponent::createNode()
 	{
-		if (const auto& ownerParent = ownerObject->getParent())
+		if (const auto& ownerParent = ownerObject->getParent().lock())
 		{	
-			if (auto ownerRenderer = ownerParent->getFirstComponentByType<RenderComponent>())
+			if (const auto& ownerRenderer = ownerParent->getFirstComponentByType<RenderComponent>())
 			{
 				if (auto pNode = ownerRenderer->getNode())
 					parentNode = pNode;

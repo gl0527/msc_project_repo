@@ -13,10 +13,17 @@ namespace Engine
 		{
 			std::string childName(child->Value());
 
-			if (childName == "height")
+			if (childName == "frustum")
+			{
+				float nearPlane = XMLParser::getInstance().parseFloat(child, "near");
+				float farPlane = XMLParser::getInstance().parseFloat(child, "far");
+				comp->setNearClip(nearPlane);
+				comp->setFarClip(farPlane);
+			}
+			else if (childName == "height")
 			{
 				float height = XMLParser::getInstance().parseFloat(child, "value");
-				comp->setCameraHeight(height);
+				comp->setHeight(height);
 			}
 			else if (childName == "targetHeight")
 			{
@@ -39,9 +46,7 @@ namespace Engine
 				comp->setFixed(isFixed);
 			}
 		}
-		const auto& objectName = XMLParser::getInstance().parseString((TiXmlElement*)elem->Parent(), "name");
-		const auto& object = ObjectManager::getInstance().getGameObject(objectName);
-		object->addComponent(comp);
+		addToParentObject(elem, comp);
 	}
 }
 

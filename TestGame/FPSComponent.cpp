@@ -19,7 +19,6 @@ FPSComponent::FPSComponent(const std::string& name)
 	panel->setMetricsMode(Ogre::GMM_PIXELS);
 	panel->setPosition(10, 10);
 	panel->setDimensions(180, 50);
-	panel->setMaterialName("TreeTrunk");
 
 	Ogre::Overlay* overlay = renderSys->createOverlay("OverlayName");
 	overlay->add2D(panel);

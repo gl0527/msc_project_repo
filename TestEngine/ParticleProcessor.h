@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	class DLL_SPEC ParticleProcessor : public TagProcessor
+	class ParticleProcessor : public TagProcessor
 	{
 	public:
 		ParticleProcessor() : TagProcessor("particlecomponent") {}

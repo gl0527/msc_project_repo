@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	class DLL_SPEC AudioProcessor : public TagProcessor
+	class AudioProcessor : public TagProcessor
 	{
 	public:
 		AudioProcessor() : TagProcessor("audiocomponent") {}

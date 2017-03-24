@@ -1,7 +1,15 @@
 #include "XMLParser.h"
 #include "ObjectManager.h"
 #include "GameObject.h"
-#include "TagProcessor.h"
+#include "TransformProcessor.h"
+#include "CameraProcessor.h"
+#include "MeshProcessor.h"
+#include "TPCameraProcessor.h"
+#include "PhysicsProcessor.h"
+#include "GameObjectProcessor.h"
+#include "AudioProcessor.h"
+#include "ParticleProcessor.h"
+#include "LightProcessor.h"
 
 namespace Engine
 {
@@ -44,26 +52,45 @@ namespace Engine
 	}
 
 
-	void XMLParser::load(const char* fileName)
+	bool XMLParser::init()
 	{
-		document.LoadFile(fileName);
-		root = document.FirstChildElement();
-		if (root == nullptr)
-			throw std::exception("XML document root not found.\n");
+		new GameObjectProcessor;
+		new TransformProcessor;
+		new TPCameraProcessor;
+		new CameraProcessor;
+		new MeshProcessor;
+		new PhysicsProcessor;
+		new AudioProcessor;
+		new ParticleProcessor;
+		new LightProcessor;
+
+		return true;
 	}
 
 
-	void XMLParser::save(const char * fileName)
+	bool XMLParser::load(const char* fileName)
 	{
-		TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "", "");
-		document.LinkEndChild(decl);
+		if (document.LoadFile(fileName))
+		{
+			root = document.FirstChildElement();
+			if (root == nullptr)
+			{
+				errorMessage("XML document root not found.\n");
+				return false;
+			}
+			traverse(root);
+			return true;
+		}
+		errorMessage("The XML document does not exist or invalid.\n");
+		return false;
+	}
 
-		root = new TiXmlElement("map");
-		document.LinkEndChild(root);
 
-		// ...
-
-		document.SaveFile(fileName);
+	void XMLParser::destroy()
+	{
+		for (auto it = procs.begin(); it != procs.end(); it++)
+			delete it->second;
+		procs.clear();
 	}
 
 
@@ -85,12 +112,6 @@ namespace Engine
 	{
 		Ogre::LogManager::getSingleton().logMessage(msg);
 		std::cout << msg << std::endl;
-	}
-
-	
-	void XMLParser::process()
-	{
-		traverse(root);
 	}
 
 
@@ -160,13 +181,23 @@ namespace Engine
 	}
 
 
-	Ogre::Vector3 XMLParser::parseFloat3_RGB(TiXmlElement* tag) const
+	Ogre::ColourValue XMLParser::parseFloat3_RGB(TiXmlElement* tag) const
 	{
 		const char* att[] = { "r", "g", "b" };
 		std::vector<const char*> attrs(att, att + elemCount(att));
 
 		const auto& colv = parse<float>(tag, attrs);
-		return Ogre::Vector3(colv[0], colv[1], colv[2]);
+		return Ogre::ColourValue(colv[0], colv[1], colv[2]);
+	}
+
+
+	Ogre::ColourValue XMLParser::parseFloat3_RGBA(TiXmlElement* tag) const
+	{
+		const char* att[] = { "r", "g", "b", "a" };
+		std::vector<const char*> attrs(att, att + elemCount(att));
+
+		const auto& colv = parse<float>(tag, attrs);
+		return Ogre::ColourValue(colv[0], colv[1], colv[2], colv[3]);
 	}
 
 

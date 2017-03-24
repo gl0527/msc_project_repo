@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	class DLL_SPEC MeshProcessor : public TagProcessor
+	class MeshProcessor : public TagProcessor
 	{
 	public:
 		MeshProcessor() : TagProcessor("meshcomponent") {}

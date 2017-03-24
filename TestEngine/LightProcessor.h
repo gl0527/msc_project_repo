@@ -3,10 +3,10 @@
 
 namespace Engine
 {
-	class PhysicsProcessor : public TagProcessor
+	class LightProcessor : public TagProcessor
 	{
 	public:
-		PhysicsProcessor() : TagProcessor("physicscomponent") {}
+		LightProcessor() : TagProcessor("lightcomponent") {}
 		virtual void process(TiXmlElement* elem) override;
 	};
 }
