@@ -14,7 +14,9 @@ namespace Engine
 
 		virtual void onStart() override;
 
-		void start(const std::string& animName);
+		void init(const std::string& animName);
+		void start();
+		void setEnabled(bool enable) { anim->setEnabled(enable); }
 		void stop();
 		void setWeight(unsigned int weight);
 		void setLoop(bool loop);

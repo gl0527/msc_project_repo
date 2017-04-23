@@ -1,12 +1,12 @@
 #include "DynamicMovementComponent.h"
 #include "GameObject.h"
-#include "PhysicsComponent.h"
 
 DynamicMovementComponent::DynamicMovementComponent(const std::string& name)
 	:Component(name),
 	moveSpeed(10000.0f),
 	inputHandler(nullptr),
-	ownerPhysics(nullptr)
+	ownerPhysics(std::shared_ptr<PhysicsComponent>(nullptr)),
+	ownerSoldierComp(std::shared_ptr<SoldierComponent>(nullptr))
 {
 }
 
@@ -19,7 +19,8 @@ DynamicMovementComponent::~DynamicMovementComponent()
 void DynamicMovementComponent::onStart()
 {
 	inputHandler = Game::getInstance().getInputHandler();
-	ownerPhysics = ownerObject->getFirstComponentByType<PhysicsComponent>().get();
+	ownerPhysics = ownerObject->getFirstComponentByType<PhysicsComponent>();
+	ownerSoldierComp = ownerObject->getFirstComponentByType<SoldierComponent>();
 }
 
 
@@ -34,20 +35,35 @@ void DynamicMovementComponent::onPreUpdate(float t, float dt)
 		return;
 	}
 	if (inputHandler->isKeyDown(OIS::KC_D))
+	{
 		force += Ogre::Vector3(1.0f, 0.0f, 0.0f);
+		if (auto& soldierComp = ownerSoldierComp.lock())
+			soldierComp->setAction(SoldierComponent::PA_RUN);
+	}
 	if (inputHandler->isKeyDown(OIS::KC_A))
+	{
 		force += Ogre::Vector3(-1.0f, 0.0f, 0.0f);
+		if (auto& soldierComp = ownerSoldierComp.lock())
+			soldierComp->setAction(SoldierComponent::PA_RUN);
+	}
 	if (inputHandler->isKeyDown(OIS::KC_W))
+	{
 		force += Ogre::Vector3(0.0f, 0.0f, -1.0f);
+		if (auto& soldierComp = ownerSoldierComp.lock())
+			soldierComp->setAction(SoldierComponent::PA_RUN);
+	}
 	if (inputHandler->isKeyDown(OIS::KC_S))
+	{
 		force += Ogre::Vector3(0.0f, 0.0f, 1.0f);
+		if (auto& soldierComp = ownerSoldierComp.lock())
+			soldierComp->setAction(SoldierComponent::PA_RUN);
+	}
 
-	/*if (ms.buttonDown(OIS::MB_Left))
-		std::cout << "lmb: " << ms.X.abs << ", " << ms.Y.abs << std::endl;
-	if (ms.buttonDown(OIS::MB_Right))
-		std::cout << "rmb: " << ms.X.rel << ", " << ms.Y.rel << std::endl;
+	if (ms.buttonDown(OIS::MB_Left))
+		if (auto& soldierComp = ownerSoldierComp.lock())
+			soldierComp->setAction(SoldierComponent::PA_SHOOT);
 
-	Ogre::Radian yaw(-0.003 * ms.X.rel);
+	/*Ogre::Radian yaw(-0.003 * ms.X.rel);
 	Ogre::Quaternion Qyaw(yaw, Ogre::Vector3::UNIT_Y);
 	ownerObject->transform()->setRotation(Qyaw * ownerObject->transform()->rotation());
 
@@ -59,10 +75,10 @@ void DynamicMovementComponent::onPreUpdate(float t, float dt)
 	force.normalise();
 	force = ownerObject->transform()->rotation() * force; // azert, hogy a movedir az ownerObject koordinata-rendszereben legyen ertve
 
-	if (ownerPhysics)
+	if (auto& phy = ownerPhysics.lock())
 	{
-		ownerPhysics->setLinearVelocity(0.0f, 0.0f, 0.0f);
-		ownerPhysics->activate();
-		ownerPhysics->addForce(moveSpeed * force.x, moveSpeed * force.y, moveSpeed * force.z);
+		phy->setLinearVelocity(0.0f, 0.0f, 0.0f);
+		phy->activate();
+		phy->addForce(moveSpeed * force.x, moveSpeed * force.y, moveSpeed * force.z);
 	}
 }

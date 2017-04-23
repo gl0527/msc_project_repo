@@ -3,12 +3,15 @@
 
 namespace Engine
 {
+	class PhysicsSystem;
+
 	class DLL_SPEC TPCameraComponent : public CameraComponent
 	{
 		float targetHeight;
 		float camDist;
 		float motBlend;
 		bool fixed;
+		PhysicsSystem* physicsSys;
 	public:
 		TPCameraComponent(const std::string& name, int zDepth);
 		~TPCameraComponent();

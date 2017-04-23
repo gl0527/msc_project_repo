@@ -9,7 +9,7 @@ namespace Engine
 
 		if (auto& obj = object.lock())
 		{
-			TiXmlElement* parent = (TiXmlElement*)elem->Parent();
+			auto parent = (TiXmlElement*)elem->Parent();
 			std::string parentTag(parent->Value());
 
 			if (parentTag == "gameobject")

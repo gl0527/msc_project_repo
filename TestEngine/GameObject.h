@@ -43,14 +43,14 @@ namespace Engine
 		std::vector<std::string> getChildrenNames() const;
 		
 		template<typename T>
-		std::shared_ptr<T> getFirstComponentByType()
+		std::weak_ptr<T> getFirstComponentByType()
 		{
 			for (auto it = components.begin(); it != components.end(); ++it)
 			{
 				if (auto casted = std::dynamic_pointer_cast<T>(*it))
 					return casted;
 			}
-			return nullptr;
+			return std::shared_ptr<T>(nullptr);
 		}
 
 		void clearParent() { parent.reset(); }

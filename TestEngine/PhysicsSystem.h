@@ -11,7 +11,7 @@ namespace Engine
 		btCollisionDispatcher* dispatcher;
 		btBroadphaseInterface* overlappingPairCache;
 		btSequentialImpulseConstraintSolver* solver;
-		btDiscreteDynamicsWorld* dynamicsWorld;
+		btDiscreteDynamicsWorld* world;
 		static bool onContactProcessed(btManifoldPoint& cp, void* body0, void* body1);
 	public:
 		PhysicsSystem();
@@ -20,7 +20,8 @@ namespace Engine
 		virtual bool update(float t, float dt) override;
 		virtual void destroy() override;
 
-		btDiscreteDynamicsWorld* getWorld() const { return dynamicsWorld; }
+		btDiscreteDynamicsWorld* getWorld() const { return world; }
+		btCollisionWorld::ClosestRayResultCallback rayTest(const btVector3& from, const btVector3& to);
 
 		void setGravity(float y);
 		void setGravity(float x, float y, float z);

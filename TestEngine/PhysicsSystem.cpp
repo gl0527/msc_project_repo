@@ -9,7 +9,7 @@ namespace Engine
 		dispatcher(nullptr),
 		overlappingPairCache(nullptr), 
 		solver(nullptr),
-		dynamicsWorld(nullptr)
+		world(nullptr)
 	{
 	}
 
@@ -21,8 +21,8 @@ namespace Engine
 		overlappingPairCache = new btDbvtBroadphase;
 		solver = new btSequentialImpulseConstraintSolver;
 
-		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-		dynamicsWorld->setGravity(gravity);
+		world = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+		world->setGravity(gravity);
 		gContactProcessedCallback = onContactProcessed;
 
 		return true;
@@ -56,9 +56,9 @@ namespace Engine
 
 	bool PhysicsSystem::update(float t, float dt)
 	{
-		if (dynamicsWorld)
+		if (world)
 		{
-			dynamicsWorld->stepSimulation(dt);
+			world->stepSimulation(dt);
 			return true;
 		}
 		else
@@ -66,28 +66,37 @@ namespace Engine
 	}
 
 
+	btCollisionWorld::ClosestRayResultCallback PhysicsSystem::rayTest(const btVector3& from, const btVector3& to)
+	{
+		btCollisionWorld::ClosestRayResultCallback ray(from, to);
+		if(world)
+			world->rayTest(from, to, ray);
+		return ray;
+	}
+
+
 	void PhysicsSystem::setGravity(float y)
 	{
 		btVector3 g(0.0f, y, 0.0f);
-		if (dynamicsWorld)
-			dynamicsWorld->setGravity(g);
+		if (world)
+			world->setGravity(g);
 	}
 
 
 	void PhysicsSystem::setGravity(float x, float y, float z)
 	{
 		btVector3 g(x, y, z);
-		if (dynamicsWorld)
-			dynamicsWorld->setGravity(g);
+		if (world)
+			world->setGravity(g);
 	}
 
 
 	void PhysicsSystem::destroy()
 	{
-		if (dynamicsWorld)
+		if (world)
 		{
-			delete dynamicsWorld;
-			dynamicsWorld = nullptr;
+			delete world;
+			world = nullptr;
 		}
 		if (solver)
 		{

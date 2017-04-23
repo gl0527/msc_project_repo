@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	LightComponent::LightComponent(const std::string & name, const Ogre::Light::LightTypes & t)
+	LightComponent::LightComponent(const std::string& name, const Ogre::Light::LightTypes& t)
 		:Component(name),
 		sceneMgr(Game::getInstance().getRenderSystem()->getSceneManager()),
 		light(sceneMgr->createLight(name)),

@@ -40,6 +40,12 @@ namespace Engine
 			delete rigidBody;
 			rigidBody = nullptr;
 		}
+
+		const auto& q = ownerObject->transform()->rotation();
+		const auto& p = ownerObject->transform()->position();
+
+		btTransform pose(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z));
+		motionState = new btDefaultMotionState(pose);
 		
 		btVector3 inertia(0, 0, 0);
 		if (type == RigidBodyType::STATIC)
@@ -64,13 +70,6 @@ namespace Engine
 	void PhysicsComponent::onInit(GameObject* object)
 	{
 		ownerObject = object;
-
-		const Ogre::Quaternion& q = ownerObject->transform()->rotation();
-		const Ogre::Vector3& p = ownerObject->transform()->position();
-
-		btTransform pose(btQuaternion(q.x, q.y, q.z, q.w), btVector3(p.x, p.y, p.z));
-		motionState = new btDefaultMotionState(pose);
-
 		setMass();
 		setType(type);
 	}
@@ -169,7 +168,7 @@ namespace Engine
 		{
 			rigidBody->setFriction(physicsMaterial.getFriction());
 			rigidBody->setDamping(physicsMaterial.getLinearDamping(), physicsMaterial.getAngularDamping());
-			rigidBody->setRestitution(physicsMaterial.getRestitution());
+			rigidBody->setRestitution(physicsMaterial.getBounciness());
 		}
 	}
 

@@ -55,11 +55,10 @@ namespace Engine
 		auto& removableObject = gameObjects[id];
 		if (removableObject)
 		{
-			// gyerekeket torlom eloszor
 			const auto& removableChildren = removableObject->getChildrenNames();
 			for (auto it = removableChildren.begin(); it != removableChildren.end(); ++it)
 			{
-				removeGameObject(*it); // rekurziv hivas
+				removeGameObject(*it);
 			}
 			removableObject->onDestroy();
 			gameObjects.erase(gameObjects.find(id));
@@ -69,10 +68,7 @@ namespace Engine
 
 	void ObjectManager::start()
 	{
-		auto begin = gameObjects.begin();
-		auto end = gameObjects.end();
-
-		for (auto it = begin; it != end; ++it)
+		for (auto it = gameObjects.begin(), end = gameObjects.end(); it != end; ++it)
 		{
 			it->second->onStart();
 		}
@@ -81,10 +77,7 @@ namespace Engine
 
 	void ObjectManager::preUpdate(float t, float dt)
 	{
-		auto begin = gameObjects.begin();
-		auto end = gameObjects.end();
-
-		for (auto it = begin; it != end; ++it)
+		for (auto it = gameObjects.begin(), end = gameObjects.end(); it != end; ++it)
 		{
 			it->second->onPreUpdate(t, dt);
 		}
@@ -93,10 +86,7 @@ namespace Engine
 
 	void ObjectManager::update(float t, float dt)
 	{
-		auto begin = gameObjects.begin();
-		auto end = gameObjects.end();
-
-		for (auto it = begin; it != end; ++it)
+		for (auto it = gameObjects.begin(), end = gameObjects.end(); it != end; ++it)
 		{
 			it->second->onUpdate(t, dt);
 		}
@@ -105,10 +95,7 @@ namespace Engine
 
 	void ObjectManager::postUpdate(float t, float dt)
 	{
-		auto begin = gameObjects.begin();
-		auto end = gameObjects.end();
-
-		for (auto it = begin; it != end; ++it)
+		for (auto it = gameObjects.begin(), end = gameObjects.end(); it != end; ++it)
 		{
 			it->second->onPostUpdate(t, dt);
 		}
@@ -117,7 +104,7 @@ namespace Engine
 
 	void ObjectManager::destroy()
 	{
-		for (auto it = gameObjects.begin(); it != gameObjects.end(); ++it)
+		for (auto it = gameObjects.begin(), end = gameObjects.end(); it != end; ++it)
 		{
 			it->second->onDestroy();
 		}

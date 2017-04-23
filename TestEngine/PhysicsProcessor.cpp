@@ -73,7 +73,7 @@ namespace Engine
 				phyMat.setFriction(XMLParser::getInstance().parseFloat(child, "friction"));
 				phyMat.setLinearDamping(XMLParser::getInstance().parseFloat(child, "lin_damping"));
 				phyMat.setAngularDamping(XMLParser::getInstance().parseFloat(child, "ang_damping"));
-				phyMat.setRestitution(XMLParser::getInstance().parseFloat(child, "restitution"));
+				phyMat.setBounciness(XMLParser::getInstance().parseFloat(child, "bounciness"));
 				
 				comp->setPhysicsMaterial(phyMat);
 			}

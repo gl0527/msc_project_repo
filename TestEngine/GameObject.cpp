@@ -27,7 +27,7 @@ namespace Engine
 
 	void GameObject::removeComponent(const std::string& compName)
 	{
-		for (auto it = components.begin(); it != components.end(); it++)
+		for (auto it = components.begin(), end = components.end(); it != end; ++it)
 		{
 			if ((*it)->getName() == compName)
 			{
@@ -70,11 +70,9 @@ namespace Engine
 
 	void GameObject::addChild(const std::string& childName)
 	{
-		const auto& child = ObjectManager::getInstance().getGameObject(childName);
-		if (auto c = child.lock())
+		if (const auto& child = ObjectManager::getInstance().getGameObject(childName).lock())
 		{
-			if (c)
-				children.push_back(c);
+			children.push_back(child);
 		}
 		
 		//child->transform()->setPosition(this->transform()->position() + child->transform()->position());
@@ -83,9 +81,9 @@ namespace Engine
 	}
 
 
-	void GameObject::removeChild(const std::string & childName)
+	void GameObject::removeChild(const std::string& childName)
 	{
-		for (auto child = children.begin(); child != children.end(); ++child)
+		for (auto child = children.begin(), end = children.end(); child != end; ++child)
 		{
 			if ((*child).lock()->getName() == childName)
 			{
@@ -104,28 +102,28 @@ namespace Engine
 
 	void GameObject::onStart()
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto it = components.begin(), end = components.end(); it != end; ++it)
 			(*it)->onStart();
 	}
 
 
 	void GameObject::onPreUpdate(float t, float dt)
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto it = components.begin(), end = components.end(); it != end; ++it)
 			(*it)->onPreUpdate(t, dt);
 	}
 
 
 	void GameObject::onUpdate(float t, float dt)
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto it = components.begin(), end = components.end(); it != end; ++it)
 			(*it)->onUpdate(t, dt);
 	}
 
 
 	void GameObject::onPostUpdate(float t, float dt)
 	{
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto it = components.begin(), end = components.end(); it != end; ++it)
 			(*it)->onPostUpdate(t, dt);
 	}
 
@@ -133,7 +131,7 @@ namespace Engine
 	void GameObject::onDestroy()
 	{
 		clearParent();
-		for (auto it = components.begin(); it != components.end(); ++it)
+		for (auto it = components.begin(), end = components.end(); it != end; ++it)
 		{
 			(*it)->onDestroy();
 		}
@@ -143,7 +141,7 @@ namespace Engine
 
 	Component_wptr GameObject::getComponent(const std::string& cID) const
 	{
-		for (auto it = components.cbegin(); it != components.cend(); ++it)
+		for (auto it = components.cbegin(), end = components.cend(); it != end; ++it)
 			if ((*it)->getName() == cID)
 				return *it;
 		return std::shared_ptr<Component>(nullptr);
@@ -153,7 +151,7 @@ namespace Engine
 	std::vector<std::string> GameObject::getChildrenNames() const
 	{
 		std::vector<std::string> childrenNames;
-		for (auto child = children.begin(); child != children.end(); ++child)
+		for (auto child = children.begin(), end = children.end(); child != end; ++child)
 		{
 			childrenNames.push_back(child->lock()->getName());
 		}
@@ -163,8 +161,7 @@ namespace Engine
 
 	void GameObject::setParent(const std::string& parentName)
 	{
-		const auto& parentObj = ObjectManager::getInstance().getGameObject(parentName);
-		if (auto ancestor = parentObj.lock())
+		if (auto& ancestor = ObjectManager::getInstance().getGameObject(parentName).lock())
 		{
 			parent = ancestor;
 			ancestor->addChild(name);
@@ -174,7 +171,7 @@ namespace Engine
 
 	bool GameObject::hasTag(const std::string& t)
 	{
-		for (auto it = tags.cbegin(); it != tags.cend(); ++it)
+		for (auto it = tags.cbegin(), end = tags.cend(); it != end; ++it)
 		{
 			if (*it == t)
 				return true;

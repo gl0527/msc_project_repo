@@ -20,12 +20,14 @@ namespace Engine
 
 	void AnimationComponent::onStart()
 	{
-		const auto& ownerMesh = ownerObject->getFirstComponentByType<MeshComponent>();
-		if (ownerMesh == nullptr)
+		if (auto& ownerMesh = ownerObject->getFirstComponentByType<MeshComponent>().lock())
+		{
+			entity = ownerMesh->getEntity();
+			if (entity)
+				entity->getSkeleton()->setBlendMode(animBlend);
+		}
+		else
 			ownerObject->removeComponent(name);
-		entity = ownerMesh->getEntity();
-		if(entity)
-			entity->getSkeleton()->setBlendMode(animBlend);
 	}
 
 
@@ -39,11 +41,17 @@ namespace Engine
 	}
 
 
-	void AnimationComponent::start(const std::string& animName)
+	void AnimationComponent::init(const std::string& animName)
+	{
+		if (entity)
+			anim = entity->getAnimationState(animName);
+	}
+
+
+	void AnimationComponent::start()
 	{
 		if (entity)
 		{
-			anim = entity->getAnimationState(animName);
 			if (anim)
 				anim->setEnabled(true);
 		}

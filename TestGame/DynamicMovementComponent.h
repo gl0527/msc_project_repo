@@ -1,6 +1,7 @@
 #pragma once
 #include "PhysicsComponent.h"
 #include "InputHandler.h"
+#include "SoldierComponent.h"
 
 using namespace Engine;
 
@@ -8,7 +9,8 @@ class DynamicMovementComponent : public Component
 {
 	float moveSpeed;
 	InputHandler* inputHandler;
-	PhysicsComponent* ownerPhysics;
+	std::weak_ptr<PhysicsComponent> ownerPhysics;
+	std::weak_ptr<SoldierComponent> ownerSoldierComp;
 public:
 	DynamicMovementComponent(const std::string& name);
 	~DynamicMovementComponent();

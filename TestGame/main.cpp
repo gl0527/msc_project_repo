@@ -50,41 +50,34 @@ int main(int argc, char** argv)
 	if (!xmlParser.load("media/map/test.xml"))
 		return -1;
 
-	const auto& explosive = objectMgr.getGameObject("explosive");
-	if (auto& exp = explosive.lock())
+	if (auto& exp = objectMgr.getGameObject("explosive").lock())
 	{
-		auto& explosivePhysx = exp->getFirstComponentByType<PhysicsComponent>();
-		if(explosivePhysx)
+		if(auto& explosivePhysx = exp->getFirstComponentByType<PhysicsComponent>().lock())
 			explosivePhysx->setOnTriggerEnter([&objectMgr, &exp](PhysicsComponent* other) { 
-				const auto& explosiveAudio = exp->getFirstComponentByType<AudioComponent>();
-				explosiveAudio->play();
+				if(const auto& explosiveAudio = exp->getFirstComponentByType<AudioComponent>().lock())
+					explosiveAudio->play();
 				objectMgr.removeGameObject(other->getOwnerObject()->getName());
 			});
 	}
 
-	const auto& soldier = objectMgr.getGameObject("soldier");
-	std::shared_ptr<DynamicMovementComponent> movement(new DynamicMovementComponent("dynamicMvmt"));
-	std::shared_ptr<Engine::AnimationComponent> anim(new Engine::AnimationComponent("soldierAnimation", Ogre::ANIMBLEND_CUMULATIVE));
-	std::shared_ptr<SoldierComponent> data(new SoldierComponent("soldireComp"));
-	if (auto& sld = soldier.lock())
+	if (auto& sld = objectMgr.getGameObject("soldier").lock())
 	{
+		std::shared_ptr<DynamicMovementComponent> movement(new DynamicMovementComponent("dynamicMvmt"));
+		std::shared_ptr<AnimationComponent> anim(new AnimationComponent("soldierAnimation", Ogre::ANIMBLEND_CUMULATIVE));
+		std::shared_ptr<SoldierComponent> data(new SoldierComponent("soldierComp"));
+
 		sld->addComponent(movement);
 		sld->addComponent(anim);
 		sld->addComponent(data);
 	}
 	
-	const auto& level = objectMgr.getGameObject("level");
-	if (auto& lvl = level.lock())
+	if (auto& lvl = objectMgr.getGameObject("level").lock())
 	{
-		auto& levelSound = lvl->getFirstComponentByType<AudioComponent>();
-		if (levelSound)
-		{
+		if(auto& levelSound = lvl->getFirstComponentByType<AudioComponent>().lock())
 			levelSound->play();
-		}
 	}
 
-	const auto& fps = objectMgr.createGameObject("fps");
-	if (auto& frames = fps.lock())
+	if (auto& frames = objectMgr.createGameObject("fps").lock())
 	{
 		std::shared_ptr<FPSComponent> fpsc(new FPSComponent("FPS"));
 		frames->addComponent(fpsc);
@@ -93,7 +86,7 @@ int main(int argc, char** argv)
 	// setting up environment
 	auto sceneMgr = renderSys->getSceneManager();
 
-	sceneMgr->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f, 1.0f));
+	sceneMgr->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f, 1.0f)); // ez is kellene az xml-be
 	//sceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
 	//sceneMgr->setShadowColour(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
 	sceneMgr->setSkyBox(true, "Sky");
