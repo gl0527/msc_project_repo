@@ -86,7 +86,7 @@ int main(int argc, char** argv)
 	// setting up environment
 	auto sceneMgr = renderSys->getSceneManager();
 
-	sceneMgr->setAmbientLight(Ogre::ColourValue(0.1f, 0.1f, 0.1f, 1.0f)); // ez is kellene az xml-be
+	sceneMgr->setAmbientLight(Ogre::ColourValue(0.3f, 0.3f, 0.3f, 1.0f)); // ez is kellene az xml-be
 	//sceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_MODULATIVE);
 	//sceneMgr->setShadowColour(Ogre::ColourValue(0.3f, 0.3f, 0.3f));
 	sceneMgr->setSkyBox(true, "Sky");

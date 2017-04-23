@@ -47,15 +47,11 @@ namespace Engine
 				float quadric = XMLParser::getInstance().parseFloat(child, "quadric");
 				comp->setAttenuation(range, constant, linear, quadric);
 			}
-			else if (childName == "position")
+			else if (childName == "angle")
 			{
-				const auto& position = XMLParser::getInstance().parseFloat3_XYZ(child);
-				comp->setPosition(position);
-			}
-			else if (childName == "direction")
-			{
-				const auto& direction = XMLParser::getInstance().parseFloat3_XYZ(child);
-				comp->setDirection(direction);
+				float inner = XMLParser::getInstance().parseFloat(child, "inner");
+				float outer = XMLParser::getInstance().parseFloat(child, "outer");
+				comp->setSpotRange(Ogre::Degree(inner), Ogre::Degree(outer));
 			}
 		}
 	}
