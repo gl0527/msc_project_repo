@@ -10,21 +10,18 @@ namespace Engine
 
 		std::shared_ptr<CameraComponent> comp(new CameraComponent(name, zOrder));
 
+		addToParentObject(elem, comp);
+
 		foreach_child(elem)
 		{
 			std::string childName(child->Value());
 			
 			if (childName == "frustum")
 			{
-				float nearPlane = XMLParser::getInstance().parseFloat(child, "near");
-				float farPlane = XMLParser::getInstance().parseFloat(child, "far");
+				float nearPlane = XMLParser::getInstance().parseFloat(child, "nearPlane");
+				float farPlane = XMLParser::getInstance().parseFloat(child, "farPlane");
 				comp->setNearClip(nearPlane);
 				comp->setFarClip(farPlane);
-			}
-			else if (childName == "height")
-			{
-				float height = XMLParser::getInstance().parseFloat(child, "value");
-				comp->setHeight(height);
 			}
 			else if (childName == "lookat")
 			{
@@ -37,6 +34,5 @@ namespace Engine
 				comp->setRenderDist(renderDist);
 			}
 		}
-		addToParentObject(elem, comp);
 	}
 }

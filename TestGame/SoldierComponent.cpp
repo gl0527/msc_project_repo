@@ -52,8 +52,12 @@ void SoldierComponent::onPostUpdate(float t, float dt)
 
 		anim->init("up_shoot");
 		anim->setWeight(1);
-		anim->setLoop(true);
+		anim->setLoop(false);
 		anim->setEnabled(action == PA_SHOOT);
 		anim->step(dt);
+		if (anim->ended() && action == PA_SHOOT) {
+			anim->setTime(0.0f);
+			action = PA_NONE;
+		}
 	}
 }

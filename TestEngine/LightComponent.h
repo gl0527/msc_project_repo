@@ -5,6 +5,7 @@ namespace Engine
 {
 	class DLL_SPEC LightComponent : public Component
 	{
+		static unsigned int instanceCount;
 		Ogre::SceneManager* sceneMgr;
 		Ogre::Light* light;
 		Ogre::Light::LightTypes type;
@@ -12,6 +13,7 @@ namespace Engine
 		LightComponent(const std::string& name, const Ogre::Light::LightTypes& t);
 		~LightComponent() {}
 
+		virtual void onInit(GameObject* object) override;
 		virtual void onPostUpdate(float t, float dt) override;
 		virtual void onDestroy() override;
 

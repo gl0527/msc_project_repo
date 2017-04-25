@@ -1,13 +1,16 @@
 #include "MeshComponent.h"
+#include "GameObject.h"
 
 namespace Engine
 {
+	unsigned int MeshComponent::instanceCount = 0;
+
 	MeshComponent::MeshComponent(const std::string& eName, const std::string& mName)
 		: RenderComponent(eName),
-		entity(nullptr)
+		entity(nullptr),
+		mesh(mName)
 	{
-		entity = sceneMgr->createEntity(objName, mName);
-		object = entity;
+		
 	}
 
 
@@ -16,10 +19,18 @@ namespace Engine
 	}
 
 
+	void MeshComponent::onInit(GameObject* obj)
+	{
+		entity = sceneMgr->createEntity(obj->getName() + Ogre::StringConverter::toString(instanceCount++), mesh);
+		object = entity;
+		RenderComponent::onInit(obj);
+	}
+
+
 	void MeshComponent::onDestroy()
 	{
 		if(sceneMgr)
-			sceneMgr->destroyEntity(objName);
+			sceneMgr->destroyEntity(entity->getName());
 	}
 
 

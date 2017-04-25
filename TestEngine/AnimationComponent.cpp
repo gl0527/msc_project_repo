@@ -6,6 +6,7 @@ namespace Engine
 {
 	AnimationComponent::AnimationComponent(const std::string& name, const Ogre::SkeletonAnimationBlendMode& blendMode)
 		:Component(name),
+		hasSkeleton(false),
 		entity(nullptr),
 		anim(nullptr),
 		animBlend(blendMode)
@@ -24,7 +25,13 @@ namespace Engine
 		{
 			entity = ownerMesh->getEntity();
 			if (entity)
-				entity->getSkeleton()->setBlendMode(animBlend);
+				if (auto skeleton = entity->getSkeleton())
+				{
+					skeleton->setBlendMode(animBlend);
+					hasSkeleton = true;
+				}
+				//else
+					//ownerObject->removeComponent(name);
 		}
 		else
 			ownerObject->removeComponent(name);
@@ -33,7 +40,7 @@ namespace Engine
 
 	void AnimationComponent::stop()
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				anim->setEnabled(false);
@@ -43,24 +50,30 @@ namespace Engine
 
 	void AnimationComponent::init(const std::string& animName)
 	{
-		if (entity)
+		if (hasSkeleton)
 			anim = entity->getAnimationState(animName);
 	}
 
 
 	void AnimationComponent::start()
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				anim->setEnabled(true);
 		}
 	}
 
+	void AnimationComponent::setEnabled(bool enable)
+	{
+		if (hasSkeleton && anim)
+			anim->setEnabled(enable);
+	}
+
 
 	void AnimationComponent::setWeight(unsigned int weight)
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				anim->setWeight(weight);
@@ -70,7 +83,7 @@ namespace Engine
 
 	void AnimationComponent::setLoop(bool loop)
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				anim->setLoop(loop);
@@ -80,7 +93,7 @@ namespace Engine
 
 	bool AnimationComponent::getLoop()
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				return anim->getLoop();
@@ -91,7 +104,7 @@ namespace Engine
 
 	void AnimationComponent::setTime(float time)
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				anim->setTimePosition(time);
@@ -101,7 +114,7 @@ namespace Engine
 
 	void AnimationComponent::step(float time)
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				anim->addTime(time);
@@ -111,7 +124,7 @@ namespace Engine
 
 	bool AnimationComponent::ended()
 	{
-		if (entity)
+		if (hasSkeleton)
 		{
 			if (anim)
 				return anim->hasEnded();

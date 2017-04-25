@@ -3,7 +3,7 @@
 
 DynamicMovementComponent::DynamicMovementComponent(const std::string& name)
 	:Component(name),
-	moveSpeed(10000.0f),
+	moveSpeed(0.0f),
 	inputHandler(nullptr),
 	ownerPhysics(std::shared_ptr<PhysicsComponent>(nullptr)),
 	ownerSoldierComp(std::shared_ptr<SoldierComponent>(nullptr))

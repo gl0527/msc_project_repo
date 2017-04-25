@@ -3,13 +3,24 @@
 
 namespace Engine
 {
+	unsigned int LightComponent::instanceCount = 0;
+
 	LightComponent::LightComponent(const std::string& name, const Ogre::Light::LightTypes& t)
-		:Component(name),
+		: Component(name),
 		sceneMgr(Game::getInstance().getRenderSystem()->getSceneManager()),
-		light(sceneMgr->createLight(name)),
+		light(nullptr),
 		type(t)
 	{
-		light->setType(type);
+		
+	}
+
+
+	void LightComponent::onInit(GameObject* object)
+	{
+		ownerObject = object;
+		light = sceneMgr->createLight(object->getName() + Ogre::StringConverter::toString(instanceCount++));
+		if (light)
+			light->setType(type);
 	}
 
 
@@ -27,7 +38,7 @@ namespace Engine
 	void LightComponent::onDestroy()
 	{
 		if(sceneMgr)
-			sceneMgr->destroyLight(name);
+			sceneMgr->destroyLight(light->getName());
 	}
 
 

@@ -25,14 +25,14 @@ void InputComponent::onPreUpdate(float t, float dt)
 	Ogre::Vector3 moveDir = Ogre::Vector3::ZERO;
 	++delay;
 
-	if (inputHandler->isKeyDown(OIS::KC_ESCAPE))
+	/*if (inputHandler->isKeyDown(OIS::KC_ESCAPE))
 	{
 		Game::getInstance().destroy();
 		return;
-	}
+	}*/
 	/*if (inputHandler->isKeyDown(OIS::KC_P))
 		Game::getInstance().pause();*/
-	if (inputHandler->isKeyDown(OIS::KC_D))
+	/*if (inputHandler->isKeyDown(OIS::KC_D))
 		moveDir += Ogre::Vector3(1.0f, 0.0f, 0.0f);
 	if (inputHandler->isKeyDown(OIS::KC_A))
 		moveDir += Ogre::Vector3(-1.0f, 0.0f, 0.0f);
@@ -50,7 +50,7 @@ void InputComponent::onPreUpdate(float t, float dt)
 	if (ms.buttonDown(OIS::MB_Left))
 		std::cout << "lmb: " << ms.X.abs << ", " << ms.Y.abs << std::endl;
 	if (ms.buttonDown(OIS::MB_Right))
-		std::cout << "rmb: " << ms.X.rel << ", " << ms.Y.rel << std::endl;
+		std::cout << "rmb: " << ms.X.rel << ", " << ms.Y.rel << std::endl;*/
 	
 	Ogre::Radian yaw(-turnSpeed * ms.X.rel);
 	Ogre::Quaternion Qyaw(yaw, Ogre::Vector3::UNIT_Y);
@@ -61,10 +61,10 @@ void InputComponent::onPreUpdate(float t, float dt)
 	Ogre::Quaternion Qpitch(pitch, right);
 	ownerObject->transform()->setRotation(Qpitch * ownerObject->transform()->rotation());
 
-	moveDir.normalise();
+	/*moveDir.normalise();
 	moveDir = ownerObject->transform()->rotation() * moveDir; // azert, hogy a movedir az ownerObject koordinata-rendszereben legyen ertve
 	
-	ownerObject->transform()->setPosition(ownerObject->transform()->position() + moveDir * dt * moveSpeed); // a dt miatt a mozgas sebessege fuggetlen a gep sebessegetol
+	ownerObject->transform()->setPosition(ownerObject->transform()->position() + moveDir * dt * moveSpeed);*/ // a dt miatt a mozgas sebessege fuggetlen a gep sebessegetol
 }
 
 

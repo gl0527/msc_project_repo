@@ -5,13 +5,12 @@ namespace Engine
 {
 	RenderComponent::RenderComponent(const std::string& name)
 		: Component(name),
-		parentNode(nullptr),
+		parentNode(Game::getInstance().getRenderSystem()->getRootNode()),
 		currentNode(nullptr),
 		object(nullptr),
-		objName(name)
+		sceneMgr(Game::getInstance().getRenderSystem()->getSceneManager())
 	{
-		parentNode = Game::getInstance().getRenderSystem()->getRootNode();
-		sceneMgr = Game::getInstance().getRenderSystem()->getSceneManager();
+
 	}
 
 
@@ -31,9 +30,17 @@ namespace Engine
 	}
 
 
+	void RenderComponent::onDestroy()
+	{
+		sceneMgr->destroySceneNode(currentNode);
+		currentNode = nullptr;
+	}
+
+
 	void RenderComponent::createNode()
 	{
 		if (const auto& ownerParent = ownerObject->getParent().lock())
+		
 		{	
 			if (const auto& ownerRenderer = ownerParent->getFirstComponentByType<RenderComponent>().lock())
 			{
@@ -42,13 +49,6 @@ namespace Engine
 			}
 		}
 		currentNode = parentNode->createChildSceneNode();
-	}
-
-
-	void RenderComponent::onDestroy()
-	{
-		sceneMgr->destroySceneNode(currentNode);
-		currentNode = nullptr;
 	}
 
 

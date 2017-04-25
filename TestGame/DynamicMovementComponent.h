@@ -17,4 +17,6 @@ public:
 	
 	virtual void onStart() override;
 	virtual void onPreUpdate(float t, float dt) override;
+
+	void setMoveSpeed(float speed) { moveSpeed = speed; }
 };

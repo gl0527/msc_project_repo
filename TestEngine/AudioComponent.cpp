@@ -17,7 +17,7 @@ namespace Engine
 			std::cout << "Cannot load audio file.\n";
 		alGenSources(1, &source);
 		alSourcei(source, AL_BUFFER, buffer);
-		listener = ObjectManager::getInstance().getGameObject(listenerName).lock();
+		listener = ObjectManager::getInstance().getGameObject(listenerName);
 	}
 
 
@@ -40,8 +40,8 @@ namespace Engine
 	{
 		if (ownerObject)
 			updatePose(ownerObject->transform()->position(), ownerObject->transform()->forward());
-		if (listener)
-			updatePose(listener->transform()->position(), listener->transform()->forward());
+		if (auto& listenerObj = listener.lock())
+			updatePose(listenerObj->transform()->position(), listenerObj->transform()->forward());
 	}
 
 

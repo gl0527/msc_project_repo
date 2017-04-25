@@ -10,7 +10,6 @@ namespace Engine
 		Ogre::SceneNode* currentNode;
 		Ogre::MovableObject* object;
 		Ogre::SceneManager* sceneMgr;
-		std::string objName;
 
 		void createNode();
 	public:

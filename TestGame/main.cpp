@@ -4,6 +4,7 @@
 #include "InputProcessor.h"
 #include "DynamicMovementComponent.h"
 #include "SoldierComponent.h"
+#include "DynamicMovementProcessor.h"
 
 using namespace Engine;
 
@@ -15,6 +16,7 @@ int main(int argc, char** argv)
 		return -1;
 
 	new InputProcessor;
+	new DynamicMovementProcessor;
 
 	auto renderSys = game.getRenderSystem();
 	auto& xmlParser = XMLParser::getInstance();
@@ -60,13 +62,11 @@ int main(int argc, char** argv)
 			});
 	}
 
-	if (auto& sld = objectMgr.getGameObject("soldier").lock())
+	if (auto& sld = objectMgr.getGameObject("gijoe").lock())
 	{
-		std::shared_ptr<DynamicMovementComponent> movement(new DynamicMovementComponent("dynamicMvmt"));
 		std::shared_ptr<AnimationComponent> anim(new AnimationComponent("soldierAnimation", Ogre::ANIMBLEND_CUMULATIVE));
 		std::shared_ptr<SoldierComponent> data(new SoldierComponent("soldierComp"));
 
-		sld->addComponent(movement);
 		sld->addComponent(anim);
 		sld->addComponent(data);
 	}

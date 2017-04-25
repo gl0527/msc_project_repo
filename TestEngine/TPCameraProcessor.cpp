@@ -9,6 +9,8 @@ namespace Engine
 		int zDepth = XMLParser::getInstance().parseInt(elem, "zdepth");
 		std::shared_ptr<TPCameraComponent> comp(new TPCameraComponent(name, zDepth));
 
+		addToParentObject(elem, comp);
+
 		foreach_child(elem)
 		{
 			std::string childName(child->Value());
@@ -23,7 +25,7 @@ namespace Engine
 			else if (childName == "height")
 			{
 				float height = XMLParser::getInstance().parseFloat(child, "value");
-				comp->setHeight(height);
+				comp->setCameraHeight(height);
 			}
 			else if (childName == "targetHeight")
 			{
@@ -46,7 +48,6 @@ namespace Engine
 				comp->setFixed(isFixed);
 			}
 		}
-		addToParentObject(elem, comp);
 	}
 }
 

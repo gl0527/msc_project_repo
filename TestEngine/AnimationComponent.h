@@ -5,6 +5,7 @@ namespace Engine
 {
 	class DLL_SPEC AnimationComponent : public Component
 	{
+		bool hasSkeleton;
 		Ogre::Entity* entity;
 		Ogre::AnimationState* anim;
 		Ogre::SkeletonAnimationBlendMode animBlend;
@@ -16,7 +17,7 @@ namespace Engine
 
 		void init(const std::string& animName);
 		void start();
-		void setEnabled(bool enable) { anim->setEnabled(enable); }
+		void setEnabled(bool enable);
 		void stop();
 		void setWeight(unsigned int weight);
 		void setLoop(bool loop);

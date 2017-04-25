@@ -6,9 +6,10 @@ namespace Engine
 {
 	TPCameraComponent::TPCameraComponent(const std::string& name, int zDepth)
 		: CameraComponent(name, zDepth),
-		targetHeight(10.0f),
-		camDist(400.0f),
-		motBlend(2.0f),
+		camHeight(0.0f),
+		targetHeight(0.0f),
+		camDist(0.0f),
+		motBlend(0.0f),
 		fixed(false),
 		physicsSys(Game::getInstance().getPhysicsSystem())
 	{
@@ -26,7 +27,7 @@ namespace Engine
 		dir.normalise();
 		const auto& ownerPos = ownerObject->transform()->position();
 
-		camera->setPosition(ownerPos - dir*camDist + Ogre::Vector3(0, height, 0));
+		camera->setPosition(ownerPos - dir*camDist + Ogre::Vector3(0, camHeight, 0));
 		camera->lookAt(ownerPos + Ogre::Vector3(0, targetHeight, 0));
 	}
 
@@ -36,21 +37,25 @@ namespace Engine
 		const auto& ownerPos = ownerObject->transform()->position() + Ogre::Vector3(0, targetHeight, 0);
 		auto& dir = ownerObject->transform()->forward();
 		dir.normalise();
-		auto newPos = ownerPos - dir*camDist + Ogre::Vector3(0, height, 0);
+		auto newPos = ownerPos - dir*camDist + Ogre::Vector3(0, camHeight, 0);
+
+		//int sgn = camera->getDirection().z < 0.0f ? -1 : 1;
 
 		btVector3 btCamPos(camera->getPosition().x, camera->getPosition().y, camera->getPosition().z);
 		btVector3 btOwnerPos(ownerPos.x, ownerPos.y, ownerPos.z);
-		auto ray = physicsSys->rayTest(btCamPos, btOwnerPos);
+		auto& ray = physicsSys->rayTest(btOwnerPos, btCamPos);
 
 		if (ray.hasHit())
 		{
-			btVector3 hitPoint = ray.m_hitPointWorld;
-			btVector3 hitNormal = ray.m_hitNormalWorld;
-			if (hitPoint.z() > btOwnerPos.z())
-				camDist -= motBlend * 0.1f;
+			//auto& hitPoint = ray.m_hitPointWorld;
+			//auto& hitNormal = ray.m_hitNormalWorld;
+			//if (hitPoint.z() > btOwnerPos.z())
+			camDist *= 0.8f;
 		}
-		else if (camDist < 40.0f)
-			camDist += motBlend * 0.1f;
+		else if (fabs(camDist) < 40.0f)
+		{
+			camDist *= 1.2f;
+		}
 
 		float w = motBlend * dt;
 

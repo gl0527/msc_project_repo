@@ -11,7 +11,7 @@ namespace Engine
 		bool looping;
 		ALuint buffer;
 		ALuint source;
-		GameObject_sptr listener;
+		GameObject_wptr listener;
 		void updatePose(const Ogre::Vector3& pos, const Ogre::Vector3& dir);
 	public:
 		AudioComponent(const std::string& fileName, const std::string& listenerName);

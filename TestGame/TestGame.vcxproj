@@ -82,7 +82,9 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CameraControlComponent.cpp" />
     <ClCompile Include="DynamicMovementComponent.cpp" />
+    <ClCompile Include="DynamicMovementProcessor.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
@@ -100,7 +102,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CameraControlComponent.h" />
     <ClInclude Include="DynamicMovementComponent.h" />
+    <ClInclude Include="DynamicMovementProcessor.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="InputProcessor.h" />

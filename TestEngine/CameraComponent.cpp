@@ -8,24 +8,41 @@ namespace Engine
 		zOrder(zDepth),
 		camera(nullptr),
 		viewport(nullptr),
-		renderWnd(nullptr),
+		renderWnd(Game::getInstance().getRenderSystem()->getRenderWindow()),
 		renderTexture(nullptr)
 	{
-		camera = sceneMgr->createCamera(name);
-		object = camera;
-		renderWnd = Game::getInstance().getRenderSystem()->getRenderWindow();
+		
+	}
+
+
+	void CameraComponent::onInit(GameObject* obj)
+	{
+		ownerObject = obj;
+		camera = sceneMgr->createCamera(obj->getName() + Ogre::StringConverter::toString(zOrder));
+
+		while (renderWnd->hasViewportWithZOrder(zOrder))
+			++zOrder;
+
 		viewport = renderWnd->addViewport(camera, zOrder);
 		camera->setAspectRatio(Ogre::Real(viewport->getActualWidth()) / Ogre::Real(viewport->getActualHeight()));
+		object = camera;
+
+		createNode();
+		currentNode->attachObject(object);
 	}
 
 
 	void CameraComponent::onDestroy()
 	{
-		renderWnd->removeViewport(zOrder);
-		sceneMgr->destroyCamera(objName);
-		sceneMgr->destroySceneNode(currentNode);
+		if (renderWnd)
+			renderWnd->removeViewport(zOrder);
+		if (sceneMgr)
+		{
+			sceneMgr->destroyCamera(camera->getName());
+			sceneMgr->destroySceneNode(currentNode);
+		}
 		currentNode = nullptr;
-		sceneMgr->destroyEntity(objName);
+		//sceneMgr->destroyEntity(camera->getName());
 	}
 
 

@@ -27,14 +27,8 @@ namespace Engine
 
 	void GameObject::removeComponent(const std::string& compName)
 	{
-		for (auto it = components.begin(), end = components.end(); it != end; ++it)
-		{
-			if ((*it)->getName() == compName)
-			{
-				components.erase(it);
-				break;
-			}
-		}
+		auto predicate = [&compName](const Component_sptr& elem) { return elem->getName() == compName; };
+		components.erase(std::remove_if(components.begin(), components.end(), predicate), components.end());
 	}
 
 
@@ -83,14 +77,19 @@ namespace Engine
 
 	void GameObject::removeChild(const std::string& childName)
 	{
-		for (auto child = children.begin(), end = children.end(); child != end; ++child)
+		auto predicate = [&childName](GameObject_wptr elem) -> bool
 		{
-			if ((*child).lock()->getName() == childName)
+			if (auto& child = elem.lock())
 			{
-				child = children.erase(child);
-				break;
+				if (child->getName() == childName)
+				{
+					child->onDestroy();
+					return true;
+				}
 			}
-		}
+			return false;
+		};
+		children.erase(std::remove_if(children.begin(), children.end(), predicate), children.end());
 	}
 
 

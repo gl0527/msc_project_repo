@@ -7,6 +7,7 @@ namespace Engine
 
 	class DLL_SPEC TPCameraComponent : public CameraComponent
 	{
+		float camHeight;
 		float targetHeight;
 		float camDist;
 		float motBlend;
@@ -21,6 +22,7 @@ namespace Engine
 
 		bool isFixed() const { return fixed; }
 
+		void setCameraHeight(float cHeight) { camHeight = cHeight; }
 		void setTargetHeight(float tHeight) { targetHeight = tHeight; }
 		void setCameraDist(float dist) { camDist = dist; }
 		void setMotionBlend(float mBlend) { motBlend = mBlend; }
